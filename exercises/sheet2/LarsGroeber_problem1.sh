@@ -2,15 +2,16 @@
 
 # 
 # small script to send spam mails using mutt
+# got probably a bit carried away from the actual assignment :)
 # @author: Lars Groeber
 # 
 # Usage:
-#       SCRIPTNAME [-T %Y%m%d%H%M] [-t timeInterval-in-min] [-m maxMails]
+#       SCRIPTNAME [-T %Y%m%d%H%M] [-t time-interval-in-min] [-m max-mails]
 #                  (-s subject,email,body) | (-f subject,file-with-emails,body)
 # 
 # Example: SCRIPTNAME -T 201610301200 -t 5 -m 10 -s subject,name@example,body
 #           sends 1 mail every 5 minutes to name@example.com starting at 
-#           10/30/2016 12:00 until 10 mails are send 
+#           10/30/2016 12:00 until 10 mails are sent 
 #           
 # Use -t 0 to send all emails immediately
 # 
@@ -25,9 +26,10 @@ timeInterval=1  # in minutes
 nameOfScript="./LarsGroeber_problem1.sh"
 timestamp=`date '+%Y%m%d%H%M'`
 
-usage="\nUsage:\n \t$nameOfScript [-T %Y%m%d%H%M] [-t timeInterval-in-min] [-m maxMails]\n\
-\t \t(-s subject,email,body) | (-f subject,file-with-emails,body)\n\
-              Defaults: maxMails: $maxMails, timeInterval: $timeInterval"
+usage="Usage:\
+            THIS-SCRIPT \t[-T %Y%m%d%H%M] [-t time-interval-in-min] [-m max-mails]\n\
+            \t\t\t(-s subject,email,body) | (-f subject,file-with-emails,body)\n\
+            \tDefaults: max-mails: $maxMails, time-interval: $timeInterval"
 
 #### FUNCTIONS ####
 
@@ -37,7 +39,7 @@ usage="\nUsage:\n \t$nameOfScript [-T %Y%m%d%H%M] [-t timeInterval-in-min] [-m m
 #         body
 function sendMail
 {
-  echo -e ""
+  echo "sent mail"
   #echo $3 | mutt -s $1 -- $2
 }
 
@@ -58,9 +60,10 @@ function checkTimeStamp
 #         body
 function simple
 {
-  # split input to -s
+  # split input
   inputArr=( $( echo $1 | sed "s/,/ /g" ) )
   
+  # check if three parameters were given
   if test ${#inputArr[@]} -ne 3; then
     echo "Invalid number of arguments!" >&2
     echo "Usage: -s subject,email,body" >&2
@@ -75,15 +78,14 @@ function simple
 
   for (( i = 1; i <= $maxMails; i++ )); do
     sendMail $subject $email $body
-    echo "Send "$i". mail to \""$email"\", going to sleep for "$timeInterval"min."\
-         $(($maxMails-$i))" mails left."
+    echo "Sent "$i". mail to \""$email"\", going to sleep for "$timeInterval"min."\
+         $(( $maxMails-$i ))" mails left."
     # go to sleep if there are mails left to send
     if test $i -ne $maxMails; then sleep $(( $timeInterval*60 )); fi
   done
 }
 
 # this implimentation takes a file with adresses and sends mails to each of them
-# and bodys
 # @param: subject
 #         file-with-emails
 #         body
@@ -96,12 +98,15 @@ function advanced
     echo "Usage: -f subject,path-to-file,body" >&2
     exit 2
   fi
- 
-  checkTimeStamp $timestamp
 
   subject=${inputArr[0]}
   pathToFile=${inputArr[1]}
   body=${inputArr[2]}
+
+  if test ! -e $pathToFile || test ! -r $pathToFile; then 
+    echo "File does not exist!"
+    exit 1
+  fi
 
   emails=""
 
@@ -112,26 +117,22 @@ function advanced
 
   emailsArr=( $emails )
 
+  checkTimeStamp $timestamp  
+
   for (( i = 1; i <= $maxMails; i++ )); do
     # here we send one email per entry in file
     for email in ${emailsArr[@]}; do
       sendMail $subject $email $body
-      echo "Send "$i". mail to \""$email"\""
+      echo "Sent "$i". mail to \""$email"\""
     done
 
-    echo -e "Going to sleep for "$timeInterval"min. "$(( $maxMails-$i ))\
-            " mails left.\n"
+    echo "Going to sleep for "$timeInterval"min. "$(( $maxMails-$i ))\
+         " mails left."
     if test $i -ne $maxMails; then sleep $(( $timeInterval*60 )); fi
   done
 }
 
 #### END FUNCTIONS ####
-
-# show usage information if no parameters are specified
-if test $# -eq 0; then
-  echo -e $usage >&2
-  exit 1
-fi
 
 cmd=""
 param=""
@@ -158,6 +159,12 @@ while getopts "f:s:t:T:m:" opt; do
       ;;
   esac
 done
+
+# show usage information if no parameters are specified
+if test $# -eq 0 || test $cmd == ""; then
+  echo -e $usage >&2
+  exit 1
+fi
 
 $cmd $param
 
