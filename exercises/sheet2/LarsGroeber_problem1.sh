@@ -27,7 +27,7 @@ timeInterval=1  # in minutes
 nameOfScript="./LarsGroeber_problem1.sh"
 timestamp=`date '+%Y%m%d%H%M'`
 FS="/" # field seperator
-debug=1
+debug=false
 
 usage="Usage:\
             \tTHIS-SCRIPT \t[-T %Y%m%d%H%M] [-t time-interval-in-min] [-m max-mails] [-d]\n\
@@ -43,7 +43,7 @@ usage="Usage:\
 #         body
 function sendMail
 {
-  if test $debug; then
+  if ( $debug ); then
     echo "sent mail: $1/$2/$3" # debug
   else
     echo "$3" | mutt -s "$1" -- "$2"
@@ -172,7 +172,7 @@ while getopts "f:s:t:T:m:d" opt; do
       param=$OPTARG
       ;;
     d)
-      debug=0
+      debug=true
       ;;
   esac
 done
