@@ -1,19 +1,20 @@
 #! /usr/bin/env bash
 
 # 
-# small script to send spam mails using mutt
+# Small script to send spam mails using mutt.
 # got probably a bit carried away from the actual assignment :)
 # @author: Lars Groeber
 # 
 # Usage:
-#       SCRIPTNAME [-T %Y%m%d%H%M] [-t time-interval-in-min] [-m max-mails]
+#       SCRIPTNAME [-T %Y%m%d%H%M] [-t time-interval-in-min] [-m max-mails] [-d]
 #                  (-s subject/email/body) | (-f subject/file-with-emails/body)
 # 
 # Example: SCRIPTNAME -T 201610301200 -t 5 -m 10 -s subject/name@example/"body with spaces"
 #           sends 1 mail every 5 minutes to name@example.com starting at 
-#           10/30/2016 12:00 until 10 mails are sent 
+#           10/30/2016 12:00 until 10 mails are sent. 
 #           
-# Use -t 0 to send all emails immediately
+# Use -t 0 to send all emails immediately.
+# Use -d for debugging (no mails are sent).
 # 
 
 # terminate on error
@@ -26,11 +27,13 @@ timeInterval=1  # in minutes
 nameOfScript="./LarsGroeber_problem1.sh"
 timestamp=`date '+%Y%m%d%H%M'`
 FS="/" # field seperator
+debug=1
 
 usage="Usage:\
-            THIS-SCRIPT \t[-T %Y%m%d%H%M] [-t time-interval-in-min] [-m max-mails]\n\
+            \tTHIS-SCRIPT \t[-T %Y%m%d%H%M] [-t time-interval-in-min] [-m max-mails] [-d]\n\
             \t\t\t(-s subject${FS}email${FS}body) | (-f subject${FS}file-with-emails${FS}body)\n\
-            \tDefaults: max-mails: $maxMails, time-interval: $timeInterval"
+            \tDefaults: max-mails: $maxMails, time-interval: $timeInterval\n
+            \tRemember to surround text with spaces by quotes!"
 
 #### FUNCTIONS ####
 
@@ -40,8 +43,11 @@ usage="Usage:\
 #         body
 function sendMail
 {
-  #echo "sent mail: $1/$2/$3" # debug
-  echo "$3" | mutt -s "$1" -- "$2"
+  if test $debug; then
+    echo "sent mail: $1/$2/$3" # debug
+  else
+    echo "$3" | mutt -s "$1" -- "$2"
+  fi
 }
 
 # function which waits until a given timestamp is in the past
@@ -69,7 +75,7 @@ function simpleSpam
   # check if three parameters were given
   if test ${#inputArr[@]} -ne 3; then
     echo "Invalid number of arguments!" >&2
-    echo "Usage: -s subject,email,body" >&2
+    echo "Usage: -s subject${FS}email${FS}body" >&2
     exit 2
   fi
  
@@ -80,7 +86,7 @@ function simpleSpam
   body=${inputArr[2]}
 
   for (( i = 1; i <= $maxMails; i++ )); do
-    sendMail "$subject" "$email" "$body"
+    sendMail "$subject" "$email" "$body" # quotes important here
     echo "Sent "$i". mail to \""$email"\". $(( $maxMails-$i )) mail(s) left."
          
     # go to sleep if there are mails left to send
@@ -101,7 +107,8 @@ function advancedSpam
   
   if test ${#inputArr[@]} -ne 3; then
     echo "Invalid number of arguments!" >&2
-    echo "Usage: -f subject,path-to-file,body" >&2
+    echo "Usage: -f subject${FS}path-to-file${FS}body" >&2
+    echo "Remember to surround text with spaces by quotes." >&2
     exit 2
   fi
 
@@ -145,7 +152,7 @@ cmd=""
 param=""
 
 # go through arguments
-while getopts "f:s:t:T:m:" opt; do
+while getopts "f:s:t:T:m:d" opt; do
   case $opt in
     T)
       timestamp=$OPTARG
@@ -164,6 +171,9 @@ while getopts "f:s:t:T:m:" opt; do
       cmd="simpleSpam"
       param=$OPTARG
       ;;
+    d)
+      debug=0
+      ;;
   esac
 done
 
@@ -173,7 +183,7 @@ if test $# -eq 0 || test $cmd == ""; then
   exit 1
 fi
 
-# use "" to allow spaces
+# quotes are important here
 $cmd "$param"
 
 exit 0
