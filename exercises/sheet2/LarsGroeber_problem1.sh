@@ -81,10 +81,14 @@ function simpleSpam
 
   for (( i = 1; i <= $maxMails; i++ )); do
     sendMail "$subject" "$email" "$body"
-    echo "Sent "$i". mail to \""$email"\", going to sleep for "$timeInterval"min."\
-         $(( $maxMails-$i ))" mails left."
+    echo -e "Sent "$i". mail to \""$email"\". "
+         
     # go to sleep if there are mails left to send
-    if test $i -ne $maxMails; then sleep $(( $timeInterval*60 )); fi
+    if test $i -ne $maxMails; then 
+      echo -e "Going to sleep for "$timeInterval"min. "
+      sleep $(( $timeInterval*60 )); 
+    fi
+    echo "$(( $maxMails-$i )) mail(s) left."
   done
 }
 
