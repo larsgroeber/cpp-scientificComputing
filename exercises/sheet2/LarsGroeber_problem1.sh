@@ -81,11 +81,11 @@ function simpleSpam
 
   for (( i = 1; i <= $maxMails; i++ )); do
     sendMail "$subject" "$email" "$body"
-    echo -e "Sent "$i". mail to \""$email"\". $(( $maxMails-$i )) mail(s) left."
+    echo "Sent "$i". mail to \""$email"\". $(( $maxMails-$i )) mail(s) left."
          
     # go to sleep if there are mails left to send
     if test $i -ne $maxMails; then 
-      echo -e "Going to sleep for "$timeInterval"min. "
+      echo "Going to sleep for "$timeInterval"min."
       sleep $(( $timeInterval*60 )); 
     fi
   done
@@ -128,13 +128,14 @@ function advancedSpam
   for (( i = 1; i <= $maxMails; i++ )); do
     # here we send one email per entry in file
     for email in ${emailsArr[@]}; do
-      sendMail $subject $email $body
-      echo "Sent "$i". mail to \""$email"\""
+      sendMail "$subject" "$email" "$body"
+      echo "Sent "$i". mail to \""$email"\". $(( $maxMails-$i )) mail(s) left."
     done
-
-    echo "Going to sleep for "$timeInterval"min. "$(( $maxMails-$i ))\
-         " mails left."
-    if test $i -ne $maxMails; then sleep $(( $timeInterval*60 )); fi
+    
+    if test $i -ne $maxMails; then 
+      echo "Going to sleep for "$timeInterval"min."
+      sleep $(( $timeInterval*60 )); 
+    fi
   done
 }
 
