@@ -40,8 +40,8 @@ usage="Usage:\
 #         body
 function sendMail
 {
-  echo "sent mail: $1/$2/$3" # debug
-  #echo $3 | mutt -s $1 -- $2
+  #echo "sent mail: $1/$2/$3" # debug
+  echo "$3" | mutt -s "$1" -- "$2"
 }
 
 # function which waits until a given timestamp is in the past
@@ -49,9 +49,11 @@ function sendMail
 function waitTimeStamp
 {
   secondsDiff=$(( $1 - `date '+%Y%m%d%H%M'` ))
+
   while test $secondsDiff -gt 0; do
     echo "Waiting..."
     sleep 5
+    secondsDiff=$(( $1 - `date '+%Y%m%d%H%M'` ))
   done
 }
 
