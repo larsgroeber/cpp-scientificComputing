@@ -40,7 +40,7 @@ usage="Usage:\
 #         body
 function sendMail
 {
-  echo "sent mail" # debug
+  echo "sent mail: $1/$2/$3" # debug
   #echo $3 | mutt -s $1 -- $2
 }
 
@@ -78,7 +78,7 @@ function simpleSpam
   body=${inputArr[2]}
 
   for (( i = 1; i <= $maxMails; i++ )); do
-    sendMail $subject $email $body
+    sendMail "$subject" "$email" "$body"
     echo "Sent "$i". mail to \""$email"\", going to sleep for "$timeInterval"min."\
          $(( $maxMails-$i ))" mails left."
     # go to sleep if there are mails left to send
