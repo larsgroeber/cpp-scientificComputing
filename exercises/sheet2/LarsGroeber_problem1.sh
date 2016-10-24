@@ -7,9 +7,9 @@
 # 
 # Usage:
 #       SCRIPTNAME [-T %Y%m%d%H%M] [-t time-interval-in-min] [-m max-mails]
-#                  (-s subject,email,body) | (-f subject,file-with-emails,body)
+#                  (-s subject/email/body) | (-f subject/file-with-emails/body)
 # 
-# Example: SCRIPTNAME -T 201610301200 -t 5 -m 10 -s subject,name@example,body
+# Example: SCRIPTNAME -T 201610301200 -t 5 -m 10 -s subject/name@example/"body with spaces"
 #           sends 1 mail every 5 minutes to name@example.com starting at 
 #           10/30/2016 12:00 until 10 mails are sent 
 #           
@@ -25,10 +25,11 @@ maxMails=5
 timeInterval=1  # in minutes
 nameOfScript="./LarsGroeber_problem1.sh"
 timestamp=`date '+%Y%m%d%H%M'`
+FS="/" # field seperator
 
 usage="Usage:\
             THIS-SCRIPT \t[-T %Y%m%d%H%M] [-t time-interval-in-min] [-m max-mails]\n\
-            \t\t\t(-s subject,email,body) | (-f subject,file-with-emails,body)\n\
+            \t\t\t(-s subject${FS}email${FS}body) | (-f subject${FS}file-with-emails${FS}body)\n\
             \tDefaults: max-mails: $maxMails, time-interval: $timeInterval"
 
 #### FUNCTIONS ####
@@ -39,13 +40,13 @@ usage="Usage:\
 #         body
 function sendMail
 {
-  echo "sent mail"
+  echo "sent mail" # debug
   #echo $3 | mutt -s $1 -- $2
 }
 
 # function which waits until a given timestamp is in the past
 # @param: timestamp to check with format %Y%m%d%H%M
-function checkTimeStamp
+function waitTimeStamp
 {
   secondsDiff=$(( $1 - `date '+%Y%m%d%H%M'` ))
   while test $secondsDiff -gt 0; do
@@ -58,11 +59,11 @@ function checkTimeStamp
 # @param: subject
 #         email
 #         body
-function simple
+function simpleSpam
 {
   # split input
-  inputArr=( $( echo $1 | sed "s/,/ /g" ) )
-  
+  IFS=$FS read -r -a inputArr <<< $1
+
   # check if three parameters were given
   if test ${#inputArr[@]} -ne 3; then
     echo "Invalid number of arguments!" >&2
@@ -70,7 +71,7 @@ function simple
     exit 2
   fi
  
-  checkTimeStamp $timestamp
+  waitTimeStamp $timestamp
 
   subject=${inputArr[0]}
   email=${inputArr[1]}
@@ -89,9 +90,9 @@ function simple
 # @param: subject
 #         file-with-emails
 #         body
-function advanced
+function advancedSpam
 {
-  inputArr=( $( echo $1 | sed "s/,/ /g" ) )
+  IFS=$FS read -r -a inputArr <<< $1
   
   if test ${#inputArr[@]} -ne 3; then
     echo "Invalid number of arguments!" >&2
@@ -117,7 +118,7 @@ function advanced
 
   emailsArr=( $emails )
 
-  checkTimeStamp $timestamp  
+  waitTimeStamp $timestamp  
 
   for (( i = 1; i <= $maxMails; i++ )); do
     # here we send one email per entry in file
@@ -150,11 +151,11 @@ while getopts "f:s:t:T:m:" opt; do
       maxMails=$OPTARG
       ;;
     f)
-      cmd="advanced"
+      cmd="advancedSpam"
       param=$OPTARG
       ;;
     s)
-      cmd="simple"
+      cmd="simpleSpam"
       param=$OPTARG
       ;;
   esac
@@ -166,6 +167,7 @@ if test $# -eq 0 || test $cmd == ""; then
   exit 1
 fi
 
-$cmd $param
+# use "" to allow spaces
+$cmd "$param"
 
 exit 0
