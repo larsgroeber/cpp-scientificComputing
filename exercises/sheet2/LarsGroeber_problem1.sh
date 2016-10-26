@@ -43,8 +43,9 @@ usage="Usage:\
 #         body
 function sendMail
 {
+  # in debug-mode don't try to send mail
   if ( $debug ); then
-    echo "sent mail: $1/$2/$3" # debug
+    echo "sent mail: $1/$2/$3"
   else
     echo "$3" | mutt -s "$1" -- "$2"
   fi
@@ -54,12 +55,12 @@ function sendMail
 # @param: timestamp to check with format %Y%m%d%H%M
 function waitTimeStamp
 {
-  secondsDiff=$(( $1 - `date '+%Y%m%d%H%M'` ))
+  minDiff=$(( $1 - `date '+%Y%m%d%H%M'` ))
 
-  while test $secondsDiff -gt 0; do
+  while test $minDiff -gt 0; do
     echo "Waiting..."
     sleep 5
-    secondsDiff=$(( $1 - `date '+%Y%m%d%H%M'` ))
+    minDiff=$(( $1 - `date '+%Y%m%d%H%M'` ))
   done
 }
 
@@ -69,7 +70,7 @@ function waitTimeStamp
 #         body
 function simpleSpam
 {
-  # split input
+  # split input into inputArray at IFS
   IFS=$FS read -r -a inputArr <<< $1
 
   # check if three parameters were given
@@ -85,8 +86,9 @@ function simpleSpam
   email=${inputArr[1]}
   body=${inputArr[2]}
 
+  # send maxMails mails
   for (( i = 1; i <= $maxMails; i++ )); do
-    sendMail "$subject" "$email" "$body" # quotes important here
+    sendMail "$subject" "$email" "$body" # quotes are important here
     echo "Sent "$i". mail to \""$email"\". $(( $maxMails-$i )) mail(s) left."
          
     # go to sleep if there are mails left to send
@@ -148,10 +150,12 @@ function advancedSpam
 
 #### END FUNCTIONS ####
 
+# these variables will hold the to-be-executed function (simple/advancedMail)
+# and the corresponding parameter
 cmd=""
 param=""
 
-# go through arguments
+# go through arguments and set globals accordingly
 while getopts "f:s:t:T:m:d" opt; do
   case $opt in
     T)
@@ -177,8 +181,9 @@ while getopts "f:s:t:T:m:d" opt; do
   esac
 done
 
-# show usage information if no parameters are specified
-if test $# -eq 0 || test $cmd == ""; then
+# show usage information if no parameters are specified or
+# no valid parameter was given
+if test $# -eq 0 || test -z $cmd; then
   echo -e $usage >&2
   exit 1
 fi
