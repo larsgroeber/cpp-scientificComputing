@@ -4,6 +4,7 @@
 # Small script to send spam mails using mutt.
 # got probably a bit carried away from the actual assignment :)
 # @author: Lars Groeber
+# @coauthor: Robert Soeder, Hendrik Edelmann
 # 
 # Usage:
 #       SCRIPTNAME [-T %Y%m%d%H%M] [-t time-interval-in-min] [-m max-mails] [-d]
@@ -24,7 +25,7 @@ set -e
 
 maxMails=5
 timeInterval=1  # in minutes
-nameOfScript="./LarsGroeber_problem1.sh"
+nameOfScript="./LarsRobertHendrik_problem1.sh"
 timestamp=`date '+%Y%m%d%H%M'`
 FS="/" # field seperator
 debug=false
@@ -118,6 +119,7 @@ function advancedSpam
   pathToFile=${inputArr[1]}
   body=${inputArr[2]}
 
+  # check if file exists and is readable
   if test ! -e $pathToFile || test ! -r $pathToFile; then 
     echo "File does not exist!"
     exit 1
@@ -150,7 +152,7 @@ function advancedSpam
 
 #### END FUNCTIONS ####
 
-# these variables will hold the to-be-executed function (simple/advancedMail)
+# these variables will hold the to-be-executed function (simple/advancedSpam)
 # and the corresponding parameter
 cmd=""
 param=""

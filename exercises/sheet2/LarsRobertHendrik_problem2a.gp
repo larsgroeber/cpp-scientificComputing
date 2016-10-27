@@ -1,11 +1,12 @@
 set terminal postscript eps size 3.5,2.62 enhanced color \
     font 'Helvetica,20' linewidth 2
-set output 'LarsGroeber_problem2a.eps'
+set output 'LarsRobertHendrik_problem2a.eps'
 
 set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2
 set style line 2 linecolor rgb '#dd181f' linetype 2 linewidth 4
 
 set xrange [0:10]
+set yrange [0:10]
 set xlabel "x"
 set ylabel "f(x)"
 
