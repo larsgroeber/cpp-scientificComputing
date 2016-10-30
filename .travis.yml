@@ -4,4 +4,4 @@ script:
   - cd exercises/sheet3/caesar-cipher
   - mkdir build
   - cd build
-  - clang .. && make
+  - cmake .. && make
