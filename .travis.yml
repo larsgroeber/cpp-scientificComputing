@@ -2,6 +2,7 @@ language: c++
 install: true
 sudo: required
 dist: trusty
+
 include:
   - compiler: cmake
       addons:
