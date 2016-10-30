@@ -1,5 +1,17 @@
 language: c++
 install: true
+sudo: required
+dist: trusty
+include:
+  - compiler: cmake
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.6
+          packages:
+            - cmake-3.6
+      env: COMPILER=cmake-3.6
 script:
   - cd exercises/sheet3/caesar-cipher
   - mkdir build
