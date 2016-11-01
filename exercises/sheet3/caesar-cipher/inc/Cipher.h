@@ -23,7 +23,9 @@ public:
     std::string shiftMessage ( const std::string& origMsg ) const;
 
 private:
-    // property holding the cipher key
+    /**
+     * property holding the cipher key
+    */
     const int key;
 };
 
