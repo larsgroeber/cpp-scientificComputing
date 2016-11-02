@@ -26,7 +26,7 @@ std::string Cipher::shiftMessage( const std::string& origMsg ) const
             if ( key >= 0 )
             {
                 // yes, you can subtract chars from other chars, they will be
-                // implicitly converted to int
+                // converted to int implicitly
                 cFinal = char( ( c - 'A' + key ) % 26 + 'A' );
             }
             else

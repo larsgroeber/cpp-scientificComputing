@@ -19,7 +19,7 @@ using namespace std;
 
 int main()
 {
-    cout << "Welcome to Caesar-Cipher 1.0." << endl;
+    cout << "Welcome to Caesar-Cipher 1.0" << endl;
     cout << "Please enter your message:" << endl;
 
     string inputSentence;

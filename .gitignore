@@ -1,3 +1,6 @@
+*/build # don't include build directories
+*/.idea # don't include .idea dir (clion uses these)
+
 # Compiled Object files
 *.slo
 *.lo
