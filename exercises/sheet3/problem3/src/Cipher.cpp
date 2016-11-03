@@ -1,8 +1,14 @@
+/**
+ * Source File for class Cipher
+ */
+
 #include "../inc/Cipher.h"
 
 #include <sstream>
 
-
+/**
+ * @brief implementation of method shiftmessage
+ */
 std::string Cipher::shiftMessage( const std::string& origMsg ) const
 {
     std::string finalMsg;

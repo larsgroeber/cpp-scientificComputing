@@ -1,6 +1,14 @@
+/**
+ * Solution to problem2
+ *
+ * Run with
+ * cmake . && make && ./LarsRobertHendrik_problem2
+ * or
+ * g++ -o LarsRobertHendrik_problem2 LarsRobertHendrik_problem2.cpp
+ */
+
 #include <iostream>
 #include <cmath>
-#include <stdio.h>
 
 using namespace std;                                // if eg cout used only once one can also write std::cout
 
@@ -12,7 +20,6 @@ int main() {
     //
     // Task (a)
     //
-
     printf("--------------------\n----- Task (a) -----\n--------------------\n\n");
 
     int myArray[5] = {1, 3, 5, 7, 9};
@@ -21,6 +28,7 @@ int main() {
         cout << " myArray [" << i << "] = " << myArray[i] << endl;
     }
     cout << endl << endl;
+
 
     //
     //Task (b)
@@ -35,6 +43,7 @@ int main() {
 
     cout << endl << endl;
 
+
     //
     //Task (c)
     //
@@ -44,12 +53,13 @@ int main() {
 
     cout << endl << endl;
 
+
     //
     //Task (d)
     //
     printf("--------------------\n----- Task (d) -----\n--------------------\n\n");
 
-    int result = myfunc (5 , 2) ;
+    double result = myfunc (5 , 2) ;                // changed *int* to *double*
     cout << result;
 
 }
