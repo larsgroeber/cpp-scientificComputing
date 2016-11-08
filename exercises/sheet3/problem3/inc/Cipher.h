@@ -1,3 +1,7 @@
+/**
+ * Header file for class Cipher
+ */
+
 #ifndef CAESAR_CIPHER_CIPHER_H
 #define CAESAR_CIPHER_CIPHER_H
 

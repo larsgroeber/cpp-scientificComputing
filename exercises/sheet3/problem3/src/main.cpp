@@ -2,13 +2,10 @@
  * small application which implements a caesar-cipher and asks the user
  * to enter the to-be-shifted message and key
  *
- * To run the program, execute in root directory of the project:
- * cmake . && make && ./caesar_cipher
- * or
+ * To run the program, execute in build directory of the project:
+ * cmake .. && make && ./caesar_cipher
+ * or in root directory
  * g++ --std=c++11 inc/* src/*
- *
- * IDEAS: while-loop to enter multiple messages,
- *        don't capitalize all characters
  */
 
 #include <iostream>
@@ -19,18 +16,27 @@ using namespace std;
 
 int main()
 {
-    cout << "Welcome to Caesar-Cipher 1.0" << endl;
+    cout << "Welcome to Caesar-Cipher 1.1" << endl;
     cout << "Please enter your message:" << endl;
 
     string inputSentence;
     int key;
 
+    // get input
     getline( cin, inputSentence );
 
     cout << "Please enter the key:" << endl;
 
     cin >> key;
 
+    // check if user entered an integer
+    if ( ! cin )
+    {
+        cerr << "Please enter a number!" << endl;
+        return 1;
+    }
+
+    // instantiate Cipher
     Cipher c ( key );
 
     cout << "Your shifted message reads:" << endl;
