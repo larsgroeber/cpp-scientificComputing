@@ -9,8 +9,9 @@
 using namespace std;
 
 const int m = 5;                        // rows
-const int n = 10;                       // columns
-const int o = 10;                       // length of arr2
+const int n = 20;                       // columns
+//const int o = 10;                       // length of arr2
+const int p = 0;                        // used for 2b; nuber of row used
 const int multFac = 2;                  // factor to multiply the matrix with
 int arr[m][n];                          // first array
 //int arr2[o];                          // second array
@@ -27,11 +28,12 @@ int main() {
     multArr(arr);
     cout << endl << m<<" x "<<n<<" Matrix multiplied by " << multFac << endl << endl;
     showArr(arr);
-    cout << endl << "strange second part of this problem..." << multFac << endl << endl;
 
 // Aufgabe 2 b
-    printArray(arr [0], sizeof(arr)/ sizeof(*arr));//arr.length());
-//    return 0;
+    cout << endl << endl<< "problem 2b"<<endl;
+    printArray(arr[p], sizeof(arr[p])/ sizeof(*arr[p]));
+
+    return 0;
 }
 
 // filling the array with random values between 0 and 9
@@ -69,5 +71,10 @@ void showArr(int arr[m][n]) {
 // Additionally write a function void printArray(int arr[], int len) that takes a one-dimensional array and its length.
 // Then call the function giving one row of the previously deﬁned matrix as an argument.
 void printArray(int arr2[], int len) {
-
+    cout<<"len: "<<len<<endl;
+    for (int i = 0; i < len; ++i) {
+        //cout<<"|"<<arr2[i];
+        printf("|%2d" , arr2[i]);
+    }
+    cout<<"|"<<endl;
 }
