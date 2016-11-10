@@ -1,0 +1,40 @@
+Solution to problem3, sheet 4
+by Lars Gröber, Robert Söder, Hendrik Edelmann
+
+Directory Structure:
+
+|--src/
+|  |--main.cpp          # main entry point
+|  |--Game.cpp
+|  |--Board.cpp
+|  |--Ship.cpp
+|--inc/
+   |--Game.h            # class Game: main game loop, randomizes ships
+   |--Board.h           # class Board: draws board on screen
+   |--Ship.h            # class Ship: keeps track of ships state
+   |--Error.h           # class Error: used to throw custom runtime errors
+
+
+Dependencies:
+
+This program uses the ncurses library, should it not be installed you can install it with 'apt-get install libncurses-dev'.
+
+
+How to run:
+
+cd build
+cmake .. && make
+./battleship
+
+or
+
+g++ -o battleship inc/*.h src/*.cpp -lncurses -std=c++11
+./battleship
+
+
+Controls:
+
+Arrow Keys: move cursor
+Enter: shoot
+F2: exit
+F12: debug/cheat mode (shows ships)
