@@ -35,10 +35,13 @@ int main ()
     cout << "ldoublePtr = " << ldoublePtr << ", *ldoublePtr = " << *ldoublePtr << endl;
 
     //incrementing the pointer and printing out the same as above
+    integerPtr++;
+    double_Ptr++;
+    ldoublePtr++;
     cout<<endl<<endl<<"incrementing the pointer gives following result:"<<endl<<endl;
-    cout << "integerPtr++ = " << integerPtr++ << ", *(integerPtr++) = " << *(integerPtr++) << endl;
-    cout << "double_Ptr++ = " << double_Ptr++ << ", *(double_Ptr++) = " << *(double_Ptr++) << endl;
-    cout << "ldoublePtr++ = " << ldoublePtr++ << ", *(ldoublePtr++) = " << *(ldoublePtr++) << endl;
+    cout << "integerPtr++ = " << integerPtr << ", *(integerPtr++) = " << *integerPtr << endl;
+    cout << "double_Ptr++ = " << double_Ptr << ", *(double_Ptr++) = " << *double_Ptr << endl;
+    cout << "ldoublePtr++ = " << ldoublePtr << ", *(ldoublePtr++) = " << *ldoublePtr << endl;
 
     cout<< endl<<endl<<"calling function from 1b:"<<endl;
     cout << myfunc(xPtr, yPtr);
