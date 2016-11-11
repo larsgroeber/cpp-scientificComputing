@@ -24,8 +24,8 @@ public:
     void run ();
 
     /**
-     * @brief Function that randomizes the ships positions.
-     * Uses check_placement() and check_position()
+     * @brief Function that randomizes the stone's positions.
+     * Uses check_position()
      * @return bool if placement was successful
      */
     bool randomize ();
@@ -42,11 +42,34 @@ private:
     /** Dimensions of the board (x,y) */
     const std::pair<unsigned int, unsigned int> dim;
 
+    /** The symbpols to use for both players */
+    const std::string p1_sym;
+    const std::string p2_sym;
+
+    /** vectors holding the stones positions */
+    std::vector<std::pair<int,int>> p1_stones;
+    std::vector<std::pair<int,int>> p2_stones;
+
+    /**
+     * @brief Strategie of Player 1
+     */
     void player1_play ();
 
+    /**
+     * @brief Strategy of Player 2
+     */
     void player2_play ();
 
+    /**
+     * @brief Check if the board needs to be updated (like remove stones)
+     */
     void update_board ();
+
+    /**
+     * @brief Get a random position on the board
+     * @return pair<int,int> a rondom pos
+     */
+    std::pair<int,int> get_random_pos () const;
 
     /**
      * @brief Function which shows debug information

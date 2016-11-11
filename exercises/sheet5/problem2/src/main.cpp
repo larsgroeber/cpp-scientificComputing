@@ -1,5 +1,6 @@
 /**
- * Battleship game - solution to problem 3 of sheet 4
+ * Go game - solution to problem 2 of sheet 5
+ * Implementation is very similar to the battleship problem
  *
  * to complile:
  * cd build
@@ -9,7 +10,6 @@
  *
  * g++ src/*.cpp inc/*.h -lncurses -std=c++11
  *
- * Controls:
  */
 
 #include <ncurses.h>

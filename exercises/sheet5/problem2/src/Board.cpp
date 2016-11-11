@@ -19,7 +19,7 @@ Board::Board ( unsigned int x, unsigned int y, WINDOW* win )
     , vSpace    ( 1 )
 {
     // set some cosmetics
-    fieldSeparate = "  ";  // horizontal separation of fields
+    fieldSeparate = " | ";  // horizontal separation of fields
     fieldFree     =  " ";  // symbol for a field which is free
     fieldPlayer1  =  "X";  // symbol for a field that belongs to player 1
     fieldPlayer2  =  "O";  // symbol for a field that belongs to player 2
@@ -64,7 +64,7 @@ void Board::draw () const
     if ( score != nullptr )
     {
         mvprintw( bStartGlobal.second + vSpace * board.size() + 2, bStartGlobal.first
-                , "%i/%i sunk | %s", score->first, score->second, message.c_str() );
+                , "X: %i O: %i | %s", score->first, score->second, message.c_str() );
     }
 }
 
@@ -119,6 +119,13 @@ bool Board::set_field ( const std::pair<int, int> pos, const std::string& type )
         throw Error ( "Position is not on board in Board::set_field!" );
     }
 
+    string* boardPos = &board[pos.second - 1][pos.first - 1];
+
+    if (*boardPos != fieldFree )
+    {
+        return false;
+    }
+
     // otherwise replace the field
     string replace;
     if ( type == "PLAYER1" )
@@ -133,7 +140,7 @@ bool Board::set_field ( const std::pair<int, int> pos, const std::string& type )
     {
         throw Error ( "Wrong replacement type in Board::set_field!" );
     }
-    board[pos.second - 1][pos.first - 1] = replace;
+    *boardPos = replace;
     return true;
 }
 
@@ -156,6 +163,11 @@ std::pair<int, int> Board::get_dim () const
 
 WINDOW* Board::get_window () const {
     return window;
+}
+
+std::pair<std::string,std::string> Board::get_player_sym () const
+{
+    return make_pair( fieldPlayer1, fieldPlayer2 );
 }
 
 //// PRIVATE METHODS ////

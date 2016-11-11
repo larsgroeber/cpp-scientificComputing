@@ -86,6 +86,12 @@ public:
      */
     WINDOW* get_window () const;
 
+    /**
+     * @brief Function to return the sysmbols for both players.
+     * @return a pair of strings containing the symbols
+     */
+    std::pair<std::string,std::string> get_player_sym () const;
+
 private:
     /** dimensions of the board (x,y) */
     const std::pair<unsigned int, unsigned int> dim;
