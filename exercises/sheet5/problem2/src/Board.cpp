@@ -61,10 +61,13 @@ void Board::draw () const
     }
 
     // add score and message
-    if ( score != nullptr )
+    if ( message != "" )
     {
-        mvprintw( bStartGlobal.second + vSpace * board.size() + 2, bStartGlobal.first
-                , "X: %i O: %i | %s", score->first, score->second, message.c_str() );
+        // center message
+        mvprintw( bStartGlobal.second + vSpace * board.size() + 2
+                , bStartGlobal.first - int( 0.5 * ( message.length() - dim.first * ( fieldSeparate.length() + 1 )
+                                                    - fieldSeparate.length() - 1 ) )
+                , "%s", message.c_str() );
     }
 }
 
@@ -89,26 +92,7 @@ void Board::print_message ( const std::string& msg )
     refresh();
 }
 
-void Board::advance_score ()
-{
-    score->first++;
-}
-
 //// SETTERS ////
-
-void Board::set_score ( int stonesPlayer1, int stonesPlayer2 )
-{
-    if ( score == nullptr )
-    {
-        score = new pair<int,int> { stonesPlayer1, stonesPlayer2 };
-    }
-    else
-    {
-        score->first = stonesPlayer1;
-        score->second = stonesPlayer2;
-    }
-
-}
 
 bool Board::set_field ( const std::pair<int, int> pos, const std::string& type )
 {

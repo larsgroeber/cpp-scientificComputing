@@ -45,10 +45,10 @@ void Game::run ()
 
         mBoard->draw();
         refresh();
-        getch();
+        //getch();
     }
 
-    mBoard->print_message( "Board after 20 rounds." );
+    mBoard->print_message( "               Board after 20 rounds.               " );
     getch();
 }
 
@@ -103,7 +103,6 @@ bool Game::randomize ()
         }
         mBoard->set_field( randomPos, player );
     }
-    mBoard->set_score( 5, 5 );
     return true;
 }
 
@@ -157,8 +156,6 @@ void Game::player1_play ()
 
     int tries ( 0 );
 
-    vector<vector<string>> board = mBoard->get_board();
-
     while ( ! stonePlaced )
     {
         // throw an Error if we could be in an endless loop
@@ -168,15 +165,8 @@ void Game::player1_play ()
         }
 
         // move one pos - see 2.A)
-        if ( pos.first == dim.first )
-        {
-            pos.first = 1;
-            pos.second = pos.second % dim.second + 1;
-        }
-        else
-        {
-            pos.first++;
-        }
+        pos.first = pos.first % dim.first + 1;
+        pos.second = ( pos.first == dim.first ) ? pos.second % dim.second + 1 : pos.second;
 
         // see step 2)
         if ( check_position( pos ) )
@@ -196,13 +186,64 @@ void Game::player1_play ()
         tries++;
     }
     mBoard->set_field( pos, "PLAYER1" );
-    cout << "now after call set_field" << endl;
     p1_stones.push_back( pos );
 }
 
 void Game::player2_play ()
 {
+    pair<int,int> startPos = get_random_pos();
+    pair<int,int> pos = startPos;
 
+    bool stonePlaced = false;
+
+    int tries ( 0 );
+
+    pair<pair<int,int>,int> bestPos { { 0, 0 }, 0 };    // ( pos, # of stones nearby )
+
+    while ( ! stonePlaced )
+    {
+        if ( pos == startPos && tries != 0 )
+        {
+            // throw an Error if we could be in an endless loop (if bestPos was not changed)
+            if ( bestPos == make_pair( make_pair( 0, 0 ), 0 ) )
+            {
+                throw Error ( "Was not able to set stone, got back to startPos in Game::player2_play()!" );
+            }
+            else
+            {
+                // if it was changed we have found a new position for the stone
+                stonePlaced = true;
+            }
+        }
+
+        // move one pos - see 2.A)
+        pos.first = pos.first % dim.first + 1;
+        pos.second = ( pos.first == dim.first ) ? pos.second % dim.second + 1 : pos.second;
+
+        // see step 2)
+        if ( check_position( pos ) )
+        {
+            int stonesNearby ( 0 );
+            for ( auto p : p1_stones )
+            {
+                if ( ( pos.first + 1 == p.first && pos.second     == p.second )
+                  || ( pos.first     == p.first && pos.second + 1 == p.second )
+                  || ( pos.first - 1 == p.first && pos.second     == p.second )
+                  || ( pos.first     == p.first && pos.second - 1 == p.second ) )
+                {
+                    // if p is nearby
+                    stonesNearby++;
+                }
+            }
+            // if pos is a stone with more stones nearby, save it
+            bestPos = ( stonesNearby > bestPos.second && stonesNearby < 4 ) ?
+                        make_pair( pos, stonesNearby ) : bestPos;
+        }
+
+        tries++;
+    }
+    mBoard->set_field( bestPos.first, "PLAYER2" );
+    p2_stones.push_back( bestPos.first );
 }
 
 std::pair<int,int> Game::get_random_pos () const

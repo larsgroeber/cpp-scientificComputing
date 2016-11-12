@@ -38,11 +38,6 @@ public:
      */
     void print_message ( const std::string& msg );
 
-    /**
-     * @brief Function to advance the score by one
-     */
-    void advance_score ();
-
     //// SETTERS ////
 
     /**
@@ -58,13 +53,6 @@ public:
      * @param b the new board (correct type is important here)
      */
     void set_board ( std::vector<std::vector<std::string>>& b );
-
-    /**
-     * @brief Function to set the initial score
-     * @param stonesPlayer1 the amount of ships left (usally 0)
-     * @param stonesPlayer2 the total amount of ships
-     */
-    void set_score ( int stonesPlayer1, int stonesPlayer2 );
 
     //// GETTERS ////
 
@@ -111,9 +99,8 @@ private:
     std::string fieldPlayer2;
     unsigned int vSpace;
 
-    /** message and score */
+    /** message */
     std::string message;
-    std::pair<int,int>* score;
 
     /** starting position of the cursor in local coords (x,y) */
     const std::pair<int,int> posCursorStart;
