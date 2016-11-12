@@ -102,19 +102,6 @@ private:
     /** message */
     std::string message;
 
-    /** starting position of the cursor in local coords (x,y) */
-    const std::pair<int,int> posCursorStart;
-
-    /** positon of the cursor in local coords (x,y) */
-    mutable std::pair<int,int> posCursor;
-
-    /**
-     * @brief helper function to move the cursor to a position in local coords
-     *        (has all logic for different values of fieldSeparate)
-     * @return if movement was successful (if pos is on the board)
-     */
-    bool move_local ( std::pair<int,int> pos ) const;
-
     /**
      * @brief this function does all updating which needs to be done between drawings
      *        like set boardStart according to terminal size

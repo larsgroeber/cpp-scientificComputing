@@ -26,8 +26,6 @@ Game::Game ( Board* b )
  */
 void Game::run ()
 {
-    int ch;
-
     // randomize ships positions
     randomize();
 
@@ -38,31 +36,23 @@ void Game::run ()
     mBoard->print_message( "Initial stone placement, press any key to continue." );
     getch();
 
+    int sleepTime ( 1 );
+
     for ( int i = 0; i < 10; ++i )
     {
         player1_play();
-        player2_play();
-
+        sleep( sleepTime );
         mBoard->draw();
         refresh();
-        //getch();
+
+        player2_play();
+        sleep( sleepTime );
+        mBoard->draw();
+        refresh();
     }
 
-    mBoard->print_message( "               Board after 20 rounds.               " );
+    mBoard->print_message( "               Board after 20 moves.               " );
     getch();
-}
-
-
-bool Game::has_user_won ()
-{
-    if ( mBoard->is_board_full() )
-    {
-        throw Error ( "Board is full Game::has_user_won!" );
-    }
-
-
-
-    return false;
 }
 
 /**
@@ -110,8 +100,7 @@ bool Game::randomize ()
 
 
 /**
- * Here we loop through all existing ships and check if one of their position
- * lies too close or on the given position.
+ * Here we check if pos is on the board and if the position is still free
  */
 bool Game::check_position ( std::pair<int, int> pos ) const
 {
@@ -189,6 +178,13 @@ void Game::player1_play ()
     p1_stones.push_back( pos );
 }
 
+/**
+ * This player places his stones on one of the fields with
+ * the highest number of opponent’s stones on theneighbour
+ * points, but less then four.
+ *
+ * Algorithm is similar to player1_play().
+ */
 void Game::player2_play ()
 {
     pair<int,int> startPos = get_random_pos();
@@ -249,17 +245,4 @@ void Game::player2_play ()
 std::pair<int,int> Game::get_random_pos () const
 {
     return make_pair( rand() % dim.first + 1, rand() % dim.second + 1 );
-}
-
-/**
- * Shows user a new board only consisting of the ships positions
- */
-void Game::show_debug () const
-{
-    Board debug = *mBoard;
-    vector<vector<string>> newBoard ( dim.second );
-
-
-    debug.draw();
-    refresh();
 }

@@ -156,30 +156,6 @@ std::pair<std::string,std::string> Board::get_player_sym () const
 
 //// PRIVATE METHODS ////
 
-/**
- * This function is very important as it translates from global coordinates of the terminal
- * to local coordinated of the board
- */
-bool Board::move_local ( std::pair<int, int> pos ) const
-{
-    // check if position is on the board
-    if ( pos.first  < 1 || pos.first  > dim.first
-      || pos.second < 1 || pos.second > dim.second)
-    {
-        return false;
-    }
-    else
-    {
-        // otherwise move the cursor to a position on the board in local coordinates
-        int sepLength = (int)fieldSeparate.length();
-        move( pos.second + bStartGlobal.second
-            , bStartGlobal.first + pos.first * ( sepLength + 1 ) );
-        posCursor = pos;
-        return true;
-    }
-}
-
-
 void Board::update () const
 {
     // first get maximal dimensions of window

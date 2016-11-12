@@ -10,6 +10,8 @@
  *
  * g++ src/*.cpp inc/*.h -lncurses -std=c++11
  *
+ * Player1 uses 'X'
+ * Player2 uses 'O'
  */
 
 #include <ncurses.h>

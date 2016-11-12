@@ -30,12 +30,6 @@ public:
      */
     bool randomize ();
 
-    /**
-     * @brief Function which checks if user has won.
-     * @return bool
-     */
-    bool has_user_won ();
-
 private:
     /** Pointer to the board being used */
     Board* mBoard;
@@ -51,7 +45,7 @@ private:
     std::vector<std::pair<int,int>> p2_stones;
 
     /**
-     * @brief Strategie of Player 1
+     * @brief Strategy of Player 1
      */
     void player1_play ();
 
@@ -61,28 +55,16 @@ private:
     void player2_play ();
 
     /**
-     * @brief Check if the board needs to be updated (like remove stones)
-     */
-    void update_board ();
-
-    /**
      * @brief Get a random position on the board
      * @return pair<int,int> a rondom pos
      */
     std::pair<int,int> get_random_pos () const;
 
     /**
-     * @brief Function which shows debug information
-     * (for now only the ships location)
-     */
-    void show_debug () const;
-
-    /**
-     * @brief check if a postion is valid for a new ship.
+     * @brief check if a postion is valid for a new stone.
      *        That means: a) the pos is on the board
      *                    b) the pos is free (there is no ship there)
-     *                    c) there is no ship within one tile
-     * @param pos the pos to be checkesd (local coords)
+     * @param pos the pos to be checked (local coords)
      * @return bool if pos is valid
      */
     bool check_position ( std::pair<int, int> pos ) const;
