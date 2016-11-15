@@ -4,13 +4,17 @@ using namespace std;
 
 const int arrSize = 21;//sizeof(intArr)/ sizeof(*intArr);//sizeof(intArr) / sizeof(intArr[0]);
 int intArr[arrSize] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,27,18,19,20};
-//int facVar = 1;
 int facInput;
+int binomVarN;
+int binomVarK;
+int doLoop =1;
 
 void replacEverySecondElementInAnArrayByZero(int a[]);
 void printArray(int a[]);
 void printOddNumSmallerThanTwenty (int array[], int len);
 void calcLargestFacWithUperLimit (int lim);
+int calcBinomialcoefficient(int n, int k);
+int calcFac (int n);
 
 int main() {
     //a
@@ -28,15 +32,22 @@ int main() {
     printOddNumSmallerThanTwenty(intArr, arrSize);
 
     //c
-    cout<<endl<<endl<<"task c"<<endl<<"please enter a number bigger then zero:";
-    calcLargestFacWithUperLimit(2);
-    calcLargestFacWithUperLimit(6);
-    calcLargestFacWithUperLimit(15);
-    calcLargestFacWithUperLimit(55);
-    calcLargestFacWithUperLimit(200);
+    cout<<endl<<endl<<"task c"<<endl<<"please enter a number bigger then zero:"<<endl;
+
     cin>>facInput;
     calcLargestFacWithUperLimit (facInput);
 
+    // d
+    cout<<endl<<"task d"<<endl;
+    for (int i = 1; i < 6; ++i) { cout<<calcFac(i)<<endl; } //calcFac test
+    while (doLoop == 1) {                       //repeats the method as long as you enter 1 and exits the loop when you enter 2
+        cout<<"please enter n and k (seperated by a space)"<<endl;
+        cin >> binomVarN >> binomVarK;          //explanation on line above in cout
+        cout<<calcBinomialcoefficient(binomVarN, binomVarK)<<endl;
+        cout<<"enter ""1"" for retry or ""2"" for abort:"<<endl;
+        cin >> doLoop;
+    }
+//    for (int j = 4; j < 8; ++j) { cout<<calcBinomialcoefficient(j, 2)<<endl;    } //for testing
     return 0;
 }
 
@@ -73,20 +84,39 @@ void printOddNumSmallerThanTwenty (int array[], int len){
 //the next number is larger than the limit.
 void calcLargestFacWithUperLimit (int lim){
     if (lim < 1){
-        cout<<"please enter a number BIGGER than zero";
+        cout<<"please enter a number BIGGER than zero"<<endl;
     }
-    int facVar;
-    for (int i = 1; i < lim; ++i) {
-        facVar *= i;
-        if (facVar >= lim)
-            break;
+    else {
+        int facProd = 1;
+        int facProd2 = 1;                   //saves the previous factorial for output
+        int facVar;
+        for (int i = 1; i < lim; ++i) {     //loop to calc factorial
+            facProd *= i;
+            if (facProd >= lim) {
+                break;
+            }
+            facProd2 *= i;                  // used for output
+            facVar = i;                     // used for output
+        }
+        cout << "the biggest factorial smaller than   " << lim << " :  " << facVar << "! = " << facProd2;
     }
-    cout<<"this is the biggest factorial smaller than the given limit:"<<endl<<facVar;
 }
 
 //(d) Binomial coeﬃcient
 //Write a program that computes the binomial coeﬃcient  (n k)
 //where n and k are speciﬁed by the user.
+// (n k) = n!/k!*(n-k)!
+int calcBinomialcoefficient(int n, int k){
+//    cout<<"n: "<<calcFac(n)<<endl<<"k: "<<calcFac(k)<<endl<<"n-k: "<<calcFac((n-k))<<endl; // for testing prints the 3 factorials
+    return calcFac(n)/(calcFac(k)*calcFac((n-k)));  //binomial coefficient
+}
+
+// factorial calculator (recursive) used for calcBinomialcoefficient
+int calcFac (int n){
+    if (n == 1 || n == 0)
+    return 1;
+    return n*calcFac(n-1);
+}
 
 
 //(e) Password prompt
@@ -94,6 +124,7 @@ void calcLargestFacWithUperLimit (int lim){
 //only enter the password a speciﬁed number of times. The program should
 //check the password every time and exit if the correct password was given
 //or the maximal limit is reached.
+
 
 //(f) The guessing game
 //Write program that randomly generates a number between 1 and 100 and
