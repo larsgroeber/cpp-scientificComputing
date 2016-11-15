@@ -4,11 +4,13 @@ using namespace std;
 
 const int arrSize = 21;//sizeof(intArr)/ sizeof(*intArr);//sizeof(intArr) / sizeof(intArr[0]);
 int intArr[arrSize] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,27,18,19,20};
+//int facVar = 1;
+int facInput;
 
 void replacEverySecondElementInAnArrayByZero(int a[]);
 void printArray(int a[]);
 void printOddNumSmallerThanTwenty (int array[], int len);
-void calcLargestFacWithUperLimit (int Limit);
+void calcLargestFacWithUperLimit (int lim);
 
 int main() {
     //a
@@ -26,8 +28,14 @@ int main() {
     printOddNumSmallerThanTwenty(intArr, arrSize);
 
     //c
-    cout<<endl<<endl<<"task c"<<endl;
-    calcLargestFacWithUperLimit (6);
+    cout<<endl<<endl<<"task c"<<endl<<"please enter a number bigger then zero:";
+    calcLargestFacWithUperLimit(2);
+    calcLargestFacWithUperLimit(6);
+    calcLargestFacWithUperLimit(15);
+    calcLargestFacWithUperLimit(55);
+    calcLargestFacWithUperLimit(200);
+    cin>>facInput;
+    calcLargestFacWithUperLimit (facInput);
 
     return 0;
 }
@@ -63,8 +71,17 @@ void printOddNumSmallerThanTwenty (int array[], int len){
 //(c) Write a program that calculates the largest factorial smaller than a given
 //upper limit. Therefore use a loop and the break statement to exit, when
 //the next number is larger than the limit.
-void calcLargestFacWithUperLimit (int Limit){
-
+void calcLargestFacWithUperLimit (int lim){
+    if (lim < 1){
+        cout<<"please enter a number BIGGER than zero";
+    }
+    int facVar;
+    for (int i = 1; i < lim; ++i) {
+        facVar *= i;
+        if (facVar >= lim)
+            break;
+    }
+    cout<<"this is the biggest factorial smaller than the given limit:"<<endl<<facVar;
 }
 
 //(d) Binomial coeﬃcient
