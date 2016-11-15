@@ -1,12 +1,41 @@
 #include <iostream>
+#include <cstdio>
+using namespace std;
+
+int intArr[21] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+int arrSize = 21;//sizeof(intArr)/ sizeof(*intArr);//sizeof(intArr) / sizeof(intArr[0]);
+
+void replacEverySecondElementInAnArrayByZero(int a[]);
+void printArray(int a[]);
 
 int main() {
-
+    //a
+    cout<<"task a";
+    for (int i = 1; i < arrSize; ++i) {
+        printf("|%2d" , intArr[i]);
+    }
+    replacEverySecondElementInAnArrayByZero(intArr);
+    //printArray(intArr);
+    for (int i = 1; i < arrSize; ++i) {
+        printf("|%2d" , intArr[i]);
+    }
     return 0;
 }
 
 // (a) Write a program that replaces every second element of an array by zero,
 // using a for loop and iterating with step size two.
+void replacEverySecondElementInAnArrayByZero (int intArr[]) {
+    for (int i = 1; i < arrSize; ++i) {
+        intArr[i] = 0;
+    }
+}
+
+void printArray(int array[]){
+    for (int i = 0; i < arrSize; ++i) {       // rows
+            printf("|%2d" , array[i]);// printing out every element as a two digit number
+    }
+    cout<<"|";
+}
 
 // (b) Write a program that prints out all odd numbers smaller than 20 by
 // using a loop and the continue statements.
