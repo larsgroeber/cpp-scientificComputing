@@ -1,5 +1,9 @@
 #include <iostream>
 #include <cstdio>
+#include <string.h>
+#include <cstdlib>
+#include <ctime>
+
 using namespace std;
 
 const int arrSize = 21;//sizeof(intArr)/ sizeof(*intArr);//sizeof(intArr) / sizeof(intArr[0]);
@@ -8,6 +12,8 @@ int facInput;
 int binomVarN;
 int binomVarK;
 int doLoop =1;
+int passwordLength;
+//char* passwordInput;
 
 void replacEverySecondElementInAnArrayByZero(int a[]);
 void printArray(int a[]);
@@ -15,41 +21,64 @@ void printOddNumSmallerThanTwenty (int array[], int len);
 void calcLargestFacWithUperLimit (int lim);
 int calcBinomialcoefficient(int n, int k);
 int calcFac (int n);
+void pwCheck(int passXtimes, int pwLength);//, char passIn);
+void guessNrBetweenOneAndOneHundredButThisNameStillIsntLongEnough();
 
 int main() {
     //a
-    cout<<"task a (the 1st line shows the original array used before running the method)"<<endl;
+    cout<<" ////task a //// (the 1st line shows the original array used before running the method)"<<endl;
     printArray(intArr);
     cout<<endl;
     replacEverySecondElementInAnArrayByZero(intArr);
     printArray(intArr);
 
     //b
-    cout<<endl<<endl<<"task b (the 1st line shows the original array used before running the method)"<<endl;
+    cout<<endl<<endl<<"//// task b //// (the 1st line shows the original array used before running the method)"<<endl;
     int intArr[arrSize] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,25,26,27,28,29,30};
     printArray(intArr);
     cout<<endl;
     printOddNumSmallerThanTwenty(intArr, arrSize);
 
     //c
-    cout<<endl<<endl<<"task c"<<endl<<"please enter a number bigger then zero:"<<endl;
+    cout<<endl<<endl<<"//// task c ////"<<endl<<"please enter a number bigger then zero:"<<endl;
 
     cin>>facInput;
     calcLargestFacWithUperLimit (facInput);
 
     // d
-    cout<<endl<<"task d"<<endl;
-    for (int i = 1; i < 6; ++i) { cout<<calcFac(i)<<endl; } //calcFac test
+    cout<<endl<<endl<<"//// task d ////"<<endl;
+    //for (int i = 1; i < 6; ++i) { cout<<calcFac(i)<<endl; } //calcFac test
     while (doLoop == 1) {                       //repeats the method as long as you enter 1 and exits the loop when you enter 2
         cout<<"please enter n and k (seperated by a space)"<<endl;
         cin >> binomVarN >> binomVarK;          //explanation on line above in cout
+        if (binomVarN<binomVarK){
+            cout<<"please choose an n bigger than k. try again:"<<endl;
+            continue;
+        }
         cout<<calcBinomialcoefficient(binomVarN, binomVarK)<<endl;
         cout<<"enter ""1"" for retry or ""2"" for abort:"<<endl;
         cin >> doLoop;
     }
 //    for (int j = 4; j < 8; ++j) { cout<<calcBinomialcoefficient(j, 2)<<endl;    } //for testing
+
+    //e
+    cout<<"//// task e ////"<<endl;
+    cout << "please enter your maximum passwordlength (as integer):" << endl;
+    cin >> passwordLength;
+    pwCheck(5, passwordLength);//) *passwordInput);
+    cout<<endl<<endl<<endl;
+
+    //f
+    cout<<"//// task f ////"<<endl;
+    guessNrBetweenOneAndOneHundredButThisNameStillIsntLongEnough();
+    cout<<endl;
+
+
     return 0;
 }
+
+
+
 
 // (a) Write a program that replaces every second element of an array by zero,
 // using a for loop and iterating with step size two.
@@ -84,7 +113,10 @@ void printOddNumSmallerThanTwenty (int array[], int len){
 //the next number is larger than the limit.
 void calcLargestFacWithUperLimit (int lim){
     if (lim < 1){
-        cout<<"please enter a number BIGGER than zero"<<endl;
+        cout<<"please enter a number BIGGER than zero:"<<endl;
+        int youWannaSeeTheWorldBurnDontYou;
+        cin>>youWannaSeeTheWorldBurnDontYou;
+        calcLargestFacWithUperLimit(youWannaSeeTheWorldBurnDontYou);
     }
     else {
         int facProd = 1;
@@ -120,13 +152,57 @@ int calcFac (int n){
 
 
 //(e) Password prompt
-//Write a program that asks the user to enter a password. The user may
-//only enter the password a speciﬁed number of times. The program should
-//check the password every time and exit if the correct password was given
-//or the maximal limit is reached.
+// Write a program that asks the user to enter a password. The user may only enter the password
+// a speciﬁed number of times. The program should check the password every time and exit if the
+// correct password was given or the maximal limit is reached.
+void pwCheck(int passXtimes, int pwLength){//, char passIn){
+    //char passConfirm;
+    int passXcounter = 0;                                   //counts the tries to reenter the pw
+    char passIn[pwLength];                                  //char[] for the reentered pw
 
+    cout << "please enter a password:" << endl;
+    cin >> passIn;                                          //store the reentered pw in passIn[]
+    cout<< "you entered your pw successfully"<<endl;
+
+    while (passXcounter < passXtimes) {                     //gives you limited tries as long as you dont reach the limit (passXtimes)
+        //char *passConfirm[pwLength*10] = new char;
+        char *passConfirm = new char[pwLength*10];          //creates a new char[] for the next try to enter the pw
+        cout<<"please confirm your pw ("<<passXtimes-passXcounter<<" times left) (please input less than "
+            << pwLength*10+1<<" characters) :"<<endl;
+        cin>> passConfirm;                                  // input pw again
+
+        if (strcmp(passConfirm, passIn) == 0){              // compares the input arrays //passConfirm == passIn){
+            cout<<"youve entered the password correctly";
+            break;}
+
+        ++passXcounter;                                     // increase pw counter
+        delete passConfirm;                                 // delete the reentered pw
+        cout<<"you have "<<passXtimes-passXcounter<<" tries  left"<<endl;
+    }
+    //cout<<"you have reached the maximum input attempts";
+}
 
 //(f) The guessing game
 //Write program that randomly generates a number between 1 and 100 and
 //the user has to guess this number. If the user guesses too high/low the
 //program outputs ”too high/low” until the user hits the correct number.
+void guessNrBetweenOneAndOneHundredButThisNameStillIsntLongEnough(){
+    int randGuess;
+    srand(time(0));
+    int randomNr = rand() % 100 + 1;            //generating rando number between 1 and 100
+    /*for (int i = 0; i < 1000; ++i) {          //testing
+        int x;
+        x = rand() % 100 + 1;
+        printf("%3d|",x);
+    }*/
+    //cout<<endl<<randomNr<<endl;                 //print random nr
+    while (randomNr != randGuess) {
+        cout << "please enter your guess:" << endl;
+        cin >> randGuess;                       //input guess
+        if(randomNr < randGuess)               //testing if wrong guess -> too high/low
+            cout<<"too high"<<endl;
+        else if (randomNr > randGuess)
+            cout<<"too low"<<endl;
+    }
+    cout<<"entered correctly"<<endl;
+}
