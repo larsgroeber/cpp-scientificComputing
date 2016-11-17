@@ -9,8 +9,8 @@ using namespace std;
 const int arrSize = 21;//sizeof(intArr)/ sizeof(*intArr);//sizeof(intArr) / sizeof(intArr[0]);
 int intArr[arrSize] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,27,18,19,20};
 int facInput;
-int binomVarN;
-int binomVarK;
+double binomVarN;
+double binomVarK;
 int doLoop =1;
 int passwordLength;
 //char* passwordInput;
@@ -18,9 +18,9 @@ int passwordLength;
 void replacEverySecondElementInAnArrayByZero(int a[]);
 void printArray(int a[]);
 void printOddNumSmallerThanTwenty (int array[], int len);
-void calcLargestFacWithUperLimit (int lim);
-int calcBinomialcoefficient(int n, int k);
-int calcFac (int n);
+void calcLargestFacWithUperLimit (double lim);
+double calcBinomialcoefficient(double n, double k);
+double calcFac (double n);
 void pwCheck(int passXtimes, int pwLength);//, char passIn);
 void guessNrBetweenOneAndOneHundredButThisNameStillIsntLongEnough();
 
@@ -111,7 +111,7 @@ void printOddNumSmallerThanTwenty (int array[], int len){
 //(c) Write a program that calculates the largest factorial smaller than a given
 //upper limit. Therefore use a loop and the break statement to exit, when
 //the next number is larger than the limit.
-void calcLargestFacWithUperLimit (int lim){
+void calcLargestFacWithUperLimit (double lim){
     if (lim < 1){
         cout<<"please enter a number BIGGER than zero:"<<endl;
         int youWannaSeeTheWorldBurnDontYou;
@@ -119,9 +119,9 @@ void calcLargestFacWithUperLimit (int lim){
         calcLargestFacWithUperLimit(youWannaSeeTheWorldBurnDontYou);
     }
     else {
-        int facProd = 1;
-        int facProd2 = 1;                   //saves the previous factorial for output
-        int facVar = NULL;
+        double facProd = 1;
+        double facProd2 = 1;                   //saves the previous factorial for output
+        double facVar = 0;
         for (int i = 1; i < lim; ++i) {     //loop to calc factorial
             facProd *= i;
             if (facProd >= lim) {
@@ -138,13 +138,13 @@ void calcLargestFacWithUperLimit (int lim){
 //Write a program that computes the binomial coeﬃcient  (n k)
 //where n and k are speciﬁed by the user.
 // (n k) = n!/k!*(n-k)!
-int calcBinomialcoefficient(int n, int k){
+double calcBinomialcoefficient(double n, double k){
 //    cout<<"n: "<<calcFac(n)<<endl<<"k: "<<calcFac(k)<<endl<<"n-k: "<<calcFac((n-k))<<endl; // for testing prints the 3 factorials
     return calcFac(n)/(calcFac(k)*calcFac((n-k)));  //binomial coefficient
 }
 
 // factorial calculator (recursive) used for calcBinomialcoefficient
-int calcFac (int n){
+double calcFac (double n){
     if (n == 1 || n == 0)
     return 1;
     return n*calcFac(n-1);
@@ -191,9 +191,9 @@ void pwCheck(int passXtimes, int pwLength){//, char passIn){
 //the user has to guess this number. If the user guesses too high/low the
 //program outputs ”too high/low” until the user hits the correct number.
 void guessNrBetweenOneAndOneHundredButThisNameStillIsntLongEnough(){
-    int randGuess;
     srand( (unsigned)time(NULL));
     int randomNr = rand() % 100 + 1;            //generating rando number between 1 and 100
+    int randGuess = randomNr + 1;
     /*for (int i = 0; i < 1000; ++i) {          //testing
         int x;
         x = rand() % 100 + 1;
