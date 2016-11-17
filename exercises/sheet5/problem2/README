@@ -1,0 +1,15 @@
+Go Game - problem 2 sheet 5
+by Lars Gröber, Robert Söder, Hendrik Endelmann
+
+How to compile:
+
+make
+
+or
+
+g++ inc/*.h src/*.cpp -std=c++11 -lncurses
+
+
+
+X will be Player 1
+O Player 2

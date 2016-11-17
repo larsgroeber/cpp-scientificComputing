@@ -35,6 +35,8 @@ void Game::run ()
 
     mBoard->print_message( "Initial stone placement, press any key to continue." );
     getch();
+    
+    mBoard->print_message( "           Now playing, wait until done.           " );
 
     int sleepTime ( 1 );
 
