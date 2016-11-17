@@ -159,6 +159,10 @@ void pwCheck(int passXtimes, int pwLength){//, char passIn){
     //char passConfirm;
     int passXcounter = 0;                                   //counts the tries to reenter the pw
     char passIn[pwLength];                                  //char[] for the reentered pw
+    /*string stringvar;                                     //alternatively one could use strings (C++)
+    cin >> stringvar;                                       //thats what it would look like.... somehow
+    if (stringvar == EinandererString)
+    */
 
     cout << "please enter a password:" << endl;
     cin >> passIn;                                          //store the reentered pw in passIn[]
