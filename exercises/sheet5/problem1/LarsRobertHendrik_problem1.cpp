@@ -121,7 +121,7 @@ void calcLargestFacWithUperLimit (int lim){
     else {
         int facProd = 1;
         int facProd2 = 1;                   //saves the previous factorial for output
-        int facVar;
+        int facVar = NULL;
         for (int i = 1; i < lim; ++i) {     //loop to calc factorial
             facProd *= i;
             if (facProd >= lim) {
@@ -192,7 +192,7 @@ void pwCheck(int passXtimes, int pwLength){//, char passIn){
 //program outputs ”too high/low” until the user hits the correct number.
 void guessNrBetweenOneAndOneHundredButThisNameStillIsntLongEnough(){
     int randGuess;
-    srand(time(0));
+    srand( (unsigned)time(NULL));
     int randomNr = rand() % 100 + 1;            //generating rando number between 1 and 100
     /*for (int i = 0; i < 1000; ++i) {          //testing
         int x;
@@ -203,7 +203,7 @@ void guessNrBetweenOneAndOneHundredButThisNameStillIsntLongEnough(){
     while (randomNr != randGuess) {
         cout << "please enter your guess:" << endl;
         cin >> randGuess;                       //input guess
-        if(randomNr < randGuess)               //testing if wrong guess -> too high/low
+        if(randomNr < randGuess)                //testing if wrong guess -> too high/low
             cout<<"too high"<<endl;
         else if (randomNr > randGuess)
             cout<<"too low"<<endl;
