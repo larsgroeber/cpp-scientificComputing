@@ -1,0 +1,25 @@
+/*************************************************
+*	Comments by Bulcsu Sandor: "// BS: "
+*	Points: 8/8
+*************************************************/
+
+// BS: the only thing I changed in your code was
+// BS: increasing the sleeping time, so that it is
+// BS: easier to follow the steps
+// BS: nice solution again!
+
+Go Game - problem 2 sheet 5
+by Lars Gröber, Robert Söder, Hendrik Endelmann
+
+How to compile:
+
+make
+
+or
+
+g++ inc/*.h src/*.cpp -std=c++11 -lncurses
+
+
+
+X will be Player 1
+O Player 2
