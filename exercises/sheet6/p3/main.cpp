@@ -61,4 +61,3 @@ double calcFac (double n){
         return 1;
     return n*calcFac(n-1);
 }
-
