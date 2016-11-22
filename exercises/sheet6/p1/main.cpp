@@ -32,11 +32,10 @@ The function shall print all entries of the array and the size of the array.
 Hint: The function then looks like
 template<typename T, int N> func name (T (&array)[N]) {...}. (2 Pts)
  */
-
 template<typename T, int N>
-void tArrPrint (T (&array)[N]) {
+void tArrPrint (T (&array)[N]) {            //prints array from type T
     for (int i = 0; i < N; ++i) {
-        cout<<"|"<<&array[i];
+        cout<<"|"<< array[i];               //prints out the values of array
     }
     cout<<"|"<<endl<<"size of the array: "<<N<<endl;
 }
@@ -47,22 +46,47 @@ array. (3 Pts)
  */
 template<typename T, int N, int M>
 void tArrPrint2d (T (&array)[N][M]) {
-    for (int j = 0; j < M; ++j) {
-        for (int i = 0; i < N; ++i) {
-            cout << "|" << &array[i][j];
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < M; ++j) {
+            cout << "|" << array[i][j];
         }
-        cout<<endl;
+        cout<<"|"<<endl;
     }
-    cout<<"|"<<endl<<"size of the array: "<<N<<endl;
+    cout<<"size of the array: "<<N<<"x"<<M<<endl;
 }
 
 double aIn;
 double bIn;
 
 int main() {
+    //a
     cin>>aIn>>bIn;
     //cout<< typeid(aIn).name() <<" : "<<aIn<<" | "<< typeid(bIn).name()<<" : "<<bIn;
-    cout<< aIn<<" | "<<bIn;
-    //templateProduct();
+    cout<< aIn<<" | "<<bIn<<endl;
+    cout<<templateProduct(aIn, bIn)<<endl;
+
+    //b
+    double arrD[3] = {1.5, 2.5, 3.5};
+    int arrI[3] = {1,2,3};
+    tArrPrint(arrD);
+    cout<<endl;
+
+    //c
+    double arrDouble2d[2][3] = {{1.5,2.5,3.5},{4.5,5.5,6.5}};
+    int arrInt2d[2][3] = {{1,2,3},{4,5,6}};
+    /*
+    cout<<arrInt2d[0][0]<<endl;
+    cout<<arrInt2d[0][1]<<endl;
+    cout<<arrInt2d[0][2]<<endl;
+    cout<<endl;
+    cout<<arrInt2d[1][0]<<endl;
+    cout<<arrInt2d[1][1]<<endl;
+    cout<<arrInt2d[1][2]<<endl;
+    cout<<endl;
+    */
+
+    tArrPrint2d(arrInt2d);
+    cout<<endl;
+
     return 0;
 }
