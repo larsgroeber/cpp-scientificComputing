@@ -21,7 +21,8 @@ int, double) and returns the product, which is of the same type. (2 Pts)
  */
 
 template <typename T>
-T templateProduct (T a, T b){
+T templateProduct (T a, T b)
+{
     return a*b;
 }
 
@@ -60,6 +61,7 @@ double bIn;
 
 int main() {
     //a
+    cout << "Please enter two numbers" << endl;
     cin>>aIn>>bIn;
     //cout<< typeid(aIn).name() <<" : "<<aIn<<" | "<< typeid(bIn).name()<<" : "<<bIn;
     cout<< aIn<<" | "<<bIn<<endl;
@@ -68,7 +70,10 @@ int main() {
     //b
     double arrD[3] = {1.5, 2.5, 3.5};
     int arrI[3] = {1,2,3};
+    cout << "tArrPrint with double array:" << endl;
     tArrPrint(arrD);
+    cout << "tArrPrint with int array:" << endl;
+    tArrPrint(arrI);
     cout<<endl;
 
     //c
@@ -85,6 +90,9 @@ int main() {
     cout<<endl;
     */
 
+    cout << "tArrPrint2d with double array:" << endl;
+    tArrPrint2d(arrDouble2d);
+    cout << "tArrPrint2d with int array:" << endl;
     tArrPrint2d(arrInt2d);
     cout<<endl;
 
