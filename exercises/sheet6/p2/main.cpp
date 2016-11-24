@@ -1,5 +1,9 @@
-#include <iostream>
-#include <fstream>
+#include <iostream>     // cout, endl
+#include <fstream>      // fstream
+
+#include "include.h"
+
+using namespace std;
 
 double f ( double x )
 {
@@ -8,20 +12,27 @@ double f ( double x )
 
 void eval ( double (*f)(double), int N, double a, double b )
 {
-    std::fstream file;
-    file.open( "cpp_data.dat", std::ios_base::out );
+    // declare a filestream file
+    fstream file;
+    // open file, file name and writeable
+    file.open( "cpp_data.dat", ios_base::out );
 
-    for ( int i = 0; i < N; ++i )
+    for ( int i = 0; i < N; i++ )
     {
-        file << i << " " << f(i) << std::endl;
-        std::cout << i << " " << f(i) << std::endl;
+        // write into file
+        file << i << " " << f(i) << endl;
+        // also write to stdout
+        std::cout << i << " " << f(i) << endl;
     }
 
     file.close();
 }
 
+
 int main ()
 {
+    myTest();
+    // define a function pointer
     double (*func_ptr)(double);
     func_ptr = f;
     eval( func_ptr, 5, 1, 2 );
