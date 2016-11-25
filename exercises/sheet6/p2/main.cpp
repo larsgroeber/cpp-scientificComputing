@@ -1,7 +1,7 @@
 #include <iostream>     // cout, endl
 #include <fstream>      // fstream
 
-#include "include.h"
+#include "main.h"
 
 using namespace std;
 
@@ -32,7 +32,6 @@ void eval ( double (*f)(double), int N, double a, double b )
 
 int main ()
 {
-    myTest();
     // define a function pointer
     double (*func_ptr)(double);
     func_ptr = f;
