@@ -16,8 +16,9 @@ void eval ( double (*f)(double), int N, double a, double b )
     fstream file;
     // open file, file name and writeable
     file.open( "cpp_data.dat", ios_base::out );
-
-    for ( int i = 0; i < N; i++ )
+    double x=(b-a)/N;
+    double y=b-a;
+    for ( double i = 0; i < y; i+=x )
     {
         // write into file
         file << i << " " << f(i) << endl;
