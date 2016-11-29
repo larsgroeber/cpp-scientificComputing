@@ -1,11 +1,36 @@
 #include <iostream>
+#include <cstdio>
+#include <typeinfo>
 
 using namespace std;
 
 void proofEquality();
+template <typename T>
+T sumOneToN(T n);
+void printSumOneToN (float finalSum);
+void printSumOneToN (double finalSum);
+void printSumOneToN (long double finalSum);
 
 int main() {
+    cout<<"////task a ////"<<endl;
+    int sixteen = 16;
+    int hundret = 100;
+    int threeee = 333;
+    sumOneToN(float(sixteen));
+    sumOneToN(float(hundret));
+    sumOneToN(float(threeee));
+    cout<<endl;
+    sumOneToN(double(sixteen));
+    sumOneToN(double(hundret));
+    sumOneToN(double(threeee));
+    cout<<endl;
+    sumOneToN((long double)sixteen);
+    sumOneToN((long double)hundret);
+    sumOneToN((long double)threeee);
+
+    cout<<endl<<"////task b ////"<<endl;
     proofEquality();
+
     return 0;
 }
 
@@ -16,6 +41,51 @@ using the data types float, double and long double. Print the output
 in a formatted way, considering the number of digits that are relevant
 for variables of the respective data type.
 */
+
+template <typename T>
+T sumOneToN(T n){
+    T finalSum;
+    for (int i = 0; i < n; ++i) {
+        finalSum += 1/n;
+    }
+
+    printSumOneToN(finalSum);
+
+    //string outFormat;
+    //cout<< typeid(finalSum).name()<<endl;
+
+    /*
+    if(typeid(finalSum) == typeid(float)){
+        //cout << "type: float" << endl;
+        //outFormat = "float: %f";
+        //cout<<outFormat;
+        printf("type: float: %f \n", finalSum);
+
+    }
+    else if (typeid(finalSum) == typeid(double)){
+        //cout << "type: double" << endl;
+        //outFormat = "double: %f";
+        printf("type: double: %f \n", finalSum);
+    }
+    else if (typeid(finalSum) == typeid(long double)){
+        //cout << "type: long double" << endl;
+        //outFormat = "long double: %lf";
+        printf("type: long double: %lf \n", finalSum);
+    }
+    //printf("type: %s", outFormat, finalSum);
+    //cout << finalSum << endl;
+     */
+}
+
+void printSumOneToN (float finalSum){
+    printf("type: float: %f \n", finalSum);
+}
+void printSumOneToN (double finalSum){
+    printf("type: double: %f \n", finalSum);
+}
+void printSumOneToN (long double finalSum){
+    printf("type: long double: %lf \n", finalSum);
+}
 
 /*
  (b) Show that the following expressions are equivalent
@@ -42,4 +112,5 @@ void proofEquality (){
     cout<<f1<<endl;
     cout<<f2<<endl;
     cout<<f3<<endl;
+    cout<<endl<<"because of the datatype \"double\" for all variables we get inaccurate results"<<endl;
 }
