@@ -44,7 +44,7 @@ for variables of the respective data type.
 
 template <typename T>
 T sumOneToN(T n){
-    T finalSum;
+    T finalSum = 0;
     for (int i = 0; i < n; ++i) {
         finalSum += 1/n;
     }
@@ -81,10 +81,10 @@ void printSumOneToN (float finalSum){
     printf("type: float: %f \n", finalSum);
 }
 void printSumOneToN (double finalSum){
-    printf("type: double: %f \n", finalSum);
+    printf("type: double: %lf \n", finalSum);
 }
 void printSumOneToN (long double finalSum){
-    printf("type: long double: %lf \n", finalSum);
+    printf("type: long double: %Lf \n", finalSum);
 }
 
 /*
