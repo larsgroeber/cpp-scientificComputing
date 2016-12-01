@@ -23,16 +23,18 @@
 */
 
 const long double default_a = 1;
-const long double start = 0;     // TODO: use these!
-const long double end = 1;
 
-/* Function to return the integral for n = 0 */
+/*
+ * Function to return the integral for n = 0
+ */
 long double get_I0 ( long double a )
 {
     return 1 / a * ( expl( a ) - 1 );
 }
 
-/* Function to use backward recursion to solve the integral */
+/*
+ * Function to solve the integral using backward recursion
+ */
 long double backward_integrate ( int n, long double a )
 {
     if ( n == 0 )
@@ -45,7 +47,9 @@ long double backward_integrate ( int n, long double a )
     }
 }
 
-/* Function to use forward recursion to solve the integral */
+/*
+ * Function to solve the integral using forward recursion
+ */
 long double forward_integrate ( int endN, long double a )
 {
     long double result = get_I0( a );
@@ -60,14 +64,18 @@ long double forward_integrate ( int endN, long double a )
 (c)
 */
 
-/* Helper function to calculate a factorial */
+/*
+ * Helper function to calculate a factorial
+ */
 long double fac ( long double a )
 {
     return ( a == 0 ) ? 1 : a * fac( a -1 );
 }
 
-/* Function to solve the integral by using the series representation */
-long double series ( int n, long double a )
+/*
+ * Function to solve the integral by using the series representation
+ */
+long double series_integrate ( int n, long double a )
 {
     long double result = 0;
     for ( int i = 0; i <= n; ++i )
@@ -82,7 +90,9 @@ long double series ( int n, long double a )
 (d)
  */
 
-/* Function to print all values starting at n = 0 up to n = N */
+/*
+ * Function to print all values starting at n = 0 up to n = N
+ */
 void print_range ( int N, long double a )
 {
     printf( "\nAll values for a = %.2Lf up to n = %d:\n", a, N );
@@ -96,14 +106,16 @@ void print_range ( int N, long double a )
                 , i
                 , backward_integrate( i, a )
                 , forward_integrate( i, a )
-                , series( i, a ) );
+                , series_integrate( i, a ) );
     }
 }
 
-/* Function to check a range of a for the value of n at which the recursion breaks down */
+/*
+ * Function to check a range of a for the value of n at which the recursion breaks down
+ */
 void check_range ( int N, long double min_a, long double max_a, long double step )
 {
-    printf( "Integration using backward, forward integration or the series breaks down at a value of n \n"
+    printf( "The next table shows at which value of n the integration using the three methods breaks down\n"
             "(a zero denotes that there was no instability found):\n" );
     printf( "a\tb\tf\ts\n" );
 
@@ -115,18 +127,23 @@ void check_range ( int N, long double min_a, long double max_a, long double step
         {
             continue;
         }
-        int breaks_down[3] = { 0, 0, 0 };
-        long double result[3];
+
+        int breaks_down[3] = { 0, 0, 0 };   /* values for n at which the methods break down */
+        long double result[3];              /* results for the three methods */
+
         for ( int n = 0; n <= N; ++n )
         /* for all n in the given range */
         {
             result[0] = backward_integrate( n, a );
             result[1] = forward_integrate( n, a );
-            result[2] = series( n, a );
+            result[2] = series_integrate( n, a );
 
             for ( int i = 0; i < 3; ++i )
             {
-                /* this is a fairly crude check if the recursion breaks down */
+                /*
+                 * this is a fairly crude way to check if the recursion breaks down
+                 * the integral is never smaller than zero and goes to 0 for bigger n
+                 */
                 if ( breaks_down[i] == 0 && ( result[i] < 0 || result[i] > get_I0( a ) ) )
                 {
                     breaks_down[i] = n;
@@ -134,7 +151,7 @@ void check_range ( int N, long double min_a, long double max_a, long double step
             }
         }
 
-        /* print the result */
+        /* print the results */
         printf( "%.2Lf\t%d\t%d\t%d\n"
                 , a
                 , breaks_down[0]
@@ -143,9 +160,10 @@ void check_range ( int N, long double min_a, long double max_a, long double step
     }
 }
 
-int main() {
+int main ()
+{
     /* Problem b) */
-    printf( "\nHi, I am now going to integrate the function x^n*e^(ax) from 0 to 1 for a = 1\n"
+    printf( "Hi, I am now going to integrate the function x^n*e^(ax) from 0 to 1 for a = 1\n"
             "using backward and forward recursion as well as a series representation.\n\n" );
 
     char c[10];
@@ -164,9 +182,9 @@ int main() {
             continue;
         }
 
-        printf( "Backward recursion:         %.5Lf\n", backward_integrate( N, default_a ) );
-        printf( "Forward recursion:          %.5Lf\n", forward_integrate( N, default_a ) );
-        printf( "Integration using the series: %.5Lf\n", series( N, default_a ) );
+        printf( "Backward recursion:           %.5Lf\n", backward_integrate( N, default_a ) );
+        printf( "Forward recursion:            %.5Lf\n", forward_integrate( N, default_a ) );
+        printf( "Integration using the series: %.5Lf\n", series_integrate( N, default_a ) );
 
         printf( "\nEnter another number? [Y/n]\n" );
 
@@ -203,7 +221,11 @@ int main() {
                 , max_n );
         fgets( c2, sizeof c2, stdin );
         /* only writes into max_n if input is a number */
-        sscanf( c2, "%d", &max_n );
+        if ( sscanf( c2, "%d", &max_n ) == 0 || max_n < 0 )
+        {
+            fprintf( stderr, "ERROR: Please give a positive integer!\n" );
+            continue;
+        }
 
         /* just print the values for a given a */
         if ( tolower( c[0] ) == 'a' )
@@ -221,7 +243,7 @@ int main() {
         /* find the point at which the recursion breaks down */
         else if ( tolower( c[0] ) == 'b' )
         {
-            printf( "\nI will use %.2Lf as the lower boundary and %.2Lf as the upper one with "
+            printf( "\nI will use %.2Lf as the lower boundary and %.2Lf as the upper one with"
                     "a step size of %.2Lf.\n", min_a, max_a, step );
             printf( "Press ENTER to use these or give your own (format: min_a max_a step).\n" );
             fgets( c, sizeof c, stdin );
@@ -235,7 +257,7 @@ int main() {
             check_range( max_n, min_a, max_a, step );
         }
 
-        /* ask if user want to continue */
+        /* ask if user wants to continue */
         printf( "\nExit? [y/N]" );
 
         fgets( c, sizeof c, stdin );
