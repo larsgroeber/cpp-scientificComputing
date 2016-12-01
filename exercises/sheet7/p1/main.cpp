@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include <typeinfo>
+#include <limits>
 
 using namespace std;
 
@@ -12,6 +13,10 @@ void printSumOneToN (double finalSum);
 void printSumOneToN (long double finalSum);
 
 int main() {
+    std::cout << "Non-sign bits in float: " << std::numeric_limits<float>::digits << '\n';
+    std::cout << "Non-sign bits in double: " << std::numeric_limits<double>::digits << '\n';
+    std::cout << "Non-sign bits in long double: " << std::numeric_limits<long double>::digits << '\n';
+
     cout<<"////task a ////"<<endl;
     int sixteen = 16;
     int hundret = 100;
@@ -78,13 +83,13 @@ T sumOneToN(T n){
 }
 
 void printSumOneToN (float finalSum){
-    printf("type: float: %f \n", finalSum);
+    printf("type: float: %.24f \n", finalSum);
 }
 void printSumOneToN (double finalSum){
-    printf("type: double: %lf \n", finalSum);
+    printf("type: double: %.53lf \n", finalSum);
 }
 void printSumOneToN (long double finalSum){
-    printf("type: long double: %Lf \n", finalSum);
+    printf("type: long double: %.64Lf \n", finalSum);
 }
 
 /*
