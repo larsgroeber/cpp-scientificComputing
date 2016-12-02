@@ -4,11 +4,11 @@
 g++ rec.cpp
 
 # Pipe output into file
-./a.out
+results_triangle_map.dat << ./a.out
 
 # Plot data
 gnuplot -p <<EOF
-    plot 'cpp_data.dat'
+    plot 'results_triangle_map.dat'
 EOF
 
 exit 0
