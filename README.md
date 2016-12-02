@@ -1,8 +1,8 @@
-Reporitory for the course "Advanced Introduction to C++ and Scientific Computing"
+Repository for the course "Advanced Introduction to C++ and Scientific Computing"
 
 # Coding-Guidelines
 
-## *Always* use braces (on new lines):
+## *Always* use braces (on new lines)
 
 ```c++
 if ( test )
