@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Compile main.cpp
-g++ main.cpp
+g++ rec.cpp
 
 # Pipe output into file
 ./a.out
