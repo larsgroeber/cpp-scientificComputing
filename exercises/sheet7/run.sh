@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#run this an hopefully it will do everything automatically
+
 # Compile main.cpp
 g++ rec.cpp
 
