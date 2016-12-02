@@ -13,11 +13,12 @@ void recursion()
     if (0 <= y );  //looking what value y is
         if ( c<500);    
             if (y<= 0.5);
+                    print y;
                     y = r * y;
                     c+=1;  //increasing our counter
                     r=r+(2/500);
                 if (0.5 < y);
-                    if (y <= 1)
+                    if (y <= 1);
                         y = r - r * y;
                         c+=1;
                         r=r+(2/500);
@@ -28,5 +29,5 @@ void recursion()
 
 int main()
 {
-    recursion();
+    cout << recursion();
 }
