@@ -28,5 +28,5 @@ void recursion()
 
 int main()
 {
-    cout << recursion();
+    recursion();
 }
