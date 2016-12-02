@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cstdio>
-#include <typeinfo>
 #include <limits>
 
 using namespace std;
@@ -13,15 +12,15 @@ void printSumOneToN (double finalSum);
 void printSumOneToN (long double finalSum);
 
 int main() {
-    std::cout << "Non-sign bits in float: " << std::numeric_limits<float>::digits << '\n';
-    std::cout << "Non-sign bits in double: " << std::numeric_limits<double>::digits << '\n';
-    std::cout << "Non-sign bits in long double: " << std::numeric_limits<long double>::digits << '\n';
+    cout << "Non-sign bits in float: " << numeric_limits<float>::digits << '\n';
+    cout << "Non-sign bits in double: " << numeric_limits<double>::digits << '\n';
+    cout << "Non-sign bits in long double: " << numeric_limits<long double>::digits << endl<<endl;
 
-    cout<<"////task a ////"<<endl;
+    cout<<"////task a ////"<<endl;      //shows how unaccurate it is calculating with float, double, long double
     int sixteen = 16;
     int hundret = 100;
     int threeee = 333;
-    sumOneToN(float(sixteen));
+    sumOneToN(float(sixteen));          //casting int so we dont have to create 9 variables but just 3
     sumOneToN(float(hundret));
     sumOneToN(float(threeee));
     cout<<endl;
@@ -33,7 +32,7 @@ int main() {
     sumOneToN((long double)hundret);
     sumOneToN((long double)threeee);
 
-    cout<<endl<<"////task b ////"<<endl;
+    cout<<endl<<"////task b ////"<<endl;    //also shows us that we can get false results when calculating
     proofEquality();
 
     return 0;
@@ -47,43 +46,18 @@ in a formatted way, considering the number of digits that are relevant
 for variables of the respective data type.
 */
 
-template <typename T>
+template <typename T>                                   //template for being able to use float, double and long double in one method
 T sumOneToN(T n){
-    T finalSum = 0;
+    T finalSum = 0;                                     //initializing finalSum!!
     for (int i = 0; i < n; ++i) {
         finalSum += 1/n;
     }
 
-    printSumOneToN(finalSum);
-
-    //string outFormat;
-    //cout<< typeid(finalSum).name()<<endl;
-
-    /*
-    if(typeid(finalSum) == typeid(float)){
-        //cout << "type: float" << endl;
-        //outFormat = "float: %f";
-        //cout<<outFormat;
-        printf("type: float: %f \n", finalSum);
-
-    }
-    else if (typeid(finalSum) == typeid(double)){
-        //cout << "type: double" << endl;
-        //outFormat = "double: %f";
-        printf("type: double: %f \n", finalSum);
-    }
-    else if (typeid(finalSum) == typeid(long double)){
-        //cout << "type: long double" << endl;
-        //outFormat = "long double: %lf";
-        printf("type: long double: %lf \n", finalSum);
-    }
-    //printf("type: %s", outFormat, finalSum);
-    //cout << finalSum << endl;
-     */
+    printSumOneToN(finalSum);                           //calls the print function (thats specific for each datatype)
 }
-
+                                                        //print functions for different datatypes
 void printSumOneToN (float finalSum){
-    printf("type: float: %.24f \n", finalSum);
+    printf("type: float: %.24f \n", finalSum);          //printf with data formatting instructions (compare to line 16-18)
 }
 void printSumOneToN (double finalSum){
     printf("type: double: %.53lf \n", finalSum);
@@ -104,12 +78,12 @@ diﬀer strongly?
 void proofEquality (){
     double a = 1000000002;
     double b = 999999999;
-
+                                            //small functions to make f1-f3 more clear
     double aMinusb = a-b;
     double aPlusb = a+b;
     double asPbs = a*a+(b*b);
     double asMbs =  a*a-(b*b);
-
+                                            //the acutal calculations
     double f1 = (aPlusb*aMinusb) * (aPlusb*aMinusb);
     double f2 = asPbs*asPbs-(4*(a*b)*(a*b));
     double f3 = asMbs*asMbs;
