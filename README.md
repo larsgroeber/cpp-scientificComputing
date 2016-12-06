@@ -15,7 +15,8 @@ for ( int i = 0; i < N; i++ )
 }
 ```
 
-## *Always* use spaces between everything
+## Spaces between operators
+
 ```c++
 std::cout << "Test" << std::endl;
 void function_name ( int a, int b )
@@ -27,10 +28,24 @@ a += 1;
 a = a + 1:
 a = exp( 2 ) / 3;
 
-// except function calls
+// except:
+// function calls
 function_name( a, b );
+
+// grouping paranthesis
+if ( (a == 2 || b == 3) && (c == 4) )
+{
+}
+
+// pointers/references
+int* ptr = &a;
+void function ( int* ptr, int& a )
+{
+}
 ```
+
 ## *No* non-const globals
+
 ```c++
 // includes
 
@@ -57,8 +72,7 @@ if ( long_name         == other_long_name
 ## Misc
 
 ```c++
-// pointers:
-int* ptr;
-// references:
-int& ref;
+/**
+ * Documentation for classes/functions goes here
+ */
 ```
