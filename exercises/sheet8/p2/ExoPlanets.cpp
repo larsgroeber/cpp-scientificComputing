@@ -2,9 +2,9 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
-#include "IO.h"
+#include "ExoPlanets.h"
 
-bool IO::readFile ( const std::string& filePath, std::vector<std::vector<std::string>>& data, std::vector<std::string>& comment )
+bool ExoPlanets::readFile ( const std::string& filePath, std::vector<std::vector<std::string>>& data, std::vector<std::string>& comment )
 {
     int line_number ( 0 );
 
@@ -49,6 +49,13 @@ bool IO::readFile ( const std::string& filePath, std::vector<std::vector<std::st
         while ( getline( lineSS, word, fieldDelimiter ) )
         {
             // pray to god that we have already read the comment
+            // ...ok, just in case, let's implement a check
+            if ( comment.size() == 0 )
+            {
+                fprintf( stderr, "Hey, there is no comment on the first line!" );
+                return 0;
+            }
+
             if ( comment[column_number].find( "error" ) == std::string::npos )
             {
                 data[line_number].push_back( word );
@@ -59,20 +66,10 @@ bool IO::readFile ( const std::string& filePath, std::vector<std::vector<std::st
         line_number++;
     }
 
-    for ( int i = 0; i < comment.size(); ++i )
-    {
-        if ( comment[i].find( "error" ) != std::string::npos )
-        {
-
-            //std::cout << *it << std::endl;
-        }
-    }
-
     // clean the comment
     // why does this not work???
     for ( std::vector<std::string>::iterator it = comment.begin(); it != comment.end(); ++it )
     {
-        std::cout << *it << std::endl;
         if ( (*it).find( "error" ) != std::string::npos )
         {
             comment.erase( it );
@@ -82,7 +79,7 @@ bool IO::readFile ( const std::string& filePath, std::vector<std::vector<std::st
     return 1;
 }
 
-bool IO::writeFile ( const std::string& filePath, std::vector<std::vector<std::string>>& data, std::vector<std::string>& comment )
+bool ExoPlanets::writeFile ( const std::string& filePath, std::vector<std::vector<std::string>>& data, std::vector<std::string>& comment )
 {
     std::fstream file ( filePath, std::ios::out );
 

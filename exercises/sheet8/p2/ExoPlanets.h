@@ -1,8 +1,10 @@
 #ifndef P2_2_IO_H
 #define P2_2_IO_H
 
+#include <vector>
+#include <string>
 
-class IO
+class ExoPlanets
 {
 public:
     static bool readFile ( const std::string& filePath, std::vector<std::vector<std::string>>& data, std::vector<std::string>& comment );
