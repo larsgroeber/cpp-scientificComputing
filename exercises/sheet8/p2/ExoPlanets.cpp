@@ -20,7 +20,7 @@ bool ExoPlanets::readFile ( const std::string& filePath, std::vector<std::vector
     char commentSymbol = '#';
     char fieldDelimiter = '\t';
 
-    std::string line = "";
+    std::string line;
 
     std::stringstream lineSS;
 
@@ -29,7 +29,7 @@ bool ExoPlanets::readFile ( const std::string& filePath, std::vector<std::vector
     {
         int column_number ( 0 );
         lineSS = std::stringstream ( line );
-        std::string word = "";
+        std::string word;
 
         // get the first line with comments
         if ( line[0] == commentSymbol )
@@ -74,7 +74,7 @@ bool ExoPlanets::readFile ( const std::string& filePath, std::vector<std::vector
     }
 
     // clean the comment
-    // why does this not work??? -> there are still fields with 'error' in them remaining
+    // why does this not work??? -> there are still fields containing 'error' remaining
     for ( std::vector<std::string>::iterator it = comment.begin(); it != comment.end(); ++it )
     {
         if ( (*it).find( "error" ) != std::string::npos )
@@ -99,6 +99,7 @@ bool ExoPlanets::writeFile ( const std::string& filePath, std::vector<std::vecto
     char commentSymbol = '#';
     char fieldDelimiter = '\t';
 
+    // write the comment into file
     file << commentSymbol << " ";
     for ( int i = 0; i < comment.size(); ++i )
     {
@@ -111,6 +112,7 @@ bool ExoPlanets::writeFile ( const std::string& filePath, std::vector<std::vecto
     }
     file << "\n";
 
+    // write the data into the file
     for ( int j = 0; j < data.size(); ++j )
     {
         for ( int i = 0; i < data[j].size(); ++i )

@@ -5,7 +5,8 @@
 #include <string>
 
 /**
- * \brief A static class which reads the exoplanet data and writes it without the errors into a file.
+ * \brief A static class which reads the exoplanet data, stripps all error
+ *        values and writes the remaining data into a file.
  */
 class ExoPlanets
 {
