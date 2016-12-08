@@ -98,6 +98,10 @@ bool IO::writeFile ( const std::string& filePath, std::vector<std::vector<std::s
     file << commentSymbol;
     for ( int i = 0; i < comment.size(); ++i )
     {
+        if ( comment[i].find( "error" ) != std::string::npos )
+        {
+            continue;
+        }
         file << comment[i] << fieldDelimiter;
     }
     file << "\n";
