@@ -1,7 +1,11 @@
+/**
+ * (this main.cpp file just shows how to use the class and can be deleted)
+ */
+
 #include <iostream>
 #include "Planet.h"
 
-std::string Planet::_dataName[2] = { "test", "test2" };
+std::string Planet::dataName[2] = { "test", "test2" };
 
 int main ()
 {

@@ -12,28 +12,28 @@ Planet::Planet ( const std::string& data, unsigned length )
     std::stringstream dataSS ( data );
 
     std::string value;
+
     // throw away the name
     std::getline( dataSS, value, '\t' );
 
+    // initialize _myData
     for ( int i = 0; std::getline( dataSS, value, '\t' ); ++i )
     {
         _myData[i] = value;
     }
 }
 
-/*
- * TODO: what happens if field is empty?
- */
 double Planet::get_value ( const std::string& name ) const
 {
     for ( int i = 0; i < _length; ++i )
     {
-        if ( _dataName[i] == name )
+        if ( dataName[i] == name )
         {
+            // stod -> string-to-double
             return stod( _myData[i] );
         }
     }
-    return 0; // denoting an error
+    return 0; // indicating an error
 }
 
 void Planet::print_data () const
