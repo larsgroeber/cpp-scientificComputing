@@ -39,11 +39,6 @@ int main ()
         pArray[j] = new Planet ( dataString, data[j].size() );
     }
 
-    for ( int k = 0; k < 5; ++k )
-    {
-        std::cout << pArray[k]->get_value( "semi_major_axis" ) << std::endl;
-    }
-
     // now sort the array
     std::sort( pArray, pArray + data.size(), []( Planet* &a, Planet* &b )
     {
