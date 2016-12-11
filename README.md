@@ -72,6 +72,8 @@ if ( long_name         == other_long_name
 ## Misc
 
 ```c++
+// NO 'using namespace *anything*' in header files!
+
 /**
  * Documentation for classes/functions goes here
  */
