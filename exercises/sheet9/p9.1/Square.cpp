@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <iostream>
 #include "Square.h"
 
@@ -8,6 +7,9 @@ Square::Square ( double a )
     squareCounter++;
 }
 
+/**
+ * Copy constructor which just copies all values from s to this square and increments the counter.
+ */
 Square::Square ( const Square& s )
     : a ( s.a )
     , area ( s.area )
@@ -29,6 +31,9 @@ void Square::initialize ()
     perimeter = 4 * a;
 }
 
+/**
+ * Here we just call the function 'ratio' which is virtual.
+ */
 double Square::operator/ ( const Square& s ) const
 {
     return ratio( s );
@@ -42,5 +47,4 @@ double Square::ratio ( const Square& s ) const
 Square::~Square ()
 {
     squareCounter--;
-    printf( "Square destroyed.\n" );
 }

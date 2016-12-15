@@ -1,17 +1,13 @@
 #include <iostream>
-
 #include "Cube.h"
 
+/**
+ * Constructor constructs a Square to initialize a.
+ */
 Cube::Cube ( double a )
         : Square ( a )
 {
     cubeCounter++;
-}
-
-Cube::~Cube ()
-{
-    cubeCounter--;
-    printf( "Cube destructed.\n" );
 }
 
 void Cube::printProperties () const
@@ -24,12 +20,24 @@ void Cube::printProperties () const
 
 void Cube::initialize ()
 {
+    Square::initialize();   // initializes area
     volume = a * a * a;
     surface = 6 * area;     // using area of square
 }
 
+/**
+ * We know that s is actually a cube, so we cast it
+ * to one and have access to it's volume.
+ * This of course could lead to problems comparing
+ * cubes to actual squares.
+ */
 double Cube::ratio ( const Square& s ) const
 {
     const Cube* c = (const Cube*)(&s);
     return volume / c->volume;
+}
+
+Cube::~Cube ()
+{
+    cubeCounter--;
 }
