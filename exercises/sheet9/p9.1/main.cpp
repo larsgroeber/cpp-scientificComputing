@@ -68,11 +68,6 @@ int main ()
     printf( "geoms[0] / geoms[1] = %.2lf\n", *(geoms[0]) / *(geoms[1]) );
     printf( "geoms[3] / geoms[4] = %.2lf\n", *(geoms[3]) / *(geoms[4]) );
 
-    /*
-     * Doing *(geoms[3]) / *(geoms[2]) - comparing a Cube to a Square - returns (at least on my system)
-     * infinity.
-     */
-
     for ( int j = 0; j < 6; ++j )
     {
         delete geoms[j];
