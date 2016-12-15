@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <iostream>
 #include "Square.h"
 
 Square::Square ( double a )
@@ -28,7 +29,18 @@ void Square::initialize ()
     perimeter = 4 * a;
 }
 
+double Square::operator/ ( const Square& s ) const
+{
+    return ratio( s );
+}
+
+double Square::ratio ( const Square& s ) const
+{
+    return area / s.area;
+}
+
 Square::~Square ()
 {
     squareCounter--;
+    printf( "Square destroyed.\n" );
 }

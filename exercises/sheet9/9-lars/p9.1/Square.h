@@ -11,16 +11,26 @@ public:
 
     virtual ~Square ();
 
-    void printProperties () const;
+    virtual void printProperties () const;
 
-    void initialize ();
+    virtual void initialize ();
+
+    /**
+     * \brief overloaded operator /
+     * Operators cannot be virtual, thus we have to use the virtual function ratio.
+     * \param s
+     * \return ratio of the areas of both squares
+     */
+    double operator/ ( const Square& s ) const;
 
     static int squareCounter;
 
-private:
+protected:
     const double a;
     double area;
     double perimeter;
+
+    virtual double ratio ( const Square& s ) const;
 };
 
 
