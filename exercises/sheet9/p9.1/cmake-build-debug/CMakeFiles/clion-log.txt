@@ -1,4 +1,0 @@
-/home/lars/Programs/JetBrains-IDE/clion/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/lars/Documents/Study/WS1617/CPP/exercises/sheet9/9-lars/p9.1
--- Configuring done
--- Generating done
--- Build files have been written to: /home/lars/Documents/Study/WS1617/CPP/exercises/sheet9/9-lars/p9.1/cmake-build-debug

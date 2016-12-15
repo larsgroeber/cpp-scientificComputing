@@ -1,1 +1,0 @@
-/usr/bin/c++   -g   CMakeFiles/p9_1.dir/main.cpp.o CMakeFiles/p9_1.dir/Square.cpp.o CMakeFiles/p9_1.dir/Cube.cpp.o  -o p9_1 
