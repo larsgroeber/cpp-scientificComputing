@@ -1,13 +1,29 @@
 #include <iostream>
-#include "Square.h"
 
 using namespace std;
 
-int main ()
+
+//defining the recursive function
+void recursion()
 {
-    Square s1 ( 1. );
-    Square *s2 = new Square ( 2. );
+    int c = 0;     //a variable for counting the steps
+    double r = 0;  //parameter r from the exercise
+    double y;
+    y=rand() %1;   //rolling a random y
+    if (0 <= y );
+    if (y<= 0.5);
+    y = r * y;
+    c+=1;
+    if (0.5 < y);
+    if (y <= 1)
+        y = r - r * y;
+    c+=1;
+}
 
 
-    return 0;
+
+
+int main()
+{
+    recursion();
 }
