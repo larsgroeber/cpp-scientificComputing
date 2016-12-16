@@ -4,6 +4,7 @@
 typedef std::ostream& (*STRFUNC)(std::ostream&);
 
 template <size_t size>
+//making the Buffer(stolen from the lecture)
 class BufferClass
 {
 private:
@@ -13,7 +14,8 @@ double data[size];
 public:
 bool isEmpty,isFull;
 
-BufferClass<size>()			     // standard constructor
+//the standard Buffer constructor
+BufferClass<size>()
   { pos=0;
     isEmpty = true;
     isFull = true;
@@ -23,8 +25,9 @@ BufferClass<size>()			     // standard constructor
       data[i] = 0;
   }
 
-template <class T>
-BufferClass<size>& operator>>(T &outInt)	     // like cin >> variable
+template <typename T>
+//the Method to write into the Buffer
+BufferClass<size>& operator>>(T &outInt)
   {
   if (pos>0)
     {
@@ -37,8 +40,9 @@ BufferClass<size>& operator>>(T &outInt)	     // like cin >> variable
   return *this;
   }
 
-template <class T>
-BufferClass<size>& operator<<(T newInt)	    // like cout << variable
+template <typename T>
+//and to get something out of the Buffer
+BufferClass<size>& operator<<(T newInt)
   {
   if (!isFull)
     {
@@ -56,10 +60,13 @@ BufferClass<size>& operator<<(T newInt)	    // like cout << variable
 
 };
 
+
 int main()
 {
- BufferClass<10> myBuffer;	// a buffer for up-to 10 integers
- double test = 0;
+//The Buffer should be for 10 types, since I couldnt do it for other than int it's only for int
+ BufferClass<10> myBuffer;
+ int test = 0;
+ int content = 0;
 //
  printf("content of buffer: ");
  while (!myBuffer.isEmpty)
@@ -68,9 +75,9 @@ int main()
    printf("%4d",test);
    }
  printf("\n");
-//
- myBuffer << 3.3;
- myBuffer << 4 << 5;
+//inserting something in the Buffer and printing it
+ myBuffer << 5.3;
+ myBuffer << 7 << 9;
  printf("content of buffer: ");
  while (!myBuffer.isEmpty)
    {
@@ -79,5 +86,17 @@ int main()
    }
  printf("\n");
 //
+//looking if something is in the Buffer
+ if (!myBuffer.isEmpty)
+    printf("Der Buffer ist leer");
+else
+    printf("Es ist etwas im Buffer");
+    myBuffer >> content;
+//well something is, but we want to see what
+    printf("Und zwar: ");
+    printf("%4d",content);
+//this is just so the output is less packed and more readable
+ printf("\n");
+
  return 0;
 }
