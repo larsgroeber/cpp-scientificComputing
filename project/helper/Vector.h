@@ -3,6 +3,9 @@
 
 namespace LH
 {
+    /**
+     * \brief Struct which implements a simple 2D vector
+     */
     struct Vector
     {
         Vector ( long double x, long double y );
@@ -14,12 +17,6 @@ namespace LH
         Vector unit () const;
 
         Vector operator*  ( const Vector& A ) const;
-
-        template <typename T1>
-        Vector operator*  ( const T1& a ) const;
-
-        template <typename T2>
-        Vector operator/  ( const T2& a ) const;
 
         Vector operator+  ( const Vector& A ) const;
 
@@ -34,15 +31,21 @@ namespace LH
 
     // templates cannot be defined in separate .cpp file
     template <typename T1>
-    Vector Vector::operator* ( const T1& a ) const
+    Vector operator* ( const T1& a, const Vector& V )
     {
-        return Vector( x * a, y * a );
+        return Vector( V.x * a, V.y * a );
+    }
+
+    template <typename T1>
+    Vector operator* ( const Vector& V, const T1& a )
+    {
+        return Vector( V.x * a, V.y * a );
     }
 
     template <typename T2>
-    Vector Vector::operator/ ( const T2& a ) const
+    Vector operator/ ( const Vector& V, const T2& a )
     {
-        return Vector( x / a, y / a );
+        return Vector( V.x / a, V.y / a );
     }
 }
 
