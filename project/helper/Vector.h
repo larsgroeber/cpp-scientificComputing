@@ -20,7 +20,11 @@ namespace LH
 
         Vector operator+  ( const Vector& A ) const;
 
+        Vector operator+=  ( const Vector& A );
+
         Vector operator-  ( const Vector& A ) const;
+
+        Vector operator-=  ( const Vector& A );
 
         bool   operator== ( const Vector& A ) const;
 

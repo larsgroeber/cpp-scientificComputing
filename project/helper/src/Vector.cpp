@@ -22,9 +22,25 @@ LH::Vector LH::Vector::operator+ ( const LH::Vector& A ) const
     return LH::Vector ( x + A.x, y + A.y );
 }
 
+LH::Vector LH::Vector::operator+= ( const LH::Vector& A )
+{
+    x += A.x;
+    y += A.y;
+
+    return *this;
+}
+
 LH::Vector LH::Vector::operator- ( const LH::Vector& A ) const
 {
     return LH::Vector ( x - A.x, y - A.y );
+}
+
+LH::Vector LH::Vector::operator-= ( const LH::Vector& A )
+{
+    x -= A.x;
+    y -= A.y;
+
+    return *this;
 }
 
 bool LH::Vector::operator== ( const LH::Vector& A ) const
