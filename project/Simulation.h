@@ -15,6 +15,8 @@ namespace LH
     public:
         Simulation ();
 
+        virtual ~Simulation ();
+
         void run ();
 
     private:
@@ -25,10 +27,8 @@ namespace LH
          * \param B Object which "generates" the force.
          * \return The force vector pointing from A to B.
          */
-        LH::Vector gravity ( const LH::Object& A, const LH::Object& B ) const;
+        LH::Vector gravity ( const LH::Object* A, const LH::Object* B ) const;
         std::vector<LH::Object*> _massPoints;
-        LH::Object _planet;
-        LH::Object _asteroid;
     };
 }
 

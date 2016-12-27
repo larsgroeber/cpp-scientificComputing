@@ -7,15 +7,22 @@
 
 LH::Simulation::Simulation ()
 {
-    _planet.pos      = PLANET_POS;
-    _planet.mass     = PLANET_MASS;
-    _planet.radius   = 0;
-    _planet.vel      = LH::Vector ( 0 , 0 );
+    LH::Object* planet = new LH::Object;
 
-    _asteroid.pos    = ASTEROID_POS_START;
-    _asteroid.mass   = ASTEROID_MASS_TOTAL;
-    _asteroid.radius = ASTEROID_RADIUS_START;
-    _asteroid.vel    = ASTEROID_VEL_START;
+    planet->pos      = PLANET_POS;
+    planet->mass     = PLANET_MASS;
+    planet->radius   = 0;
+    planet->vel      = LH::Vector ( 0, 0 );
+
+    LH::Object* asteroid = new LH::Object;
+
+    asteroid->pos    = ASTEROID_POS_START;
+    asteroid->mass   = ASTEROID_MASS_TOTAL;
+    asteroid->radius = ASTEROID_RADIUS_START;
+    asteroid->vel    = ASTEROID_VEL_START;
+
+    _massPoints.push_back( planet );
+    _massPoints.push_back( asteroid );
 }
 
 void LH::Simulation::run ()
@@ -26,24 +33,43 @@ void LH::Simulation::run ()
 
     for ( long double t = 0; t < MAX_TIME; t += TIME_STEP )
     {
-        LH::Vector force = gravity( _asteroid, _planet );
-        // apply acceleration
-        _asteroid.vel += TIME_STEP * (force / _asteroid.mass);
+        std::string s = "";
 
-        // apply velocity
-        _asteroid.pos += TIME_STEP * _asteroid.vel;
+        for ( auto o : _massPoints )
+        {
+            for ( auto v : _massPoints )
+            {
+                if ( o == v )
+                {
+                    continue;
+                }
 
+                LH::Vector force = gravity( o, v );
+                o->vel += TIME_STEP * (force / o->mass);
+                o->pos += TIME_STEP * o->vel;
+            }
+        }
+
+        // TODO: add this to the loop
         snprintf( c, sizeof( c ),"%Lf\t%Lf\t%LF\t%Lf\t%LF\n"
                 , t
-                , _asteroid.pos.x, _asteroid.pos.y
-                , _planet.pos.x, _planet.pos.y );
+                , _massPoints[0]->pos.x, _massPoints[0]->pos.y
+                , _massPoints[1]->pos.x, _massPoints[1]->pos.y );
 
         io << c;
     }
 }
 
-LH::Vector LH::Simulation::gravity ( const LH::Object& A, const LH::Object& B ) const
+LH::Vector LH::Simulation::gravity ( const LH::Object* A, const LH::Object* B ) const
 {
-    LH::Vector dist = B.pos - A.pos;
-    return GRAVITY_CONSTANT * ((A.mass * B.mass) / pow( dist.size(), 2 )) * dist.unit();
+    LH::Vector dist = B->pos - A->pos;
+    return GRAVITY_CONSTANT * ((A->mass * B->mass) / pow( dist.size(), 2 )) * dist.unit();
+}
+
+LH::Simulation::~Simulation ()
+{
+    for ( auto o : _massPoints )
+    {
+        delete o;
+    }
 }
