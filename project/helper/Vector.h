@@ -8,7 +8,9 @@ namespace LH
      */
     struct Vector
     {
-        Vector ( long double x, long double y );
+        Vector () : x ( 0 ), y ( 0 ) {};
+
+        Vector ( long double x, long double y ) : x ( x ), y ( y ) {};
 
         long double dot_product ( const Vector& A ) const;
 
@@ -20,18 +22,17 @@ namespace LH
 
         Vector operator+  ( const Vector& A ) const;
 
-        Vector operator+=  ( const Vector& A );
+        Vector operator+= ( const Vector& A );
 
         Vector operator-  ( const Vector& A ) const;
 
-        Vector operator-=  ( const Vector& A );
+        Vector operator-= ( const Vector& A );
 
         bool   operator== ( const Vector& A ) const;
 
         long double x;
         long double y;
     };
-
 
     // templates cannot be defined in separate .cpp file
     template <typename T1>

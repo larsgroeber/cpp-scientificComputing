@@ -2,11 +2,6 @@
 #include <tgmath.h>
 #include "../Vector.h"
 
-LH::Vector::Vector ( long double x, long double y )
-    : x ( x ), y ( y )
-{
-}
-
 long double LH::Vector::dot_product ( const LH::Vector& A ) const
 {
     return x * A.x + y * A.y;
