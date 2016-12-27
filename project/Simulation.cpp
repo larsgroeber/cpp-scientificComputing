@@ -7,7 +7,7 @@
 
 LH::Simulation::Simulation ()
 {
-    _planet.pos      = PLAMET_POS;
+    _planet.pos      = PLANET_POS;
     _planet.mass     = PLANET_MASS;
     _planet.radius   = 0;
     _planet.vel      = LH::Vector ( 0 , 0 );
@@ -24,10 +24,6 @@ void LH::Simulation::run ()
 
     char c[100];
 
-    //snprintf( c, sizeof( c ),"%d\t%llf\t%llf\n", 0, sun.x, sun.y );
-
-    //io << c;
-
     for ( long double t = 0; t < MAX_TIME; t += TIME_STEP )
     {
         LH::Vector force = gravity( _asteroid, _planet );
@@ -37,7 +33,10 @@ void LH::Simulation::run ()
         // apply velocity
         _asteroid.pos += TIME_STEP * _asteroid.vel;
 
-        snprintf( c, sizeof( c ),"%Lf\t%Lf\t%LF\n", t, _planet.pos.x, _planet.pos.y );
+        snprintf( c, sizeof( c ),"%Lf\t%Lf\t%LF\t%Lf\t%LF\n"
+                , t
+                , _asteroid.pos.x, _asteroid.pos.y
+                , _planet.pos.x, _planet.pos.y );
 
         io << c;
     }
