@@ -75,12 +75,14 @@ bool ExoPlanets::readFile ( const std::string& filePath, std::vector<std::vector
 
     // clean the comment
     // why does this not work??? -> there are still fields containing 'error' remaining
-    for ( std::vector<std::string>::iterator it = comment.begin(); it != comment.end(); ++it )
+    for ( std::vector<std::string>::iterator it = comment.begin(); it != comment.end(); )
     {
         if ( (*it).find( "error" ) != std::string::npos )
         {
             comment.erase( it );
+            continue;
         }
+        it++;
     }
 
     return 1;

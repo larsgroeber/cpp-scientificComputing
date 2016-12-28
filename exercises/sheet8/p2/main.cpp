@@ -23,6 +23,7 @@ int main ()
         fprintf( stderr, "Something went wrong reading the file..." );
     }
 
+
     if ( ! ExoPlanets::writeFile( "../planets.dat", data, comment ) )
     {
         fprintf( stderr, "Something went wrong writing the file..." );

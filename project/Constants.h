@@ -20,7 +20,7 @@ const long double TIME_STEP = .001;
 const long double GRAVITY_CONSTANT = 1;
 
 // mass of the planet
-const long double PLANET_MASS = 1000;
+const long double PLANET_MASS = 1;
 
 // position of the planet (which does not change)
 const LH::Vector PLANET_POS ( 0 , 0 );
@@ -38,7 +38,7 @@ const long double ASTEROID_RADIUS_START = 10;
 const LH::Vector ASTEROID_POS_START ( 0 , 10 );
 
 // starting velocity of asteroid, TODO: consider giving only orbital parameters
-const LH::Vector ASTEROID_VEL_START ( 10 , 0 );
+const LH::Vector ASTEROID_VEL_START ( .2 , 0 );
 
 // file to write results into
 const std::string DATA_FILE = "./data/data.dat";

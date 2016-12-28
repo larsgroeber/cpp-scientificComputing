@@ -8,7 +8,7 @@ namespace LH
     /**
      * \brief Definition of a circular object (think planet, asteroid, mass point).
      */
-    struct Object
+    struct Body
     {
         LH::Vector pos;
         LH::Vector vel;

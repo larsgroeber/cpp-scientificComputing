@@ -2,7 +2,7 @@
 #define ROCHE_LIMIT_SIMULATION_H
 
 #include <vector>
-#include "Object.h"
+#include "Body.h"
 
 namespace LH
 {
@@ -27,8 +27,8 @@ namespace LH
          * \param B Object which "generates" the force.
          * \return The force vector pointing from A to B.
          */
-        LH::Vector gravity ( const LH::Object* A, const LH::Object* B ) const;
-        std::vector<LH::Object*> _massPoints;
+        LH::Vector gravity ( const LH::Body* A, const LH::Body* B ) const;
+        std::vector<LH::Body*> _massPoints;
     };
 }
 

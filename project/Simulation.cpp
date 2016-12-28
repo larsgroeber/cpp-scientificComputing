@@ -7,14 +7,14 @@
 
 LH::Simulation::Simulation ()
 {
-    LH::Object* planet = new LH::Object;
+    LH::Body* planet = new LH::Body;
 
     planet->pos      = PLANET_POS;
     planet->mass     = PLANET_MASS;
     planet->radius   = 0;
-    planet->vel      = LH::Vector ( 0, 0 );
+    planet->vel      = LH::Vector ( -.2, 0 );
 
-    LH::Object* asteroid = new LH::Object;
+    LH::Body* asteroid = new LH::Body;
 
     asteroid->pos    = ASTEROID_POS_START;
     asteroid->mass   = ASTEROID_MASS_TOTAL;
@@ -35,9 +35,9 @@ void LH::Simulation::run ()
     {
         std::string s = "";
 
-        for ( auto o : _massPoints )
+        for ( LH::Body* o : _massPoints )
         {
-            for ( auto v : _massPoints )
+            for ( LH::Body* v : _massPoints )
             {
                 if ( o == v )
                 {
@@ -51,7 +51,7 @@ void LH::Simulation::run ()
         }
 
         // TODO: add this to the loop
-        snprintf( c, sizeof( c ),"%Lf\t%Lf\t%LF\t%Lf\t%LF\n"
+        snprintf( c, sizeof( c ), "%Lf\t%Lf\t%LF\t%Lf\t%LF\n"
                 , t
                 , _massPoints[0]->pos.x, _massPoints[0]->pos.y
                 , _massPoints[1]->pos.x, _massPoints[1]->pos.y );
@@ -60,7 +60,7 @@ void LH::Simulation::run ()
     }
 }
 
-LH::Vector LH::Simulation::gravity ( const LH::Object* A, const LH::Object* B ) const
+LH::Vector LH::Simulation::gravity ( const LH::Body* A, const LH::Body* B ) const
 {
     LH::Vector dist = B->pos - A->pos;
     return GRAVITY_CONSTANT * ((A->mass * B->mass) / pow( dist.size(), 2 )) * dist.unit();
