@@ -17,7 +17,12 @@ namespace LH
 
         virtual ~Simulation ();
 
+        /**
+         * @brief calls function gravity and writes all data into a stream thats passed on to gnuplot later
+         */
         void run ();
+
+        void massPointsInit(Vector massPoints);
 
     private:
         /**
@@ -28,6 +33,7 @@ namespace LH
          * \return The force vector pointing from A to B.
          */
         LH::Vector gravity ( const LH::Body* A, const LH::Body* B ) const;
+
         std::vector<LH::Body*> _massPoints;
     };
 }

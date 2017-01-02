@@ -1,0 +1,9 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=larsXYZ/Gravity-Simulator: This is th...
+Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=ikdmmpblfihipmnmlajhdkekmpnphcbo
+Icon=chrome-ikdmmpblfihipmnmlajhdkekmpnphcbo-Default
+StartupWMClass=crx_ikdmmpblfihipmnmlajhdkekmpnphcbo

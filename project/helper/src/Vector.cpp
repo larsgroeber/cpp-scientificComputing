@@ -1,6 +1,6 @@
 
 #include <tgmath.h>
-#include "../Vector.h"
+#include "../include/Vector.h"
 
 long double LH::Vector::dot_product ( const LH::Vector& A ) const
 {

@@ -1,2 +1,2 @@
-test: main.cpp Simulation.cpp Simulation.h Body.h helper/Vector.h helper/src/Vector.cpp helper/IOManager.h helper/src/IOManager.cpp Constants.h
-	g++ -o roche_limit main.cpp Simulation.cpp Simulation.h Body.h helper/Vector.h helper/src/Vector.cpp helper/IOManager.h helper/src/IOManager.cpp Constants.h
+test: main.cpp helper/src/Simulation.cpp helper/include/Simulation.h helper/include/Body.h helper/include/Vector.h helper/src/Vector.cpp helper/include/IOManager.h helper/src/IOManager.cpp helper/include/Constants.h
+	g++ -o roche_limit main.cpp helper/src/Simulation.cpp helper/include/Simulation.h helper/include/Body.h helper/include/Vector.h helper/src/Vector.cpp helper/include/IOManager.h helper/src/IOManager.cpp helper/include/Constants.h

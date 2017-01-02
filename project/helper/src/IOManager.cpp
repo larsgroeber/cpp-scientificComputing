@@ -1,4 +1,4 @@
-#include "../IOManager.h"
+#include "../include/IOManager.h"
 
 
 LH::IOManager::IOManager ( const std::string fileName )
