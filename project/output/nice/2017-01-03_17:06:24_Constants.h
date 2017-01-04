@@ -11,10 +11,10 @@
 #include "Vector.h"
 
 // time duration
-const long double MAX_TIME = 100;
+const long double MAX_TIME = 1000;
 
 // time step
-const long double TIME_STEP = .8;
+const long double TIME_STEP = .1;
 
 // gravitational constant (can be used to translate between units)
 const long double GRAVITY_CONSTANT = 1;
@@ -25,7 +25,7 @@ const long double GRAVITY_CONSTANT = 1;
 const long double PLANET_MASS = 1000;
 
 // size of planet (radius)
-const long double PLANET_RADIUS_START = 100;
+const long double PLANET_RADIUS_START = 10;
 
 // position of the planet (which does not change)
 const LH::Vector PLANET_POS ( 0 , 0 );
@@ -50,11 +50,11 @@ const LH::Vector ASTEROID_VEL_START ( 0 , -8 );
 
 
 // number of mass points for the asteroid
-const long double MASSPOINTS_NUM = 2;
+const long double MASSPOINTS_NUM = 8;
 
 // size of masspoints (radius)
 //const long double MASSPOINTS_RADIUS = 1;
-const long double MASSPOINTS_RADIUS = .5; //0.302593388348611302909204224934; //for 8 http://hydra.nat.uni-magdeburg.de/packing/cci/
+const long double MASSPOINTS_RADIUS = 0.302593388348611302909204224934; //for 8 http://hydra.nat.uni-magdeburg.de/packing/cci/
 
 // mass of each asteroid rock (all rocks have the same weight)
 const long double MASSPOINTS_MASS = ASTEROID_MASS_TOTAL / MASSPOINTS_NUM;

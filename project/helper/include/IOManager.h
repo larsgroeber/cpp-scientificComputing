@@ -34,6 +34,7 @@ namespace LH
     private:
         /** File to write into */
         std::ofstream file;
+
     };
 }
 
