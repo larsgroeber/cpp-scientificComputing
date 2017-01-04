@@ -19,8 +19,8 @@ lineCounter=$(wc -l < "data/data.dat")-1
 
 gnuplot -p <<EOF
 ########################## OLD ##########################
-set size square
-plot "data/data.dat" u 2:3 w l, "data/data.dat" u 4:5 w l
+#set size square
+#plot "data/data.dat" u 2:3 w l, "data/data.dat" u 4:5 w l
 ######################## OLD END ########################
 
 ########################## GIF ########################## http://www.gnuplotting.org/tag/animation/

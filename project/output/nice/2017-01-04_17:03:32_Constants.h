@@ -11,10 +11,10 @@
 #include "Vector.h"
 
 // time duration
-const long double MAX_TIME = 500;
+const long double MAX_TIME = 77;
 
 // time step
-const long double TIME_STEP = 1;
+const long double TIME_STEP = .1;
 
 // gravitational constant (can be used to translate between units)
 const long double GRAVITY_CONSTANT = 1;
@@ -22,7 +22,7 @@ const long double GRAVITY_CONSTANT = 1;
 
 
 // mass of the planet
-const long double PLANET_MASS = 1000;
+const long double PLANET_MASS = 1;
 
 // size of planet (radius)
 const long double PLANET_RADIUS_START = 100;
@@ -42,10 +42,10 @@ const LH::Vector PLANET_VEL_START ( 0 , 0 );
 const long double ASTEROID_MASS_TOTAL = 1;
 
 // starting positon of the asteroid
-const LH::Vector ASTEROID_POS_START ( 0 , 100 );
+const LH::Vector ASTEROID_POS_START ( 0 , 10 );
 
 // starting velocity of asteroid, TODO: consider giving only orbital parameters
-const LH::Vector ASTEROID_VEL_START ( 2 , 0 );
+const LH::Vector ASTEROID_VEL_START ( .2 , 0 );
 
 
 
