@@ -23,7 +23,7 @@ namespace LH
         void run ();
 
         /**
-         * @brief creates a bodyCloud in the shape of an archimedic spiral
+         * @brief creates a bodyCloud in the shape of an archimedic spiral and adds it to _massPoints
          */
         void buildSpiral ();
 

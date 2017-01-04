@@ -2,7 +2,7 @@
 
 #include "../include/Simulation.h"
 #include "../include/Constants.h"
-#include "../include/IOManager.h"
+#include "../helper/include/IOManager.h"
 //#include "../include/BodyCloud.h"
 
 LH::Simulation::Simulation ()
@@ -39,7 +39,6 @@ void LH::Simulation::run ()
                 {
                     continue;
                 }
-
                 LH::Vector force = gravity( o, v );
                 o->vel += TIME_STEP * (force / o->mass);
                 o->pos += TIME_STEP * o->vel;
@@ -70,32 +69,39 @@ LH::Simulation::~Simulation ()
     }
 }
 
+// TODO: move to bodyCloud.cpp
 void LH::Simulation::buildSpiral ()
 {
+    // for testing: used for creating text output of coordinates of the elements
 //    LH::IOManager io ("./data/BodyCloud.gplt");
 //    io << "# BodyElementX BodyElementY";
 //    LH::IOManager distFile ("./data/distFIle.gplt");
 //    distFile << "# distances between all points";
 
+    // polar coordinates
     long double phi = 3.;
     long double r;
+    // cartesian coordinates
     long double x;
     long double y;
 
     // TODO: find the right value for a (if you vary MASSPOINTS_RADIUS it wont work anymore
-    long double a = .321660216662
-                    * MASSPOINTS_RADIUS;
+    // factor for calculating the archimedic spiral
+    long double a = .321660216662 * MASSPOINTS_RADIUS;
 
     long double pi = atan ( 1 ) * 4;
 
+    // looping over all bodyCloud elements and adding them to a vector
     for ( int i = 0; i < MASSPOINTS_NUM; ++ i )
     {
         LH::Body *bodyElementB = new LH::Body;
 
+        // formula for archimedic spiral (polar + cartesian)
         r = a * phi;
         x = r * cos( phi );
         y = r * sin( phi );
 
+        //creating a bodyCloud element
         bodyElementB->mass = MASSPOINTS_MASS;
         bodyElementB->radius = MASSPOINTS_RADIUS;
         bodyElementB->vel = ASTEROID_VEL_START;
@@ -109,16 +115,18 @@ void LH::Simulation::buildSpiral ()
 //    long double delta = 6.8;
         long double delta = 1 / r;
 
+        // increment phi for the archimedic spiral
 //        phi += 1 / r; //pow( r, 2 );
         phi += delta;
 
+        // for testing: writes the coordinates of all _bodyCloud elements in a file (one element per row)
 //        char c[100];
 //        snprintf (c, sizeof (c), "\n%Lf\t%LF"
 //                  , _bodyCloud[i]->pos.x, _bodyCloud[i]->pos.y);
 //        io << c;
     }
 
-    // calculating the distance between all points to check if none are overlapping
+    // for testing: calculating the distance between all points to check if none are overlapping
 //    for ( int j = 0; j < MASSPOINTS_NUM; ++ j )
 //    {
 //        for ( int k = 0; k < MASSPOINTS_NUM; ++ k )

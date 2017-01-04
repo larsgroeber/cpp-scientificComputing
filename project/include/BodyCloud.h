@@ -3,23 +3,22 @@
 
 namespace LH
 {
-//    class BodyCloud
-//    {
-//    public:
-//        BodyCloud ();
-//
-//        virtual ~BodyCloud ();
+    class BodyCloud
+    {
+    public:
+        BodyCloud ();
+
+        virtual ~BodyCloud ();
 
         /**
          * @brief creates a bodyCloud in the shape of an archimedic spiral
          */
         void LH::BodyCloud::buildSpiral ();
 
-//    private:
-
+    private:
         std::vector<LH::Body*> _bodyCloud;
 
-//    };
+    };
 }
 
 #endif //CPP_SCIENTIFICCOMPUTING_BODYCLOUD_H

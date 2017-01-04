@@ -1,7 +1,7 @@
 #ifndef ROCHE_LIMIT_OBJECT_H
 #define ROCHE_LIMIT_OBJECT_H
 
-#include "Vector.h"
+#include "../helper/include/Vector.h"
 
 namespace LH
 {

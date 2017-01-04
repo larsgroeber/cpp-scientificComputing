@@ -8,10 +8,10 @@
 
 #include <string>
 
-#include "Vector.h"
+#include "../helper/include/Vector.h"
 
 // time duration
-const long double MAX_TIME = 500;
+const long double MAX_TIME = 200;
 
 // time step
 const long double TIME_STEP = 1;
