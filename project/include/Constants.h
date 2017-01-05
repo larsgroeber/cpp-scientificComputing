@@ -11,10 +11,10 @@
 #include "../helper/include/Vector.h"
 
 // time duration
-const long double MAX_TIME = 200;
+const long double MAX_TIME = 20;
 
 // time step
-const long double TIME_STEP = 1;
+const long double TIME_STEP = .01;
 
 // gravitational constant (can be used to translate between units)
 const long double GRAVITY_CONSTANT = 1;
@@ -50,7 +50,7 @@ const LH::Vector ASTEROID_VEL_START ( 2 , 0 );
 
 
 // number of mass points for the asteroid
-const long double MASSPOINTS_NUM = 1;
+const long double MASSPOINTS_NUM = 10;
 
 // size of masspoints (radius)
 const long double MASSPOINTS_RADIUS = .5; //0.302593388348611302909204224934; //for 8 http://hydra.nat.uni-magdeburg.de/packing/cci/

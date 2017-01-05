@@ -24,13 +24,25 @@ void LH::Simulation::run ()
 {
     LH::IOManager io ( DATA_FILE );
 
-    io << "# time    planetX    planetY    asteroidX    asteroidY";
+    io << "# time\tplanetX\tplanetY";
+    for ( int i = 0; i < MASSPOINTS_NUM; ++ i )
+    {
+        io << "\tbodyX_";
+        io << i;
+        io << "\tbodyY_";
+        io << i;
+    }
+    io << "\n";
+
+//    int charSize = ( MASSPOINTS_NUM + 1 ) * 20;
     char c[100];
 
     for ( long double t = 0; t < MAX_TIME; t += TIME_STEP )
     {
-        std::string s = "";
-
+//        std::string s = "";
+//        snprintf( c, sizeof( c ), "\t%Lf", t);
+//        io << c;
+        int i = 0;
         for ( LH::Body* o : _massPoints )
         {
             for ( LH::Body* v : _massPoints )
@@ -43,15 +55,12 @@ void LH::Simulation::run ()
                 o->vel += TIME_STEP * (force / o->mass);
                 o->pos += TIME_STEP * o->vel;
             }
+            snprintf( c, sizeof( c ), "\t%Lf\t%LF"
+                    , _massPoints[i]->pos.x, _massPoints[i]->pos.y );
+            io << c;
+            i++;
         }
-
-        // TODO: add all masspoints X & Y to the file (additional rows)
-        // TODO: add this to the loop
-        snprintf( c, sizeof( c ), "\n%Lf\t%Lf\t%LF\t%Lf\t%LF"
-                , t
-                , _massPoints[0]->pos.x, _massPoints[0]->pos.y
-                , _massPoints[1]->pos.x, _massPoints[1]->pos.y );
-        io << c;
+        io << "\n";
     }
 }
 
