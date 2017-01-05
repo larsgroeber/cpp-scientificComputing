@@ -6,8 +6,8 @@
 #ifndef ROCHE_LIMIT_CONSTANTS_H
 #define ROCHE_LIMIT_CONSTANTS_H
 
-// comment this out to disable graphics
-//#define GRAPHICS
+// comment this out to disable graphics and use 'make graphic' (you might have to change the cmake file, too)
+#define GRAPHICS
 
 #include <string>
 

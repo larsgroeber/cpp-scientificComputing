@@ -21,7 +21,7 @@ namespace LH
     enum class State {PLAY, QUIT};
 
     /**
-     * \brief Class to draw the simulation using an opengl library.
+     * \brief Class to draw the simulation using the opengl library jaogll.
      */
     class Graphic
     {
