@@ -22,7 +22,7 @@ const long double GRAVITY_CONSTANT = 1;
 
 
 // mass of the planet
-const long double PLANET_MASS = 1000;
+const long double PLANET_MASS = 10000;
 
 // size of planet (radius)
 const long double PLANET_RADIUS_START = 100;
