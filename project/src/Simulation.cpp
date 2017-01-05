@@ -68,7 +68,7 @@ void LH::Simulation::run ()
                     continue;
                 }
                 LH::Vector force = gravity( o, v );
-                o->vel += TIME_STEP * (force / o->mass);
+                o->vel += TIME_STEP * ( force / o->mass );
                 o->pos += TIME_STEP * o->vel;
             }
             snprintf( c, sizeof( c ), "\t%Lf\t%LF"
@@ -126,7 +126,14 @@ void LH::Simulation::make_graphics ()
 LH::Vector LH::Simulation::gravity ( const LH::Body* A, const LH::Body* B ) const
 {
     LH::Vector dist = B->pos - A->pos;
-    return GRAVITY_CONSTANT * ((A->mass * B->mass) / pow( dist.size(), 2 )) * dist.unit();
+
+    // check for collision
+    if ( dist.size() == MASSPOINTS_RADIUS * 2 )
+    {
+
+    }
+
+    return GRAVITY_CONSTANT * ( ( A->mass * B->mass ) / pow( dist.size(), 2 ) ) * dist.unit();
 }
 
 void LH::Simulation::collision ( LH::Body* A, const LH::Body* B )
