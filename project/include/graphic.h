@@ -30,6 +30,10 @@ namespace LH
 
         void set_sprites ( const std::vector<std::tuple<LH::Vector,float,std::string>>& _sprites );
 
+        void set_viewing_pos ( LH::Vector pos );
+
+        void set_viewing_scale ( float scale );
+
         void process_input ();
 
         void draw ();

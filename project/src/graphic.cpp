@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include <jaogll/jaogll.h>
 #include <jaogll/logger.h>
+#include <map>
 
 JOGL::LogLevel JOGL::Logger::current_log_level = JOGL::LogLevel::LOG_DEBUG;
 
@@ -54,30 +55,47 @@ void LH::Graphic::process_input ()
                 _state = LH::State::QUIT;
                 break;
             case SDL_KEYDOWN:
-                switch ( event.key.keysym.sym )
-                {
-                    case SDLK_w:
-                        _camera.setPosition( _camera.getPosition() + glm::vec2 ( 0, 1 ) * CAMERA_SPEED );
-                        break;
-                    case SDLK_s:
-                        _camera.setPosition( _camera.getPosition() + glm::vec2 ( 0, -1 ) * CAMERA_SPEED );
-                        break;
-                    case SDLK_a:
-                        _camera.setPosition( _camera.getPosition() + glm::vec2 ( -1, 0 ) * CAMERA_SPEED );
-                        break;
-                    case SDLK_d:
-                        _camera.setPosition( _camera.getPosition() + glm::vec2 ( 1, 0 ) * CAMERA_SPEED );
-                        break;
-                    case SDLK_q:
-                        _camera.setScale( _camera.getScale() + SCALE_SPEED );
-                        break;
-                    case SDLK_e:
-                        _camera.setScale( _camera.getScale() - SCALE_SPEED );
-                        break;
-                }
+                _inputManager.press_key( event.key.keysym.sym );
+                break;
+            case SDL_KEYUP:
+                _inputManager.release_key( event.key.keysym.sym );
                 break;
         }
     }
+
+    std::map<unsigned int,glm::vec2> dirs {
+            { SDLK_w, glm::vec2( 0, 1 ) },
+            { SDLK_s, glm::vec2( 0, -1 ) },
+            { SDLK_a, glm::vec2( -1, 0 ) },
+            { SDLK_d, glm::vec2( 1, 0 ) }
+    };
+
+    for ( auto&& dir : dirs )
+    {
+        if ( _inputManager.is_key_presses( dir.first ) )
+        {
+            _camera.setPosition( _camera.getPosition() + CAMERA_SPEED * dir.second );
+        }
+    }
+
+    if ( _inputManager.is_key_presses( SDLK_q ) )
+    {
+        _camera.setScale( _camera.getScale() + SCALE_SPEED );
+    }
+    if ( _inputManager.is_key_presses( SDLK_e ) )
+    {
+        _camera.setScale( _camera.getScale() - SCALE_SPEED );
+    }
+}
+
+void LH::Graphic::set_viewing_pos ( LH::Vector pos )
+{
+    _camera.setPosition( glm::vec2 ( pos.x, pos.y ) );
+}
+
+void LH::Graphic::set_viewing_scale ( float scale )
+{
+    _camera.setScale( scale );
 }
 
 void LH::Graphic::draw ()

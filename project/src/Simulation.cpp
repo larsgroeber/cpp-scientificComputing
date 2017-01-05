@@ -15,6 +15,11 @@ LH::Simulation::Simulation ()
 #endif
 
 {
+#ifdef GRAPHICS
+    _graphic.set_viewing_pos( ASTEROID_POS_START );
+    _graphic.set_viewing_scale( 5.0f );
+#endif
+
     LH::Body* planet = new LH::Body;
 
     planet->pos      = PLANET_POS;
@@ -44,6 +49,8 @@ void LH::Simulation::run ()
 
 //    int charSize = ( MASSPOINTS_NUM + 1 ) * 20;
     char c[100];
+
+    std::cin >> c;
 
     for ( long double t = 0; t < MAX_TIME; t += TIME_STEP )
     {
