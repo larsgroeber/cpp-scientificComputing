@@ -6,6 +6,9 @@
 #ifndef ROCHE_LIMIT_CONSTANTS_H
 #define ROCHE_LIMIT_CONSTANTS_H
 
+// comment this out to disable graphics
+//#define GRAPHICS
+
 #include <string>
 
 #include "../helper/include/Vector.h"

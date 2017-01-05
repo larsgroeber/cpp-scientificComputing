@@ -3,6 +3,8 @@
 
 #include <vector>
 #include "Body.h"
+#include "graphic.h"
+#include "Constants.h"
 
 namespace LH
 {
@@ -46,6 +48,11 @@ namespace LH
 //        void LH::Simulation::HoneycombBodyCloud ( Vector massPoints, int n, double diam );
 
     private:
+#ifdef GRAPHICS
+        void make_graphics ();
+        Graphic _graphic;
+#endif
+
         /**
          * \brief Calculates the gravity acting on A given object B.
          * If you want to calculate the force acting on B just reverse the vector.
@@ -57,6 +64,8 @@ namespace LH
 
         std::vector<LH::Body*> _massPoints;
         std::vector<LH::Body*> _bodyCloud;
+
+
     };
 }
 

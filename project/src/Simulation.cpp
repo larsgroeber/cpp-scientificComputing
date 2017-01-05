@@ -1,11 +1,19 @@
 #include <tgmath.h>
+#include <iostream>
 
 #include "../include/Simulation.h"
 #include "../include/Constants.h"
 #include "../helper/include/IOManager.h"
+#include "../include/graphic.h"
 //#include "../include/BodyCloud.h"
 
+
+
 LH::Simulation::Simulation ()
+#ifdef GRAPHICS
+    : _graphic ( 500, 500, 60 )
+#endif
+
 {
     LH::Body* planet = new LH::Body;
 
@@ -61,8 +69,35 @@ void LH::Simulation::run ()
             i++;
         }
         io << "\n";
+
+#ifdef GRAPHICS
+        make_graphics();
+
+        // quit if user closed window
+        if ( _graphic.get_state() == State::QUIT )
+        {
+            break;
+        }
+#endif
     }
 }
+
+#ifdef GRAPHICS
+void LH::Simulation::make_graphics ()
+{
+    // vector to give pos, radius and path to texture/image file
+    std::vector<std::tuple<LH::Vector,float,std::string>> sprites;
+
+    for ( auto&& m : _massPoints )
+    {
+        sprites.emplace_back( m->pos, m->radius, "./graphics/black-circle.png" );
+    }
+
+    _graphic.set_sprites( sprites );
+
+    _graphic.draw();
+}
+#endif
 
 LH::Vector LH::Simulation::gravity ( const LH::Body* A, const LH::Body* B ) const
 {
