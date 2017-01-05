@@ -53,7 +53,7 @@ n=0
         n=n+1
         # save each step in a png
 #        set output sprintf("data/output_PNG/simulation%05d.png", n)
-    plot for [j=1:$columnCounter] "data/data.dat" u j:j+1 w l t sprintf("column %d", j)
+    plot for [j=1:$columnCounter] "data/data.dat" u j*2:j*2+1 w l t sprintf("col: %d", j)
 #    plot for [j=1:$columnCounter] \
 #        'data/data.dat' u j:j+1 every ::i::i w p ls 1 t "Heavy Object", \
 #        'data/data.dat' u j:j+1 every ::1::i w l ls 1 t "Heavy Object trace", \
@@ -68,7 +68,7 @@ EOF
 #ffmpeg -framerate 300 -i data/output_PNG/simulation%05d.png -r 60 -loop -1 "output/${timeStamp}output.gif"  #ffmpeg -framerate 30 -i data/output_PNG/simulation%05d.png -c:v libx264 -vf "fps=25,format=yuv420p" output/output_$(date +%Y-%m-%d_%T).mp4
 ######################## GIF END ########################
 
-# plot with: plot "data/data.dat"  u 1:2 w l, "data/data.dat"  u 3:4 w l, "data/data.dat"  u 7:8 w l, "data/data.dat"  u 9:10 w l, "data/data.dat"  u 11:12 w l, "data/data.dat"  u 13:14 w l, "data/data.dat"  u 15:16 w l
+# plot with: plot for [j=1:10] "data/data.dat" u j*2:j*2+1 w l t sprintf("col: %d", j)
 cp data/data.dat output/${timeStamp}gnuPlotData.gplt
 cp include/Constants.h output/${timeStamp}Constants.h
 rm -r "data/output_PNG"
