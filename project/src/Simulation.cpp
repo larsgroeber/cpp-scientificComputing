@@ -11,13 +11,13 @@
 
 LH::Simulation::Simulation ()
 #ifdef GRAPHICS
-    : _graphic ( 500, 500, 60 )
+    : _graphic ( 500, 500, 50 )
 #endif
 
 {
 #ifdef GRAPHICS
     _graphic.set_viewing_pos( ASTEROID_POS_START );
-    _graphic.set_viewing_scale( 5.0f );
+    _graphic.set_viewing_scale( 30.0f );
 #endif
 
     LH::Body* planet = new LH::Body;
@@ -50,14 +50,15 @@ void LH::Simulation::run ()
 //    int charSize = ( MASSPOINTS_NUM + 1 ) * 20;
     char c[100];
 
-    std::cin >> c;
 
-    for ( long double t = 0; t < MAX_TIME; t += TIME_STEP )
+
+    for ( long double t = 0; 1; t += TIME_STEP )
     {
 //        std::string s = "";
 //        snprintf( c, sizeof( c ), "\t%Lf", t);
 //        io << c;
         int i = 0;
+
         for ( LH::Body* o : _massPoints )
         {
             for ( LH::Body* v : _massPoints )
@@ -72,13 +73,27 @@ void LH::Simulation::run ()
             }
             snprintf( c, sizeof( c ), "\t%Lf\t%LF"
                     , _massPoints[i]->pos.x, _massPoints[i]->pos.y );
-            io << c;
+            //io << c;
             i++;
         }
-        io << "\n";
+        //io << "\n";
+
+        for ( LH::Body* o : _massPoints )
+        {
+            for ( LH::Body* v : _massPoints )
+            {
+                if ( o == v )
+                {
+                    continue;
+                }
+                collision( o, v );
+            }
+        }
 
 #ifdef GRAPHICS
         make_graphics();
+
+        //std::cin >> c;
 
         // quit if user closed window
         if ( _graphic.get_state() == State::QUIT )
@@ -102,6 +117,8 @@ void LH::Simulation::make_graphics ()
 
     _graphic.set_sprites( sprites );
 
+    _graphic.set_viewing_pos( _massPoints[1]->pos );
+
     _graphic.draw();
 }
 #endif
@@ -110,6 +127,18 @@ LH::Vector LH::Simulation::gravity ( const LH::Body* A, const LH::Body* B ) cons
 {
     LH::Vector dist = B->pos - A->pos;
     return GRAVITY_CONSTANT * ((A->mass * B->mass) / pow( dist.size(), 2 )) * dist.unit();
+}
+
+void LH::Simulation::collision ( LH::Body* A, const LH::Body* B )
+{
+    LH::Vector dist = B->pos - A->pos;
+    if ( dist.size() > B->radius + A->radius || A->vel.dot_product( dist ) < 0 )
+    {
+        return;
+    }
+
+    A->pos += -1 * dist.unit() * (B->radius + A->radius - dist.size());
+    A->vel = A->vel - dist.unit() * (A->vel - B->vel).dot_product( dist.unit() );
 }
 
 LH::Simulation::~Simulation ()

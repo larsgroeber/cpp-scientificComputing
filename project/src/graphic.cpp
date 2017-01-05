@@ -45,7 +45,7 @@ void LH::Graphic::process_input ()
     SDL_Event event;
 
     const float CAMERA_SPEED = 1.0f;
-    const float SCALE_SPEED = .1f;
+    const float SCALE_SPEED = 1.0f;
 
     while ( SDL_PollEvent( &event ) )
     {
@@ -126,7 +126,7 @@ void LH::Graphic::draw ()
 
         _spriteBatch.add_sprite( JOGL::Sprite (
                 std::get<0>(b).x, std::get<0>(b).y   // pos
-                , std::get<1>(b), std::get<1>(b)     // width, height
+                , std::get<1>(b) * 2, std::get<1>(b) * 2     // width, height
                 , JOGL::Color ( 255, 255, 255, 255 ) // color
                 , std::get<2>(b)                     // file
                 , 0                                  // depth

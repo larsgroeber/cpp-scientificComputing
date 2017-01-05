@@ -6,7 +6,7 @@
 #ifndef ROCHE_LIMIT_CONSTANTS_H
 #define ROCHE_LIMIT_CONSTANTS_H
 
-// comment this out to disable graphics and use 'make graphic' (you might have to change the cmake file, too)
+// uncomment this to enable graphics and use 'make graphic' (you might have to change the cmake file, too)
 #define GRAPHICS
 
 #include <string>
@@ -17,18 +17,20 @@
 const long double MAX_TIME = 20;
 
 // time step
-const long double TIME_STEP = .01;
+const long double TIME_STEP = .001;
 
 // gravitational constant (can be used to translate between units)
-const long double GRAVITY_CONSTANT = 1;
+const long double GRAVITY_CONSTANT = 10;
+
+const long double DISTANCE_CONSTANT = .01f;
 
 
 
 // mass of the planet
-const long double PLANET_MASS = 1000;
+const long double PLANET_MASS = 1;
 
 // size of planet (radius)
-const long double PLANET_RADIUS_START = 100;
+const long double PLANET_RADIUS_START = 10;
 
 // position of the planet (which does not change)
 const LH::Vector PLANET_POS ( 0 , 0 );
@@ -42,10 +44,10 @@ const LH::Vector PLANET_VEL_START ( 0 , 0 );
 //const long double ASTEROID_RADIUS_START = 10;
 
 // total mass of the asteroid
-const long double ASTEROID_MASS_TOTAL = 1;
+const long double ASTEROID_MASS_TOTAL = 10;
 
 // starting positon of the asteroid
-const LH::Vector ASTEROID_POS_START ( 0 , 100 );
+const LH::Vector ASTEROID_POS_START ( 0 , 100000 );
 
 // starting velocity of asteroid, TODO: consider giving only orbital parameters
 const LH::Vector ASTEROID_VEL_START ( 2 , 0 );
@@ -53,7 +55,7 @@ const LH::Vector ASTEROID_VEL_START ( 2 , 0 );
 
 
 // number of mass points for the asteroid
-const long double MASSPOINTS_NUM = 10;
+const long double MASSPOINTS_NUM = 50;
 
 // size of masspoints (radius)
 const long double MASSPOINTS_RADIUS = .5; //0.302593388348611302909204224934; //for 8 http://hydra.nat.uni-magdeburg.de/packing/cci/

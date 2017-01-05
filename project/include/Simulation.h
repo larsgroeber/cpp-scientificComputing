@@ -52,6 +52,7 @@ namespace LH
         void make_graphics ();
         Graphic _graphic;
 #endif
+        void collision ( LH::Body* A, const LH::Body* B );
 
         /**
          * \brief Calculates the gravity acting on A given object B.
