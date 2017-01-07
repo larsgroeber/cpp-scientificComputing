@@ -17,17 +17,18 @@
 const long double MAX_TIME = 20;
 
 // time step
-const long double TIME_STEP = .001;
+const long double TIME_STEP = .0001;
 
 // gravitational constant (can be used to translate between units)
-const long double GRAVITY_CONSTANT = 10;
+const long double GRAVITY_CONSTANT = 1;
 
-const long double DISTANCE_CONSTANT = .01f;
+// number of collision passes (of complexity O(n^2))
+const unsigned int COLLISION_PASSES = 10;
 
 
 
 // mass of the planet
-const long double PLANET_MASS = 1;
+const long double PLANET_MASS = 0.1;
 
 // size of planet (radius)
 const long double PLANET_RADIUS_START = 10;
@@ -47,15 +48,15 @@ const LH::Vector PLANET_VEL_START ( 0 , 0 );
 const long double ASTEROID_MASS_TOTAL = 10;
 
 // starting positon of the asteroid
-const LH::Vector ASTEROID_POS_START ( 0 , 100000 );
+const LH::Vector ASTEROID_POS_START ( 0 , 100 );
 
 // starting velocity of asteroid, TODO: consider giving only orbital parameters
-const LH::Vector ASTEROID_VEL_START ( 2 , 0 );
+const LH::Vector ASTEROID_VEL_START ( 5 , 0 );
 
 
 
 // number of mass points for the asteroid
-const long double MASSPOINTS_NUM = 50;
+const long double MASSPOINTS_NUM =100;
 
 // size of masspoints (radius)
 const long double MASSPOINTS_RADIUS = .5; //0.302593388348611302909204224934; //for 8 http://hydra.nat.uni-magdeburg.de/packing/cci/

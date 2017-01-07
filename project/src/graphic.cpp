@@ -44,7 +44,7 @@ void LH::Graphic::process_input ()
 {
     SDL_Event event;
 
-    const float CAMERA_SPEED = 1.0f;
+    const float CAMERA_SPEED = .1f;
     const float SCALE_SPEED = 1.0f;
 
     while ( SDL_PollEvent( &event ) )

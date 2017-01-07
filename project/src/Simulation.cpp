@@ -1,5 +1,6 @@
 #include <tgmath.h>
 #include <iostream>
+#include <algorithm>
 
 #include "../include/Simulation.h"
 #include "../include/Constants.h"
@@ -11,7 +12,7 @@
 
 LH::Simulation::Simulation ()
 #ifdef GRAPHICS
-    : _graphic ( 500, 500, 50 )
+    : _graphic ( 1000, 1000, 500 )
 #endif
 
 {
@@ -31,10 +32,14 @@ LH::Simulation::Simulation ()
 
     // adding a cloud of masspoints representing the asteroid to _masspoints
     buildSpiral ();
+
+    srand( time(NULL) );
 }
 
 void LH::Simulation::run ()
 {
+   _view = _massPoints[1];
+
     LH::IOManager io ( DATA_FILE );
 
     io << "# time\tplanetX\tplanetY";
@@ -50,7 +55,7 @@ void LH::Simulation::run ()
 //    int charSize = ( MASSPOINTS_NUM + 1 ) * 20;
     char c[100];
 
-
+    int J = 0;
 
     for ( long double t = 0; 1; t += TIME_STEP )
     {
@@ -67,7 +72,7 @@ void LH::Simulation::run ()
                 {
                     continue;
                 }
-                LH::Vector force = gravity( o, v );
+                LH::Vector force = gravity( o, v );// + potential( o, v );
                 o->vel += TIME_STEP * (force / o->mass);
                 o->pos += TIME_STEP * o->vel;
             }
@@ -78,16 +83,32 @@ void LH::Simulation::run ()
         }
         //io << "\n";
 
-        for ( LH::Body* o : _massPoints )
+        std::random_shuffle( _massPoints.begin(), _massPoints.end() );
+
+        for ( int j = 0; j < 10; ++j )
         {
-            for ( LH::Body* v : _massPoints )
+            for ( auto o = _massPoints.begin(); o < _massPoints.end(); ++o )
             {
-                if ( o == v )
+                for ( LH::Body* v : _massPoints )
                 {
-                    continue;
+                    if ( *o == v || *o == _massPoints[ 0 ] )
+                    {
+                        continue;
+                    }
+                    collision( *o, v );
                 }
-                collision( o, v );
             }
+        }
+
+        if ( J++ == 100 )
+        {
+            LH::Vector total_speed ( 0, 0 );
+            for ( int j = 1; j < _massPoints.size(); ++j )
+            {
+                total_speed += _massPoints[j]->vel;
+            }
+            printf( "%Lf : %Lf\n", total_speed.x / (MASSPOINTS_NUM), total_speed.y / MASSPOINTS_NUM);
+            J = 0;
         }
 
 #ifdef GRAPHICS
@@ -116,8 +137,7 @@ void LH::Simulation::make_graphics ()
     }
 
     _graphic.set_sprites( sprites );
-
-    _graphic.set_viewing_pos( _massPoints[1]->pos );
+    _graphic.set_viewing_pos( _view->pos );
 
     _graphic.draw();
 }
@@ -129,16 +149,22 @@ LH::Vector LH::Simulation::gravity ( const LH::Body* A, const LH::Body* B ) cons
     return GRAVITY_CONSTANT * ((A->mass * B->mass) / pow( dist.size(), 2 )) * dist.unit();
 }
 
-void LH::Simulation::collision ( LH::Body* A, const LH::Body* B )
+void LH::Simulation::collision ( LH::Body* A, LH::Body* B )
 {
     LH::Vector dist = B->pos - A->pos;
-    if ( dist.size() > B->radius + A->radius || A->vel.dot_product( dist ) < 0 )
+    long double diff = B->radius + A->radius - dist.size();
+    if ( dist.size() > B->radius + A->radius )
     {
         return;
     }
 
-    A->pos += -1 * dist.unit() * (B->radius + A->radius - dist.size());
-    A->vel = A->vel - dist.unit() * (A->vel - B->vel).dot_product( dist.unit() );
+
+    LH::Vector pos_response = dist.unit() * (B->radius + A->radius - dist.size());
+    A->pos -= 0.5 * pos_response;
+    B->pos += 0.5 * pos_response;
+    LH::Vector vel_response = dist.unit() * (A->vel - B->vel).dot_product( dist.unit() );
+    A->vel -= 0.5 * vel_response;
+    B->vel += 0.5 * vel_response;
 }
 
 LH::Simulation::~Simulation ()

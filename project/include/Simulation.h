@@ -52,7 +52,7 @@ namespace LH
         void make_graphics ();
         Graphic _graphic;
 #endif
-        void collision ( LH::Body* A, const LH::Body* B );
+        void collision ( LH::Body* A, LH::Body* B );
 
         /**
          * \brief Calculates the gravity acting on A given object B.
@@ -66,7 +66,7 @@ namespace LH
         std::vector<LH::Body*> _massPoints;
         std::vector<LH::Body*> _bodyCloud;
 
-
+        LH::Body* _view;
     };
 }
 
