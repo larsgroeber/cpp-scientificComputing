@@ -5,63 +5,63 @@
 #include "../include/Simulation.h"
 #include "../include/Constants.h"
 #include "../helper/include/IOManager.h"
-#include "../include/graphic.h"
-//#include "../include/BodyCloud.h"
-
-
+#include "../graphics/graphic.h"
 
 LH::Simulation::Simulation ()
 #ifdef GRAPHICS
-    : _graphic ( 1000, 1000, 500 )
+    : _graphic ( 1000, 1000, 500 ) // window width and height as well as the target framerate
 #endif
 
 {
 #ifdef GRAPHICS
+    // initialize camera
     _graphic.set_viewing_pos( ASTEROID_POS_START );
     _graphic.set_viewing_scale( 30.0f );
 #endif
 
-    LH::Body* planet = new LH::Body;
+    // initialize the planet
+    _planet = new LH::Body;
 
-    planet->pos      = PLANET_POS;
-    planet->mass     = PLANET_MASS;
-    planet->radius   = PLANET_RADIUS_START;
-    planet->vel      = PLANET_VEL_START;
+    _planet->pos      = PLANET_POS;
+    _planet->mass     = PLANET_MASS;
+    _planet->radius   = PLANET_RADIUS_START;
+    _planet->vel      = PLANET_VEL_START;
 
-    _massPoints.push_back( planet );
+    _massPoints.push_back( _planet );
 
     // adding a cloud of masspoints representing the asteroid to _masspoints
     buildSpiral ();
 
+    // seed the RNG
     srand( time(NULL) );
 }
 
 void LH::Simulation::run ()
 {
+    // setup the view
    _view = _massPoints[1];
 
-    LH::IOManager io ( DATA_FILE );
-
-    io << "# time\tplanetX\tplanetY";
-    for ( int i = 0; i < MASSPOINTS_NUM; ++ i )
-    {
-        io << "\tbodyX_";
-        io << i;
-        io << "\tbodyY_";
-        io << i;
-    }
-    io << "\n";
+    // only needed for a run w/o graphics
+//    LH::IOManager io ( DATA_FILE );
+//
+//    io << "# time\tplanetX\tplanetY";
+//    for ( int i = 0; i < MASSPOINTS_NUM; ++ i )
+//    {
+//        io << "\tbodyX_";
+//        io << i;
+//        io << "\tbodyY_";
+//        io << i;
+//    }
+//    io << "\n";
 
 //    int charSize = ( MASSPOINTS_NUM + 1 ) * 20;
     char c[100];
 
     int J = 0;
 
+    // main loop (w/o maxtime if using graphics)
     for ( long double t = 0; 1; t += TIME_STEP )
     {
-//        std::string s = "";
-//        snprintf( c, sizeof( c ), "\t%Lf", t);
-//        io << c;
         int i = 0;
 
         for ( LH::Body* o : _massPoints )
@@ -72,8 +72,11 @@ void LH::Simulation::run ()
                 {
                     continue;
                 }
-                LH::Vector force = gravity( o, v );// + potential( o, v );
+                // calculate gravity
+                LH::Vector force = gravity( o, v );
+                // apply acceleration
                 o->vel += TIME_STEP * (force / o->mass);
+                // apply velocity
                 o->pos += TIME_STEP * o->vel;
             }
             snprintf( c, sizeof( c ), "\t%Lf\t%LF"
@@ -83,15 +86,17 @@ void LH::Simulation::run ()
         }
         //io << "\n";
 
+        // might help to minimize rotation of the asteroid
         std::random_shuffle( _massPoints.begin(), _massPoints.end() );
 
-        for ( int j = 0; j < 10; ++j )
+        // collision passes
+        for ( int j = 0; j < COLLISION_PASSES; ++j )
         {
             for ( auto o = _massPoints.begin(); o < _massPoints.end(); ++o )
             {
                 for ( LH::Body* v : _massPoints )
                 {
-                    if ( *o == v || *o == _massPoints[ 0 ] )
+                    if ( *o == v )
                     {
                         continue;
                     }
@@ -100,6 +105,10 @@ void LH::Simulation::run ()
             }
         }
 
+        // fix planet (only if some masspoints hit it -> would otherwise fly away
+        //_planet->pos = PLANET_POS;
+
+        // print velocity of center of mass of the asteroid every 100th frame
         if ( J++ == 100 )
         {
             LH::Vector total_speed ( 0, 0 );
@@ -113,8 +122,6 @@ void LH::Simulation::run ()
 
 #ifdef GRAPHICS
         make_graphics();
-
-        //std::cin >> c;
 
         // quit if user closed window
         if ( _graphic.get_state() == State::QUIT )
@@ -136,9 +143,11 @@ void LH::Simulation::make_graphics ()
         sprites.emplace_back( m->pos, m->radius, "./graphics/black-circle.png" );
     }
 
+    // set active sprites
     _graphic.set_sprites( sprites );
     _graphic.set_viewing_pos( _view->pos );
 
+    // actual drawing
     _graphic.draw();
 }
 #endif
@@ -153,16 +162,18 @@ void LH::Simulation::collision ( LH::Body* A, LH::Body* B )
 {
     LH::Vector dist = B->pos - A->pos;
     long double diff = B->radius + A->radius - dist.size();
-    if ( dist.size() > B->radius + A->radius )
+    if ( diff > 0 )
     {
         return;
     }
 
-
-    LH::Vector pos_response = dist.unit() * (B->radius + A->radius - dist.size());
+    LH::Vector pos_response = dist.unit() * diff;
+    // resolve collision
     A->pos -= 0.5 * pos_response;
     B->pos += 0.5 * pos_response;
+    // calculate relative velocity along dist
     LH::Vector vel_response = dist.unit() * (A->vel - B->vel).dot_product( dist.unit() );
+    // apply relative velocity on both objects (they have the same mass) to achieve an inelastic collision
     A->vel -= 0.5 * vel_response;
     B->vel += 0.5 * vel_response;
 }
@@ -175,7 +186,6 @@ LH::Simulation::~Simulation ()
     }
 }
 
-// TODO: move to bodyCloud.cpp
 void LH::Simulation::buildSpiral ()
 {
     // for testing: used for creating text output of coordinates of the elements

@@ -17,7 +17,7 @@
 const long double MAX_TIME = 20;
 
 // time step
-const long double TIME_STEP = .0001;
+const long double TIME_STEP = .001;
 
 // gravitational constant (can be used to translate between units)
 const long double GRAVITY_CONSTANT = 1;
@@ -28,7 +28,7 @@ const unsigned int COLLISION_PASSES = 10;
 
 
 // mass of the planet
-const long double PLANET_MASS = 0.1;
+const long double PLANET_MASS = 100000;
 
 // size of planet (radius)
 const long double PLANET_RADIUS_START = 10;
@@ -48,10 +48,10 @@ const LH::Vector PLANET_VEL_START ( 0 , 0 );
 const long double ASTEROID_MASS_TOTAL = 10;
 
 // starting positon of the asteroid
-const LH::Vector ASTEROID_POS_START ( 0 , 100 );
+const LH::Vector ASTEROID_POS_START ( 0 , 300 );
 
 // starting velocity of asteroid, TODO: consider giving only orbital parameters
-const LH::Vector ASTEROID_VEL_START ( 5 , 0 );
+const LH::Vector ASTEROID_VEL_START ( 1 , 0 );
 
 
 
