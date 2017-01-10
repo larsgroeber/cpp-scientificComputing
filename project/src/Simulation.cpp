@@ -76,9 +76,9 @@ void LH::Simulation::run ()
                 LH::Vector force = gravity( o, v );
                 // apply acceleration
                 o->vel += TIME_STEP * (force / o->mass);
-                // apply velocity
-                o->pos += TIME_STEP * o->vel;
             }
+            // apply velocity
+            o->pos += TIME_STEP * o->vel;
             snprintf( c, sizeof( c ), "\t%Lf\t%LF"
                     , _massPoints[i]->pos.x, _massPoints[i]->pos.y );
             //io << c;
@@ -87,7 +87,7 @@ void LH::Simulation::run ()
         //io << "\n";
 
         // might help to minimize rotation of the asteroid
-        //std::random_shuffle( _massPoints.begin(), _massPoints.end() );
+        std::random_shuffle( _massPoints.begin() + 1, _massPoints.end() );
 
         // collision passes
         for ( int j = 0; j < COLLISION_PASSES; ++j )
@@ -105,7 +105,7 @@ void LH::Simulation::run ()
             }
         }
 
-        // fix planet (only if some masspoints hit it -> would otherwise fly away
+        // fix planet (only if some masspoints hit it -> would otherwise fly away)
         //_planet->pos = PLANET_POS;
 
         // print information every 100th frame
@@ -113,6 +113,7 @@ void LH::Simulation::run ()
         {
             LH::Vector total_momentum = _massPoints[0]->mass * _massPoints[0]->vel;
             double av_distance = 0.0;
+            long double dist_to_planet = 0.0;
             for ( int j = 1; j < _massPoints.size(); ++j )
             {
                 total_momentum += _massPoints[j]->mass * _massPoints[j]->vel;
@@ -120,8 +121,10 @@ void LH::Simulation::run ()
                 {
                     av_distance += (_massPoints[j]->pos - _massPoints[k]->pos).size();
                 }
+                dist_to_planet = (_massPoints[0]->pos - _view->pos).size();
             }
-            printf( "Momentum: %Lf; Average distance: %Lf\n", total_momentum.size(), av_distance / MASSPOINTS_NUM );
+            printf( "Momentum: %Lf; Average distance: %Lf; Distance to planet: %Lf; Direction: %.5Lf : %.5Lf\n", total_momentum.size(), av_distance / MASSPOINTS_NUM, dist_to_planet
+                    , _view->pos.x, _view->pos.y );
             J = 0;
         }
 
