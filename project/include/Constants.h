@@ -23,7 +23,7 @@ const long double TIME_STEP = .001;
 const long double GRAVITY_CONSTANT = 1;
 
 // number of collision passes (of complexity O(n^2))
-const unsigned int COLLISION_PASSES = 10;
+const unsigned int COLLISION_PASSES = 1;
 
 
 
@@ -56,7 +56,7 @@ const LH::Vector ASTEROID_VEL_START ( 1.5 , 0 );
 
 
 // number of mass points for the asteroid
-const long double MASSPOINTS_NUM = 101;
+const long double MASSPOINTS_NUM = 100;
 
 // size of masspoints (radius)
 const long double MASSPOINTS_RADIUS = .5; //0.302593388348611302909204224934; //for 8 http://hydra.nat.uni-magdeburg.de/packing/cci/

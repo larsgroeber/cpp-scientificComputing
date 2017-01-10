@@ -92,15 +92,15 @@ void LH::Simulation::run ()
         // collision passes
         for ( int j = 0; j < COLLISION_PASSES; ++j )
         {
-            for ( auto o = _massPoints.begin(); o < _massPoints.end(); ++o )
+            for ( LH::Body* o : _massPoints )
             {
                 for ( LH::Body* v : _massPoints )
                 {
-                    if ( *o == v )
+                    if ( o == v )
                     {
                         continue;
                     }
-                    collision( *o, v );
+                    collision( o, v );
                 }
             }
         }
@@ -108,15 +108,20 @@ void LH::Simulation::run ()
         // fix planet (only if some masspoints hit it -> would otherwise fly away
         //_planet->pos = PLANET_POS;
 
-        // print velocity of center of mass of the asteroid every 100th frame
+        // print information every 100th frame
         if ( J++ == 100 )
         {
-            LH::Vector total_speed ( 0, 0 );
+            LH::Vector total_momentum = _massPoints[0]->mass * _massPoints[0]->vel;
+            double av_distance = 0.0;
             for ( int j = 1; j < _massPoints.size(); ++j )
             {
-                total_speed += _massPoints[j]->vel;
+                total_momentum += _massPoints[j]->mass * _massPoints[j]->vel;
+                for ( int k = 1; k < _massPoints.size(); ++k )
+                {
+                    av_distance += (_massPoints[j]->pos - _massPoints[k]->pos).size();
+                }
             }
-            printf( "%Lf : %Lf\n", total_speed.x / (MASSPOINTS_NUM), total_speed.y / MASSPOINTS_NUM);
+            printf( "Momentum: %Lf; Average distance: %Lf\n", total_momentum.size(), av_distance / MASSPOINTS_NUM );
             J = 0;
         }
 
