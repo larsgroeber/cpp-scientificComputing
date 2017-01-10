@@ -42,8 +42,8 @@ void LH::Simulation::run ()
    _view = _massPoints[1];
 
     // only needed for a run w/o graphics
-//    LH::IOManager io ( DATA_FILE );
-//
+    LH::IOManager io ( DATA_FILE );
+
 //    io << "# time\tplanetX\tplanetY";
 //    for ( int i = 0; i < MASSPOINTS_NUM; ++ i )
 //    {
@@ -54,13 +54,13 @@ void LH::Simulation::run ()
 //    }
 //    io << "\n";
 
-//    int charSize = ( MASSPOINTS_NUM + 1 ) * 20;
+    //int charSize = ( MASSPOINTS_NUM + 1 ) * 20;
     char c[100];
 
     int J = 0;
 
     // main loop (w/o maxtime if using graphics)
-    for ( long double t = 0; 1; t += TIME_STEP )
+    for ( long double t = 0; t < MAX_TIME; t += TIME_STEP )
     {
         int i = 0;
 
@@ -79,8 +79,8 @@ void LH::Simulation::run ()
             }
             // apply velocity
             o->pos += TIME_STEP * o->vel;
-            snprintf( c, sizeof( c ), "\t%Lf\t%LF"
-                    , _massPoints[i]->pos.x, _massPoints[i]->pos.y );
+//            snprintf( c, sizeof( c ), "\t%Lf\t%LF"
+//                    , _massPoints[i]->pos.x, _massPoints[i]->pos.y );
             //io << c;
             i++;
         }
@@ -108,11 +108,11 @@ void LH::Simulation::run ()
         // fix planet (only if some masspoints hit it -> would otherwise fly away)
         //_planet->pos = PLANET_POS;
 
-        // print information every 100th frame
-        if ( J++ == 100 )
+        // print information
+        if ( J++ == OUTPUT_FRAMES )
         {
             LH::Vector total_momentum = _massPoints[0]->mass * _massPoints[0]->vel;
-            double av_distance = 0.0;
+            long double av_distance = 0.0;
             long double dist_to_planet = 0.0;
             for ( int j = 1; j < _massPoints.size(); ++j )
             {
@@ -123,8 +123,10 @@ void LH::Simulation::run ()
                 }
                 dist_to_planet = (_massPoints[0]->pos - _view->pos).size();
             }
-            printf( "Momentum: %Lf; Average distance: %Lf; Distance to planet: %Lf; Direction: %.5Lf : %.5Lf\n", total_momentum.size(), av_distance / MASSPOINTS_NUM, dist_to_planet
-                    , _view->pos.x, _view->pos.y );
+            //printf( "Momentum: %Lf; Average distance: %Lf; Distance to planet: %Lf; Direction: %.5Lf : %.5Lf\n", total_momentum.size(), av_distance / MASSPOINTS_NUM, dist_to_planet
+            //        , _view->pos.x, _view->pos.y );
+            snprintf( c, sizeof( c ), "%Lf\t%Lf\t%LF\t%Lf\n", t, dist_to_planet, av_distance / MASSPOINTS_NUM, total_momentum.size() );
+            io << c;
             J = 0;
         }
 

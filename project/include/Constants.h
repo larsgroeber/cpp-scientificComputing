@@ -9,9 +9,9 @@
 // uncomment this to enable graphics and use 'make graphic' (you might have to change the cmake file, too)
 #define GRAPHICS
 
-// just uncomment one!
-#define DEFAULT
-//#define MOON_EARTH
+// just uncomment one to enable!
+//#define DEFAULT
+#define MOON_EARTH
 
 #include <string>
 
@@ -20,6 +20,9 @@
 
 // file to write results into
 const std::string DATA_FILE = "./data/data.dat";
+
+// how many frames should we wait between printing information?
+const unsigned int OUTPUT_FRAMES = 200;
 
 
 #ifdef DEFAULT
@@ -77,7 +80,7 @@ const long double MASSPOINTS_MASS = ASTEROID_MASS_TOTAL / MASSPOINTS_NUM;
 
 #ifdef MOON_EARTH
 // time duration
-const long double MAX_TIME = 20;
+const long double MAX_TIME = 120;
 
 // time step
 const long double TIME_STEP = .001;
@@ -108,7 +111,7 @@ const unsigned int COLLISION_PASSES = 1;
  */
 
 // mass of the planet
-const long double PLANET_MASS = 600;
+const long double PLANET_MASS = 800;
 
 // size of planet (radius)
 const long double PLANET_RADIUS_START = 63.56;
@@ -128,10 +131,10 @@ const long double ASTEROID_RADIUS_START = 17.28;
 const long double ASTEROID_MASS_TOTAL = 7.342;
 
 // starting positon of the asteroid
-const LH::Vector ASTEROID_POS_START ( -3844, 0 );
+const LH::Vector ASTEROID_POS_START ( -200, 0 );
 
 // starting velocity of asteroid, TODO: consider giving only orbital parameters
-const LH::Vector ASTEROID_VEL_START ( 0, 1.022 );
+const LH::Vector ASTEROID_VEL_START ( 0, 3.022 );
 
 
 
@@ -139,7 +142,7 @@ const LH::Vector ASTEROID_VEL_START ( 0, 1.022 );
 const long double MASSPOINTS_NUM = 100;
 
 // size of masspoints (radius) -> for 100 points there are about 11 along the radius
-const long double MASSPOINTS_RADIUS = 1; //.5
+const long double MASSPOINTS_RADIUS = ASTEROID_RADIUS_START / 11; //.5
 
 // mass of each asteroid rock (all rocks have the same weight)
 const long double MASSPOINTS_MASS = ASTEROID_MASS_TOTAL / MASSPOINTS_NUM;
