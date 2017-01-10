@@ -87,7 +87,7 @@ void LH::Simulation::run ()
         //io << "\n";
 
         // might help to minimize rotation of the asteroid
-        std::random_shuffle( _massPoints.begin(), _massPoints.end() );
+        //std::random_shuffle( _massPoints.begin(), _massPoints.end() );
 
         // collision passes
         for ( int j = 0; j < COLLISION_PASSES; ++j )
@@ -162,7 +162,7 @@ void LH::Simulation::collision ( LH::Body* A, LH::Body* B )
 {
     LH::Vector dist = B->pos - A->pos;
     long double diff = B->radius + A->radius - dist.size();
-    if ( diff > 0 )
+    if ( diff < 0 )
     {
         return;
     }

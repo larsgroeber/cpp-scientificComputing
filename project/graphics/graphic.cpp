@@ -128,7 +128,7 @@ void LH::Graphic::draw ()
 
     for ( auto&& b : _sprites )
     {
-        std::get<0>(b) -= LH::Vector (std::get<1>(b) / 2, std::get<1>(b) / 2);
+        std::get<0>(b) -= LH::Vector (std::get<1>(b), std::get<1>(b));
 
         _spriteBatch.add_sprite( JOGL::Sprite (
                 std::get<0>(b).x, std::get<0>(b).y   // pos

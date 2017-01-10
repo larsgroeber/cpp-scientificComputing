@@ -51,12 +51,12 @@ const long double ASTEROID_MASS_TOTAL = 10;
 const LH::Vector ASTEROID_POS_START ( 0 , 300 );
 
 // starting velocity of asteroid, TODO: consider giving only orbital parameters
-const LH::Vector ASTEROID_VEL_START ( 1 , 0 );
+const LH::Vector ASTEROID_VEL_START ( 1.5 , 0 );
 
 
 
 // number of mass points for the asteroid
-const long double MASSPOINTS_NUM =100;
+const long double MASSPOINTS_NUM = 101;
 
 // size of masspoints (radius)
 const long double MASSPOINTS_RADIUS = .5; //0.302593388348611302909204224934; //for 8 http://hydra.nat.uni-magdeburg.de/packing/cci/
