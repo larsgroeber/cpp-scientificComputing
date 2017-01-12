@@ -7,7 +7,7 @@
 #define ROCHE_LIMIT_CONSTANTS_H
 
 // uncomment this to enable graphics and use 'make graphic' (you might have to change the cmake file, too)
-#define GRAPHICS
+//#define GRAPHICS
 
 // just uncomment one to enable!
 //#define DEFAULT
@@ -19,7 +19,8 @@
 
 
 // file to write results into
-const std::string DATA_FILE = "./data/data.dat";
+const std::string POS_FILE = "./data/position.dat";
+const std::string DAT_FILE = "./data/data.dat";
 
 // how many frames should we wait between printing information?
 const unsigned int OUTPUT_FRAMES = 200;
@@ -50,6 +51,7 @@ const long double PLANET_RADIUS_START = 10;
 const LH::Vector PLANET_POS ( 0 , 0 );
 
 // starting velocity of planet
+const LH::Vector PLANET_VEL_START ( 0 , 0 );
 const LH::Vector PLANET_VEL_START ( 0 , 0 );
 
 
@@ -111,7 +113,7 @@ const unsigned int COLLISION_PASSES = 1;
  */
 
 // mass of the planet
-const long double PLANET_MASS = 800;
+const long double PLANET_MASS = 600;
 
 // size of planet (radius)
 const long double PLANET_RADIUS_START = 63.56;
@@ -142,7 +144,7 @@ const LH::Vector ASTEROID_VEL_START ( 0, 3.022 );
 const long double MASSPOINTS_NUM = 100;
 
 // size of masspoints (radius) -> for 100 points there are about 11 along the radius
-const long double MASSPOINTS_RADIUS = ASTEROID_RADIUS_START / 11; //.5
+const long double MASSPOINTS_RADIUS = ASTEROID_RADIUS_START / 10; //.5
 
 // mass of each asteroid rock (all rocks have the same weight)
 const long double MASSPOINTS_MASS = ASTEROID_MASS_TOTAL / MASSPOINTS_NUM;

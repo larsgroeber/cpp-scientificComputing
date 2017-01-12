@@ -7,7 +7,7 @@ columnCounter=$3
 gnuplot -p <<EOF
 ########################## OLD ##########################
 #set size square
-#plot "data/data.dat" u 2:3 w l, "data/data.dat" u 4:5 w l
+#plot "data/position.dat" u 2:3 w l, "data/position.dat" u 4:5 w l
 ######################## OLD END ########################
 
 ########################## GIF ########################## http://www.gnuplotting.org/tag/animation/
@@ -36,12 +36,12 @@ n=0
         n=n+1
         # save each step in a png
 #        set output sprintf("data/output_PNG/simulation%05d.png", n)
-    plot for [j=1:$columnCounter] "data/data.dat" u j*2:j*2+1 w l t sprintf("col: %d", j)
+    plot for [j=1:$columnCounter] "data/position.dat" u j*2:j*2+1 w l t sprintf("col: %d", j)
 #    plot for [j=1:$columnCounter] \
-#        'data/data.dat' u j:j+1 every ::i::i w p ls 1 t "Heavy Object", \
-#        'data/data.dat' u j:j+1 every ::1::i w l ls 1 t "Heavy Object trace", \
-#        'data/data.dat' u j:j+1 every ::i::i w p ls 2 t "victim", \
-#        'data/data.dat' u j:j+1 every ::1::i w l ls 2 t "victim trace"
+#        'data/position.dat' u j:j+1 every ::i::i w p ls 1 t "Heavy Object", \
+#        'data/position.dat' u j:j+1 every ::1::i w l ls 1 t "Heavy Object trace", \
+#        'data/position.dat' u j:j+1 every ::i::i w p ls 2 t "victim", \
+#        'data/position.dat' u j:j+1 every ::1::i w l ls 2 t "victim trace"
 #}
 #replot
 EOF

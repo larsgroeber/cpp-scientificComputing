@@ -42,17 +42,18 @@ void LH::Simulation::run ()
    _view = _massPoints[1];
 
     // only needed for a run w/o graphics
-    LH::IOManager io ( DATA_FILE );
+    LH::IOManager ioPos ( POS_FILE );
+    LH::IOManager ioDat ( DAT_FILE );
 
-//    io << "# time\tplanetX\tplanetY";
-//    for ( int i = 0; i < MASSPOINTS_NUM; ++ i )
-//    {
-//        io << "\tbodyX_";
-//        io << i;
-//        io << "\tbodyY_";
-//        io << i;
-//    }
-//    io << "\n";
+    ioPos << "# time\tplanetX\tplanetY";
+    for ( int i = 0; i < MASSPOINTS_NUM; ++ i )
+    {
+        ioPos << "\tbodyX_";
+        ioPos << i;
+        ioPos << "\tbodyY_";
+        ioPos << i;
+    }
+    ioPos << "\n";
 
     //int charSize = ( MASSPOINTS_NUM + 1 ) * 20;
     char c[100];
@@ -81,10 +82,10 @@ void LH::Simulation::run ()
             o->pos += TIME_STEP * o->vel;
 //            snprintf( c, sizeof( c ), "\t%Lf\t%LF"
 //                    , _massPoints[i]->pos.x, _massPoints[i]->pos.y );
-            //io << c;
+//            io << c;
             i++;
         }
-        //io << "\n";
+//        io << "\n";
 
         // might help to minimize rotation of the asteroid
         std::random_shuffle( _massPoints.begin() + 1, _massPoints.end() );
@@ -111,6 +112,15 @@ void LH::Simulation::run ()
         // print information
         if ( J++ == OUTPUT_FRAMES )
         {
+
+            for ( LH::Body* massPoint : _massPoints )
+            {
+                snprintf( c, sizeof( c ), "\t%Lf\t%LF"
+                          , massPoint->pos.x, massPoint->pos.y );
+            ioPos << c;
+            }
+            ioPos  << "\n";
+
             LH::Vector total_momentum = _massPoints[0]->mass * _massPoints[0]->vel;
             long double av_distance = 0.0;
             long double dist_to_planet = 0.0;
@@ -126,7 +136,7 @@ void LH::Simulation::run ()
             //printf( "Momentum: %Lf; Average distance: %Lf; Distance to planet: %Lf; Direction: %.5Lf : %.5Lf\n", total_momentum.size(), av_distance / MASSPOINTS_NUM, dist_to_planet
             //        , _view->pos.x, _view->pos.y );
             snprintf( c, sizeof( c ), "%Lf\t%Lf\t%LF\t%Lf\n", t, dist_to_planet, av_distance / MASSPOINTS_NUM, total_momentum.size() );
-            io << c;
+            ioDat << c;
             J = 0;
         }
 

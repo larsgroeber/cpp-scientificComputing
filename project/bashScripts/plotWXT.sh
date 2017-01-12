@@ -22,7 +22,7 @@ set term wxt # unstable
 # some other interesting terminals  http://www.manpagez.com/info/gnuplot/gnuplot-4.4.0/gnuplot_380.php
 #set terminal dumb # ASCII art
 
-plot for [j=1:$columnCounter] "data/data.dat" u j*2:j*2+1 w l t sprintf("col: %d", j)
+plot for [j=1:$columnCounter] "data/position.dat" u j*2:j*2+1 w l notitle #t "test"# sprintf("col: %d", j)
 
 #replot
 EOF
