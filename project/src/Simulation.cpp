@@ -42,9 +42,11 @@ void LH::Simulation::run ()
    _view = _massPoints[1];
 
     // only needed for a run w/o graphics
-    LH::IOManager ioPos ( POS_FILE );
+
     LH::IOManager ioDat ( DAT_FILE );
 
+#ifdef POS_DATA
+    LH::IOManager ioPos ( POS_FILE );
     ioPos << "# time\tplanetX\tplanetY";
     for ( int i = 0; i < MASSPOINTS_NUM; ++ i )
     {
@@ -54,7 +56,7 @@ void LH::Simulation::run ()
         ioPos << i;
     }
     ioPos << "\n";
-
+#endif
     //int charSize = ( MASSPOINTS_NUM + 1 ) * 20;
     char c[100];
 
@@ -80,12 +82,7 @@ void LH::Simulation::run ()
             }
             // apply velocity
             o->pos += TIME_STEP * o->vel;
-//            snprintf( c, sizeof( c ), "\t%Lf\t%LF"
-//                    , _massPoints[i]->pos.x, _massPoints[i]->pos.y );
-//            io << c;
-            i++;
         }
-//        io << "\n";
 
         // might help to minimize rotation of the asteroid
         std::random_shuffle( _massPoints.begin() + 1, _massPoints.end() );
@@ -106,13 +103,10 @@ void LH::Simulation::run ()
             }
         }
 
-        // fix planet (only if some masspoints hit it -> would otherwise fly away)
-        //_planet->pos = PLANET_POS;
-
         // print information
         if ( J++ == OUTPUT_FRAMES )
         {
-
+#ifdef POS_DATA
             for ( LH::Body* massPoint : _massPoints )
             {
                 snprintf( c, sizeof( c ), "\t%Lf\t%LF"
@@ -120,22 +114,29 @@ void LH::Simulation::run ()
             ioPos << c;
             }
             ioPos  << "\n";
+#endif
 
+            long double total_energy = 0.0;
             LH::Vector total_momentum = _massPoints[0]->mass * _massPoints[0]->vel;
             long double av_distance = 0.0;
             long double dist_to_planet = 0.0;
+            LH::Vector av_position;
             for ( int j = 1; j < _massPoints.size(); ++j )
             {
-                total_momentum += _massPoints[j]->mass * _massPoints[j]->vel;
+                LH::Body* body = _massPoints[j];
+                total_energy += 0.5 * body->mass * pow(body->vel.size(),2) - GRAVITY_CONSTANT * body->mass * _massPoints[0]->mass / (body->pos - _massPoints[0]->pos).size();
+                av_position += body->pos;
+                total_momentum += body->mass * body->vel;
                 for ( int k = 1; k < _massPoints.size(); ++k )
                 {
-                    av_distance += (_massPoints[j]->pos - _massPoints[k]->pos).size();
+                    av_distance += (body->pos - _massPoints[k]->pos).size();
                 }
-                dist_to_planet = (_massPoints[0]->pos - _view->pos).size();
             }
-            //printf( "Momentum: %Lf; Average distance: %Lf; Distance to planet: %Lf; Direction: %.5Lf : %.5Lf\n", total_momentum.size(), av_distance / MASSPOINTS_NUM, dist_to_planet
-            //        , _view->pos.x, _view->pos.y );
-            snprintf( c, sizeof( c ), "%Lf\t%Lf\t%LF\t%Lf\n", t, dist_to_planet, av_distance / MASSPOINTS_NUM, total_momentum.size() );
+            av_position = av_position / MASSPOINTS_NUM;
+            dist_to_planet = (_massPoints[0]->pos - av_position).size();
+            printf( "Momentum: %Lf; Average distance: %Lf; Distance to planet: %Lf; Energy: %.5Lf\n", total_momentum.size(), av_distance / MASSPOINTS_NUM, dist_to_planet
+                    , total_energy );
+            snprintf( c, sizeof( c ), "%Lf\t%Lf\t%LF\t%Lf\t%Lf\n", t, dist_to_planet, av_distance / MASSPOINTS_NUM, total_momentum.size(), total_energy );
             ioDat << c;
             J = 0;
         }
@@ -194,8 +195,8 @@ void LH::Simulation::collision ( LH::Body* A, LH::Body* B )
     // calculate relative velocity along dist
     LH::Vector vel_response = dist.unit() * (A->vel - B->vel).dot_product( dist.unit() );
     // apply relative velocity on both objects (they have the same mass) to achieve an inelastic collision
-    A->vel -= 0.5 * vel_response;
-    B->vel += 0.5 * vel_response;
+    A->vel -= B->mass / ( A->mass + B->mass ) * vel_response;
+    B->vel += A->mass / ( A->mass + B->mass ) * vel_response;
 }
 
 LH::Simulation::~Simulation ()

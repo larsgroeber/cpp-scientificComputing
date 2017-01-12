@@ -7,7 +7,9 @@
 #define ROCHE_LIMIT_CONSTANTS_H
 
 // uncomment this to enable graphics and use 'make graphic' (you might have to change the cmake file, too)
-//#define GRAPHICS
+#define GRAPHICS
+
+//#define POS_DATA
 
 // just uncomment one to enable!
 //#define DEFAULT
@@ -28,7 +30,7 @@ const unsigned int OUTPUT_FRAMES = 200;
 
 #ifdef DEFAULT
 // time duration
-const long double MAX_TIME = 20;
+const long double MAX_TIME = 2000;
 
 // time step
 const long double TIME_STEP = .001;
@@ -52,7 +54,6 @@ const LH::Vector PLANET_POS ( 0 , 0 );
 
 // starting velocity of planet
 const LH::Vector PLANET_VEL_START ( 0 , 0 );
-const LH::Vector PLANET_VEL_START ( 0 , 0 );
 
 
 
@@ -66,7 +67,7 @@ const long double ASTEROID_MASS_TOTAL = 10;
 const LH::Vector ASTEROID_POS_START ( 0 , 300 );
 
 // starting velocity of asteroid, TODO: consider giving only orbital parameters
-const LH::Vector ASTEROID_VEL_START ( 1.5 , 0 );
+const LH::Vector ASTEROID_VEL_START ( 10 , 0 );
 
 
 
@@ -133,10 +134,10 @@ const long double ASTEROID_RADIUS_START = 17.28;
 const long double ASTEROID_MASS_TOTAL = 7.342;
 
 // starting positon of the asteroid
-const LH::Vector ASTEROID_POS_START ( -200, 0 );
+const LH::Vector ASTEROID_POS_START ( -300, 0 );
 
 // starting velocity of asteroid, TODO: consider giving only orbital parameters
-const LH::Vector ASTEROID_VEL_START ( 0, 3.022 );
+const LH::Vector ASTEROID_VEL_START ( 0, 0 );
 
 
 
