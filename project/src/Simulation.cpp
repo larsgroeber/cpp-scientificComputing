@@ -63,7 +63,7 @@ void LH::Simulation::run ()
     int J = 0;
 
     // main loop (w/o maxtime if using graphics)
-    for ( long double t = 0; t < MAX_TIME; t += TIME_STEP )
+    for ( long double t = 0; 1; t += TIME_STEP )
     {
         int i = 0;
 
@@ -124,6 +124,7 @@ void LH::Simulation::run ()
             for ( int j = 1; j < _massPoints.size(); ++j )
             {
                 LH::Body* body = _massPoints[j];
+
                 total_energy += 0.5 * body->mass * pow(body->vel.size(),2) - GRAVITY_CONSTANT * body->mass * _massPoints[0]->mass / (body->pos - _massPoints[0]->pos).size();
                 av_position += body->pos;
                 total_momentum += body->mass * body->vel;

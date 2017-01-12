@@ -13,7 +13,8 @@
 
 // just uncomment one to enable!
 //#define DEFAULT
-#define MOON_EARTH
+//#define MOON_EARTH
+#define MARS_PHOBOS
 
 #include <string>
 
@@ -145,13 +146,81 @@ const LH::Vector ASTEROID_VEL_START ( 0, 0 );
 const long double MASSPOINTS_NUM = 100;
 
 // size of masspoints (radius) -> for 100 points there are about 11 along the radius
-const long double MASSPOINTS_RADIUS = ASTEROID_RADIUS_START / 10; //.5
+const long double MASSPOINTS_RADIUS = ASTEROID_RADIUS_START / 9; //.5
 
 // mass of each asteroid rock (all rocks have the same weight)
 const long double MASSPOINTS_MASS = ASTEROID_MASS_TOTAL / MASSPOINTS_NUM;
 #endif
 
+#ifdef MARS_PHOBOS
+// time duration
+const long double MAX_TIME = 120;
 
+// time step
+const long double TIME_STEP = .001;
+
+// gravitational constant (can be used to translate between units)
+// actually: 6.67 * 10^-11 m^3 / (kg * s^2)
+const long double GRAVITY_CONSTANT = 6.67; // (10^3m)^3/(10^16kg * 10^4s) = 10^-11 m^3 / (kg * s^2)
+
+// number of collision passes (of complexity O(n^2))
+const unsigned int COLLISION_PASSES = 1;
+
+/*
+ * PHOBOS:
+ * Mass: 1*10^16 kg
+ * Radius: 11km
+ *
+ * MARS:
+ * Mass: 6.4 * 10^23 kg
+ * Radius: 3390km
+ *
+ * Distance Phobos-Mars: 9376km
+ * Speed: 2.138km/s
+ *
+ * UNITS:
+ * Length: 1km
+ * Mass: 10^16kg
+ * Time: 100s
+ */
+
+// mass of the planet
+const long double PLANET_MASS = 64000000;
+
+// size of planet (radius)
+const long double PLANET_RADIUS_START = 3390;
+
+// position of the planet (which does not change)
+const LH::Vector PLANET_POS ( 0 , 0 );
+
+// starting velocity of planet
+const LH::Vector PLANET_VEL_START ( 0 , 0 );
+
+
+
+// size of asteroid (radius)
+const long double ASTEROID_RADIUS_START = 11;
+
+// total mass of the asteroid
+const long double ASTEROID_MASS_TOTAL = 1;
+
+// starting positon of the asteroid
+const LH::Vector ASTEROID_POS_START ( 0, 10000 );
+
+// starting velocity of asteroid, TODO: consider giving only orbital parameters
+const LH::Vector ASTEROID_VEL_START ( 100, 0 );
+
+
+
+// number of mass points for the asteroid
+const long double MASSPOINTS_NUM = 100;
+
+// size of masspoints (radius) -> for 100 points there are about 11 along the radius
+const long double MASSPOINTS_RADIUS = ASTEROID_RADIUS_START / 10.9; //.5
+
+// mass of each asteroid rock (all rocks have the same weight)
+const long double MASSPOINTS_MASS = ASTEROID_MASS_TOTAL / MASSPOINTS_NUM;
+#endif
 
 
 
