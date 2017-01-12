@@ -1,3 +1,9 @@
+/**
+ * This file contains all the magic for drawing stuff on the screen.
+ * It makes heavy use of various libraries so it is not part of the project.
+ * Disable everything by commenting out the 'define GRAPHICS' part in Constants.h.
+ */
+
 #ifndef ROCHE_LIMIT_GRAPHIC_H
 #define ROCHE_LIMIT_GRAPHIC_H
 

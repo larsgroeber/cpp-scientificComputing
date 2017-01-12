@@ -1,4 +1,10 @@
-#include "../include/graphic.h"
+/**
+ * This file contains all the magic for drawing stuff on the screen.
+ * It makes heavy use of various libraries so it is not part of the project.
+ * Disable everything by commenting out the 'define GRAPHICS' part in Constants.h.
+ */
+
+#include "graphic.h"
 
 #ifdef GRAPHICS
 
@@ -44,8 +50,8 @@ void LH::Graphic::process_input ()
 {
     SDL_Event event;
 
-    const float CAMERA_SPEED = 1.0f;
-    const float SCALE_SPEED = 1.0f;
+    const float CAMERA_SPEED = .1f;
+    const float SCALE_SPEED = .1f;
 
     while ( SDL_PollEvent( &event ) )
     {
@@ -122,7 +128,7 @@ void LH::Graphic::draw ()
 
     for ( auto&& b : _sprites )
     {
-        std::get<0>(b) -= LH::Vector (std::get<1>(b) / 2, std::get<1>(b) / 2);
+        std::get<0>(b) -= LH::Vector (std::get<1>(b), std::get<1>(b));
 
         _spriteBatch.add_sprite( JOGL::Sprite (
                 std::get<0>(b).x, std::get<0>(b).y   // pos

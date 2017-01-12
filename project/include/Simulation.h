@@ -3,14 +3,14 @@
 
 #include <vector>
 #include "Body.h"
-#include "graphic.h"
+#include "../graphics/graphic.h"
 #include "Constants.h"
 
 namespace LH
 {
     /**
      * \brief Main simulation
-     * Defines everythin regarding the simulation, like potentials, main loop etc.
+     * Defines everything regarding the simulation, like potentials, main loop etc.
      */
     class Simulation
     {
@@ -52,7 +52,13 @@ namespace LH
         void make_graphics ();
         Graphic _graphic;
 #endif
-        void collision ( LH::Body* A, const LH::Body* B );
+        /**
+         * \brief Resolves the collision between A and B.
+         * We use an inelastic impact.
+         * \param A LH::Body
+         * \param B LH::Body
+         */
+        void collision ( LH::Body* A, LH::Body* B );
 
         /**
          * \brief Calculates the gravity acting on A given object B.
@@ -63,10 +69,13 @@ namespace LH
          */
         LH::Vector gravity ( const LH::Body* A, const LH::Body* B ) const;
 
+        /** Vector holding all bodies */
         std::vector<LH::Body*> _massPoints;
-        std::vector<LH::Body*> _bodyCloud;
 
-
+        /** Viewpoint for the camera */
+        LH::Body* _view;
+        /** The planet */
+        LH::Body* _planet;
     };
 }
 
