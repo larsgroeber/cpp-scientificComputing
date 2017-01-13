@@ -35,7 +35,6 @@ namespace LH
     };
 
     // templates cannot be defined in separate .cpp file
-    // Caution: what happens when a is a Vector?
     template <typename T1>
     Vector operator* ( const T1& a, const Vector& V )
     {

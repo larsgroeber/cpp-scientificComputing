@@ -29,24 +29,6 @@ namespace LH
          */
         void buildSpiral ();
 
-//        void LH::Simulation::buildAsteroid ();
-
-        /**
-         * @brief creates a body cloud by placing particles around a massive one in the middle and let gravity do its work
-         * @param massPoints
-         * @param n number of particles ( n = 6*x+1 , x element of N)
-         * @param diam diameter of particles
-         */
-//        void bodyCloudInit ( Vector massPoints, int n, double diam );
-
-        /**
-         * @brief creates a point cloud in a honeycomb shape, by placing circles layerwise around the first
-         * @param massPoints
-         * @param n number of particles ( n = 6*x+1 , x element of N)
-         * @param diam diameter of particles
-         */
-//        void LH::Simulation::HoneycombBodyCloud ( Vector massPoints, int n, double diam );
-
     private:
 #ifdef GRAPHICS
         void make_graphics ();
