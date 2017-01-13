@@ -63,26 +63,38 @@ void LH::Simulation::run ()
     int J = 0;
 
     // main loop (w/o maxtime if using graphics)
+#ifdef GRAPHICS
     for ( long double t = 0; 1; t += TIME_STEP )
+#endif
+#ifdef POS_DATA
+    for ( long double t = 0; t < MAX_TIME; t += TIME_STEP )
+#endif
     {
         int i = 0;
 
-        for ( LH::Body* o : _massPoints )
-        {
-            for ( LH::Body* v : _massPoints )
-            {
-                if ( o == v )
-                {
+        for ( LH::Body* o : _massPoints ) {
+            for (LH::Body *v : _massPoints) {
+                if (o == v) {
                     continue;
                 }
                 // calculate gravity
-                LH::Vector force = gravity( o, v );
+                LH::Vector force = gravity(o, v);
                 // apply acceleration
                 o->vel += TIME_STEP * (force / o->mass);
             }
             // apply velocity
             o->pos += TIME_STEP * o->vel;
+#ifdef POS_DATA
+                snprintf(c, sizeof(c), "\t%Lf\t%LF", _massPoints[i]->pos.x, _massPoints[i]->pos.y);
+                ioPos << c;
+                i++;
+            }
+        ioPos << "\n";
+#endif
+#ifndef POS_DATA
+        i++;
         }
+#endif
 
         // might help to minimize rotation of the asteroid
         std::random_shuffle( _massPoints.begin() + 1, _massPoints.end() );
@@ -106,16 +118,15 @@ void LH::Simulation::run ()
         // print information
         if ( J++ == OUTPUT_FRAMES )
         {
-#ifdef POS_DATA
-            for ( LH::Body* massPoint : _massPoints )
-            {
-                snprintf( c, sizeof( c ), "\t%Lf\t%LF"
-                          , massPoint->pos.x, massPoint->pos.y );
-            ioPos << c;
-            }
-            ioPos  << "\n";
-#endif
-
+//#ifdef POS_DATA // moved to previous position
+//            for ( LH::Body* massPoint : _massPoints )
+//            {
+//                snprintf( c, sizeof( c ), "\t%Lf\t%LF"
+//                          , massPoint->pos.x, massPoint->pos.y );
+//            ioPos << c;
+//            }
+//            ioPos  << "\n";
+//#endif
             long double total_energy = 0.0;
             LH::Vector total_momentum = _massPoints[0]->mass * _massPoints[0]->vel;
             long double av_distance = 0.0;

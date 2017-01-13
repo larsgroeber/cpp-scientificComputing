@@ -39,3 +39,4 @@
 cmake-build-debug/
 data/*
 media/*
+/.idea/

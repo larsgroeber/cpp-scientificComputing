@@ -8,7 +8,6 @@
 
 // uncomment this to enable graphics and use 'make graphic' (you might have to change the cmake file, too)
 #define GRAPHICS
-
 //#define POS_DATA
 
 // just uncomment one to enable!

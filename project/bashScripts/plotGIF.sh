@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # if the first argument is a the variables will be taken from run.sh IF you want to simply make a GIF from the position.dat run without arguments
 if [ $1 = 'a' ];
 then
@@ -17,10 +16,7 @@ else
     columnCounter=$(($(($(awk -F'\t' '{print NF; exit}' ${dirVar}data/position.dat)-3))/2)) #grep -m 1 -e '\t' data/position.dat | wc -w
 fi
 
-#chmod +r ${dirVar}data/position.dat
-
 gnuplot -p <<EOF
-
 ########################## GIF ########################## http://www.gnuplotting.org/tag/animation/
 reset
 
@@ -29,9 +25,10 @@ set style line 1 lc rgb 'red' lt 1 lw 2 pt 7 ps .5
 set style line 2 lc rgb 'blue' lt 1 lw .1 pt 7 ps 2
 
 # graph size
-#set xrange [-25:25] #set xrange[-max:max]
-#set yrange [-25:25] #set yrange[-max:max]
-set size ratio 1
+#set size ratio 1
+#set size square
+#set size 1, 1
+#set autoscale xfixmax
 
 # picture size, etc
 set terminal pngcairo size 300,300 enhanced font 'Verdana,10' # comment out for live view instead of gif-outup
@@ -41,16 +38,9 @@ do for [i=1:$lineCounter]{              # adjust loop to MAX_TIME and TIME_STEP 
         n=n+1
         # save each step in a png
         set output sprintf("${dirVar}data/output_PNG/simulation%05d.png", n)
-#        plot for [j=1:$columnCounter] "${dirVar}data/position.dat" u j*2:j*2+1 w l notitle #t sprintf("col: %d", j)
         plot for [j=0:$columnCounter] '${dirVar}data/position.dat' u j*2:j*2+1 every ::i::i w p ls 1 notitle, \
-        plot for [j=0:$columnCounter] '${dirVar}data/position.dat' u j*2:j*2+1 every ::1::i w l ls 2 notitle
-#        plot for [j=1:$columnCounter] '${dirVar}data/position.dat' u j*2:j*2+1 every ::1::i w l notitle #t sprintf("col: %d", j)
-#            'data/position.dat' u j*2:j*2+1 every ::i::i w p ls 1 notitle #t "Heavy Object", \
-#            'data/position.dat' u j*2:j*2+1 every ::1::i w l ls 1 notitle #t "Heavy Object trace", \
-#            'data/position.dat' u j*2:j*2+1 every ::i::i w p ls 2, \    notitle #t "victim", \
-#            'data/position.dat' u j*2:j*2+1 every ::1::i w l ls 2       notitle # t "victim trace"
+        '${dirVar}data/position.dat' u j*2:j*2+1 every ::1::i w l ls 2 notitle
 }
-#replot
 EOF
 
 #convert the png's to a video
