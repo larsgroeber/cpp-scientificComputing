@@ -14,7 +14,7 @@ set style line 2 lc rgb 'blue' lt 1 lw .8 pt 7 ps 2
 # graph size
 #set xrange [-25:25] #set xrange[-max:max]
 #set yrange [-25:25] #set yrange[-max:max]
-set size ratio -1
+set size ratio 1
 
 # picture size, etc
 #set term x11
