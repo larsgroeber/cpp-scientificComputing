@@ -1,7 +1,7 @@
 Readme
 
-This Project simulates a roche limit problem. There are 3 Problems that you can use but you can also change the
-code to add more examples. You can either get an image, a GIF, mp4 or an openGL animation.
+This Project simulates a roche limit problem. There are 3 examples that you can use. You can either get an image,
+a GIF, mp4 or an openGL animation.
 
 in order to run the openGL simulation you need these libraries: jaogll which uses the libraries SDL2, GLM and GLEW
 after you installed the libraries you can run the simulation with "make graphic"
@@ -28,12 +28,12 @@ here is a list of all files and folders with a short description:
 │       ├── IOManager.cpp   this class is used to write files
 │       └── Vector.cpp      this class implements a 2 dimensional vector useful for 2d graphics
 ├── include
-│   ├── Body.h
-│   ├── Constants.h
-│   └── Simulation.h
+│   ├── Body.h              defines a body struct (all planets and asteroid particles are bodies)
+│   ├── Constants.h         includes all constants like the gravitational constant, masses, radii
+│   └── Simulation.h        this is the actual Simulation code
 ├── main.cpp                the actual main.cpp is very small (the main part is found in Simulation.cpp)
 ├── makefile                "make" is used by run.sh if you want to run the openGL version run "make graphic"
 ├── results                 contains some results created with this code
 ├── run.sh                  to create a GIF, mp4 or an image run "./run.sh gif" (replace "gif" with "mp4" or "image")
 └── src
-    └── Simulation.cpp      this is the actual Simulation code
+    └── Simulation.cpp
