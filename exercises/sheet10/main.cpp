@@ -5,6 +5,7 @@
 #include <list>
 #include <sstream>
 #include <memory>
+#include <algorithm>
 
 const int SIZE_ARRAY = 100000000;
 
@@ -75,6 +76,49 @@ void insert_array ( std::shared_ptr<Array> array, int i, std::string s )
     (*array)[i];
 }
 
+/**
+ * The next functions are used to look up values in different containers
+ */
+template <typename F, typename... Args>
+void lookup ( F& func, Args&... args, int K, int N )
+{
+    srand( time(NULL) );
+
+    for ( int i = 0; i < K; ++i )
+    {
+        int r = rand() * N;
+//        std::stringstream ss;
+//        ss << std::hex << i;
+        func( args..., r );
+    }
+};
+
+std::string lookup_vector ( std::shared_ptr<Vector> v, int i )
+{
+    return (*v)[i];
+}
+
+std::string lookup_map ( std::shared_ptr<Map> m, int i )
+{
+    return m->find( i )->second;
+}
+
+std::string lookup_list ( std::shared_ptr<List> l, int i )
+{
+    auto it = l->begin();
+    for ( int j = 0; j < i; ++j )
+    {
+        ++it;
+    }
+    return *it;
+}
+
+std::string lookup_array ( std::shared_ptr<Array> a, int i )
+{
+    return (*a)[i];
+}
+
+
 int main ()
 {
     // the limits
@@ -100,6 +144,16 @@ int main ()
         m.reset();
         printf( "Array:  %lf\n", Measure::duration( fill<decltype(insert_array),  decltype(a)>, insert_array,  a, n ) );
     }
+
+    /*
+     * 1 char = 1Byte
+     * Each string has at least 3 chars (0x#)
+     * Considering 100000:
+     * 100000 = 0x186A0
+     * Memory = 15 * 3B + 15*16 * 4B + 15 * 16^2 * 5B + 15 * 16^3 * 6B + 15 * 16^4 * 7B
+     */
+
+
 
     return 0;
 }

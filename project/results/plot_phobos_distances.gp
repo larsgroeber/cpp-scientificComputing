@@ -11,7 +11,7 @@ set xlabel "Time"
 set ylabel "Distance"
 
 set yrange [950:1020]
-#set xrange [0:25]
+set xrange [20:60]
 
 f(x) = 5543
 
