@@ -43,7 +43,7 @@ struct Measure
  * \param N    Max Number
  */
 template <typename F, typename... Args>
-void fill ( F& func, Args&... args, int N )
+void my_fill ( F& func, Args& ... args, int N )
 {
     for ( int i = 0; i < N; ++i )
     {
@@ -86,9 +86,10 @@ void lookup ( F& func, Args&... args, int K, int N )
 
     for ( int i = 0; i < K; ++i )
     {
-        int r = rand() * N;
+        int r = rand() / RAND_MAX * N - 1;
 //        std::stringstream ss;
 //        ss << std::hex << i;
+        //printf( "%d\n", i );
         func( args..., r );
     }
 };
@@ -121,11 +122,20 @@ std::string lookup_array ( std::shared_ptr<Array> a, int i )
 
 int main ()
 {
+    ////////// a) //////////
     // the limits
     std::vector<unsigned> limitsN { 100000, 1000000, 10000000, 100000000 };
 
     for ( auto&& n : limitsN )
     {
+        printf( "Do you want to measure insert times? [y/n]\n" );
+        std::string s;
+        std::cin >> s;
+        if ( s != "y" )
+        {
+            break;
+        }
+
         // our containers, we need to allocate the array on the heap (stack is too small)
         // so we allocate all of them on the heap
         // and use smart pointer to delete their contents once they are not needed anymore
@@ -136,24 +146,46 @@ int main ()
         std::shared_ptr<Array> a ( new Array );
 
         printf( "Measuring now for N = %d\n", n );
-        printf( "Vector: %lf\n", Measure::duration( fill<decltype(insert_vector), decltype(v)>, insert_vector, v, n ) );
+        printf( "Vector: %lf\n", Measure::duration( my_fill<decltype( insert_vector ), decltype( v )>, insert_vector, v, n ) );
         v.reset(); // deleting v here reduces memory usage
-        printf( "Map:    %lf\n", Measure::duration( fill<decltype(insert_map),    decltype(m)>, insert_map,    m, n ) );
+        printf( "Map:    %lf\n", Measure::duration( my_fill<decltype( insert_map ), decltype( m )>, insert_map, m, n ) );
         m.reset();
-        printf( "List:   %lf\n", Measure::duration( fill<decltype(insert_list),   decltype(l)>, insert_list,   l, n ) );
+        printf( "List:   %lf\n", Measure::duration( my_fill<decltype( insert_list ), decltype( l )>, insert_list, l, n ) );
         m.reset();
-        printf( "Array:  %lf\n", Measure::duration( fill<decltype(insert_array),  decltype(a)>, insert_array,  a, n ) );
+        printf( "Array:  %lf\n", Measure::duration( my_fill<decltype( insert_array ), decltype( a )>, insert_array, a, n ) );
     }
 
     /*
      * 1 char = 1Byte
-     * Each string has at least 3 chars (0x#)
+     * Each string has at least 1 chars (#)
      * Considering 100000:
-     * 100000 = 0x186A0
-     * Memory = 15 * 3B + 15*16 * 4B + 15 * 16^2 * 5B + 15 * 16^3 * 6B + 15 * 16^4 * 7B
+     * 100000 = 186A0
+     * Memory = 15 * 1B + 15*16 * 2B + 15 * 16^2 * 3B + 15 * 16^3 * 4B + 15 * 16^4 * 5B
      */
 
+    ////////// b) //////////
+    // to speed things up, we use N = 100000
+    int N = 100000;
+    int K = 1000000;
+    std::shared_ptr<Vector> v ( new Vector ( N ) );
+    std::shared_ptr<Map> m ( new Map );
+    std::shared_ptr<List> l ( new List );
+    std::shared_ptr<Array> a ( new Array );
 
+    printf( "Access times: filling containers...\n" );
+
+    my_fill<decltype( insert_vector ), decltype( v )>( insert_vector, v, N );
+    my_fill<decltype( insert_map )   , decltype( m )>( insert_map   , m, N );
+    my_fill<decltype( insert_list )  , decltype( l )>( insert_list  , l, N );
+    my_fill<decltype( insert_array ) , decltype( a )>( insert_array , a, N );
+
+    std::cout << (*a)[1] << std::endl;
+
+    printf( "Measuring now the access times for %d values:\n", N );
+    printf( "Vector: %lfs\n", Measure::duration( lookup<decltype( lookup_vector ), decltype( v )>, lookup_vector, v, K, N ) );
+    printf( "Map:    %lfs\n", Measure::duration( lookup<decltype( lookup_map )   , decltype( m )>, lookup_map   , m, K, N ) );
+    printf( "List:   %lfs\n", Measure::duration( lookup<decltype( lookup_list )  , decltype( l )>, lookup_list  , l, K, N ) );
+    printf( "Array:  %lfs\n", Measure::duration( lookup<decltype( lookup_array ) , decltype( a )>, lookup_array, a, K, N ) );
 
     return 0;
 }
