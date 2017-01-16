@@ -1,15 +1,16 @@
 Readme
 
-This Project simulates a roche limit problem. There are 3 examples that you can use. You can either get an image,
-a GIF, mp4 or an openGL animation.
+This Project simulates a roche limit problem. There are 3 examples that you can use. You can either get an image, a GIF, mp4 or an openGL animation.
 
-in order to run the openGL simulation you need these libraries: jaogll which uses the libraries SDL2, GLM and GLEW
-after you installed the libraries you can run the simulation with "make graphic"
-CAUTION: you need to cooment in "#define GRAPHICS" in Constants.h and comment out "#define POS_DATA"
+In order to run the openGL simulation you need these libraries: jaogll which uses the libraries SDL2, GLM and GLEW after you installed the libraries you can run the simulation with "make graphic"
+you can zoom in/out with "Q" and "E"
+CAUTION: You need to comment in "#define GRAPHICS" in Constants.h and comment out "#define POS_DATA"
 
-for all other outputs you need to install the library ffmpeg.
-you can create a GIF, a mp4 or an image by running "./run.sh gif" or "./run.sh mp4" or "./run.sh image"
-CAUTION: you need to cooment in "#define POS_DATA" in Constants.h and comment out "#define GRAPHICS"
+For all other outputs you need to install the library ffmpeg.
+You can create a GIF, a mp4 or an image by running "./run.sh gif" or "./run.sh mp4" or "./run.sh image"
+CAUTION: You need to comment in "#define POS_DATA" in Constants.h and comment out "#define GRAPHICS"
+
+
 
 here is a list of all files and folders with a short description:
 .
