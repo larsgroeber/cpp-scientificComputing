@@ -163,7 +163,7 @@ int main ()
         m.reset();
         printf( "List:   %lf\n"
                 , Measure::duration( fill_loop<decltype( insert_list )  , decltype( l )>, insert_list  , l, n ) );
-        m.reset();
+        l.reset();
         printf( "Array:  %lf\n"
                 , Measure::duration( fill_loop<decltype( insert_array ) , decltype( a )>, insert_array , a, n ) );
     }
