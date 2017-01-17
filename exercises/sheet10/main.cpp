@@ -6,6 +6,7 @@
 #include <sstream>
 #include <memory>
 #include <algorithm>
+#include <fstream>
 
 const int SIZE_ARRAY = 100000000;
 
@@ -72,7 +73,7 @@ void insert_list ( std::shared_ptr<List> l, int i, std::string s )
 
 void insert_array ( std::shared_ptr<Array> array, int i, std::string s )
 {
-    (*array)[i];
+    (*array)[i] = s;
 }
 
 /**
@@ -85,7 +86,7 @@ void lookup ( F& func, Args&... args, int K, int N )
 
     for ( int i = 0; i < K; ++i )
     {
-        int r = rand() / RAND_MAX * N - 1;
+        int r = rand() % N;
 //        std::stringstream ss;
 //        ss << std::hex << i;
         //printf( "%d\n", i );
@@ -93,29 +94,29 @@ void lookup ( F& func, Args&... args, int K, int N )
     }
 };
 
-void lookup_vector ( std::shared_ptr<Vector> v, int i )
+std::string lookup_vector ( std::shared_ptr<Vector> v, int i )
 {
-    (*v)[i];
+    return (*v)[i];
 }
 
-void lookup_map ( std::shared_ptr<Map> m, int i )
+std::string lookup_map ( std::shared_ptr<Map> m, int i )
 {
-    m->find( i )->second;
+    return m->find( i )->second;
 }
 
-void lookup_list ( std::shared_ptr<List> l, int i )
+std::string lookup_list ( std::shared_ptr<List> l, int i )
 {
     auto it = l->begin();
     for ( int j = 0; j < i; ++j )
     {
         ++it;
     }
-    //return *it;
+    return *it;
 }
 
-void lookup_array ( std::shared_ptr<Array> a, int i )
+std::string lookup_array ( std::shared_ptr<Array> a, int i )
 {
-    (*a)[i];
+    return (*a)[i];
 }
 
 
@@ -179,7 +180,7 @@ int main ()
         // to speed things up, we use N = 100000
         int N = 100000;
         int K = 1000000;
-        int K_list = 100000;
+        int K_list = 10000;
         std::shared_ptr<Vector> v( new Vector( N ) );
         std::shared_ptr<Map> m( new Map );
         std::shared_ptr<List> l( new List );
@@ -202,12 +203,23 @@ int main ()
         printf( "Array:  %lfs\n", Measure::duration( lookup<decltype( lookup_array ), decltype( a )>
                                                      , lookup_array, a, K, N ) );
 
+
+        ////////// c) //////////
+        printf( "Measuring now a list with %d values:\n", K_list );
         printf( "List:   %lfs\n", Measure::duration( lookup<decltype( lookup_list ), decltype( l )>
                                                      , lookup_list, l, K_list, N ) );
 
         printf( "\nThe map takes longer then vector and array (and list)"
                 "because it has a key and a value instead of just a value" );
     }
+
+    ////////// d) //////////
+    {
+        std::ofstream file ( "access_times.dat" );
+
+        //if (  )
+    }
+
 
     return 0;
 }
