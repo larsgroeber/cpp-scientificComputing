@@ -204,6 +204,9 @@ int main ()
 
         printf( "List:   %lfs\n", Measure::duration( lookup<decltype( lookup_list ), decltype( l )>
                                                      , lookup_list, l, K_list, N ) );
+
+        printf( "\nThe map takes longer then vector and array (and list)"
+                "because it has a key and a value instead of just a value" );
     }
 
     return 0;
