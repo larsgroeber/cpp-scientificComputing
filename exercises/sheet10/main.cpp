@@ -1,11 +1,17 @@
-#include <iostream>
-#include <chrono>
+/**
+ * Exercise 1 of sheet 10
+ * by Lars Gröber, Hendrik Edelmann
+ *
+ * You might have to compile it using -std=c++11.
+ */
+
+#include <iostream>     // printf
+#include <chrono>       // std::chrono
 #include <vector>
 #include <map>
 #include <list>
 #include <sstream>
-#include <memory>
-#include <algorithm>
+#include <memory>       // std::shared_ptr
 #include <fstream>
 
 const int SIZE_ARRAY = 100000000;
@@ -21,7 +27,7 @@ typedef std::array<std::string,SIZE_ARRAY> Array;
 struct Measure
 {
     /**
-     * \brief Function to measure the time a function took to execute
+     * \brief Function to measure the time a function takes to execute.
      * \param func  The function to measure
      * \param args  The function's arguments
      * \return      Time the function took in seconds
@@ -40,16 +46,16 @@ struct Measure
  * \brief Helper function to fill a container with hexadecimal numbers
  * \param func Function to insert one element into the container
  * \param args The container
- * \param N    Max Number
+ * \param N    Number of elements
  */
-template <typename F, typename... Args>
-void my_fill ( F& func, Args& ... args, int N )
+template <typename F, typename Args>
+void fill_loop ( F& func, Args& args, int N )
 {
     for ( int i = 0; i < N; ++i )
     {
         std::stringstream ss;
         ss << std::hex << i;
-        func ( args..., i, ss.str() );
+        func ( args, i, ss.str() );
     }
 }
 
@@ -79,43 +85,43 @@ void insert_array ( std::shared_ptr<Array> array, int i, std::string s )
 /**
  * The next functions are used to look up values in different containers
  */
-template <typename F, typename... Args>
-void lookup ( F& func, Args&... args, int K, int N )
+template <typename F, typename Args>
+void access_loop ( F& func, Args& args, int K, int N )
 {
     srand( time(NULL) );
 
+    // generate K random numbers between 0 and N - 1 to access
     for ( int i = 0; i < K; ++i )
     {
         int r = rand() % N;
-//        std::stringstream ss;
-//        ss << std::hex << i;
-        //printf( "%d\n", i );
-        func( args..., r );
+
+        func( args, r );
     }
 };
 
-std::string lookup_vector ( std::shared_ptr<Vector> v, int i )
+std::string access_vector ( std::shared_ptr<Vector> v, int i )
 {
+    // random access is O(1)
     return (*v)[i];
 }
 
-std::string lookup_map ( std::shared_ptr<Map> m, int i )
+std::string access_map ( std::shared_ptr<Map> m, int i )
 {
+    // O(log(n)) - binary search
     return m->find( i )->second;
 }
 
-std::string lookup_list ( std::shared_ptr<List> l, int i )
+std::string access_list ( std::shared_ptr<List> l, int i )
 {
+    // complexity is equal to i
     auto it = l->begin();
-    for ( int j = 0; j < i; ++j )
-    {
-        ++it;
-    }
+    std::advance( it, i );
     return *it;
 }
 
-std::string lookup_array ( std::shared_ptr<Array> a, int i )
+std::string access_array ( std::shared_ptr<Array> a, int i )
 {
+    // similar to vector, O(1)
     return (*a)[i];
 }
 
@@ -123,9 +129,11 @@ std::string lookup_array ( std::shared_ptr<Array> a, int i )
 int main ()
 {
     ////////// a) //////////
-    std::cout << std::endl << "////////// Task 10.1.a //////////" << "\n\n";
+
+    printf( "\n////////// Task 10.1.a //////////\n\n");
+
     // the limits
-    std::vector<unsigned> limitsN { 100000, 1000000, 10000000, 100000000 };
+    const std::vector<unsigned> limitsN { 100000, 1000000, 10000000, 100000000 };
 
     for ( auto&& n : limitsN )
     {
@@ -147,13 +155,17 @@ int main ()
         std::shared_ptr<Array> a ( new Array );
 
         printf( "Measuring now for N = %d\n", n );
-        printf( "Vector: %lf\n", Measure::duration( my_fill<decltype( insert_vector ), decltype( v )>, insert_vector, v, n ) );
+        printf( "Vector: %lf\n"
+                , Measure::duration( fill_loop<decltype( insert_vector ), decltype( v )>, insert_vector, v, n ) );
         v.reset(); // deleting v here reduces memory usage
-        printf( "Map:    %lf\n", Measure::duration( my_fill<decltype( insert_map ), decltype( m )>, insert_map, m, n ) );
+        printf( "Map:    %lf\n"
+                , Measure::duration( fill_loop<decltype( insert_map )   , decltype( m )>, insert_map   , m, n ) );
         m.reset();
-        printf( "List:   %lf\n", Measure::duration( my_fill<decltype( insert_list ), decltype( l )>, insert_list, l, n ) );
+        printf( "List:   %lf\n"
+                , Measure::duration( fill_loop<decltype( insert_list )  , decltype( l )>, insert_list  , l, n ) );
         m.reset();
-        printf( "Array:  %lf\n", Measure::duration( my_fill<decltype( insert_array ), decltype( a )>, insert_array, a, n ) );
+        printf( "Array:  %lf\n"
+                , Measure::duration( fill_loop<decltype( insert_array ) , decltype( a )>, insert_array , a, n ) );
     }
 
     /*
@@ -172,52 +184,141 @@ int main ()
 
         storageSize += ss.str().length();
     }
-    printf("size of 100 000 strings: %d byte\n", storageSize);
+    printf("Size of 100 000 strings: %d byte\n", storageSize);
 
     ////////// b) //////////
-    std::cout << std::endl << "////////// Task 10.1.b //////////" << "\n\n";
+
+    printf( "\n////////// Task 10.1.b //////////\n\n");
+
     {
         // to speed things up, we use N = 100000
         int N = 100000;
         int K = 1000000;
         int K_list = 10000;
+
         std::shared_ptr<Vector> v( new Vector( N ) );
         std::shared_ptr<Map> m( new Map );
         std::shared_ptr<List> l( new List );
         std::shared_ptr<Array> a( new Array );
 
-        printf( "Access times: filling containers...\n" );
+        printf( "Access times: \nFilling containers..." );
 
-        my_fill<decltype( insert_vector ), decltype( v )>( insert_vector, v, N );
-        my_fill<decltype( insert_map ), decltype( m )>( insert_map, m, N );
-        my_fill<decltype( insert_list ), decltype( l )>( insert_list, l, N );
-        my_fill<decltype( insert_array ), decltype( a )>( insert_array, a, N );
+        fill_loop<decltype( insert_vector ), decltype( v )>( insert_vector, v, N );
+        fill_loop<decltype( insert_map ), decltype( m )>( insert_map, m, N );
+        fill_loop<decltype( insert_list ), decltype( l )>( insert_list, l, N );
+        fill_loop<decltype( insert_array ), decltype( a )>( insert_array, a, N );
 
-        std::cout << ( *a )[1] << std::endl;
+        printf( "Done\n" );
 
         printf( "Measuring now the access times for %d values:\n", N );
-        printf( "Vector: %lfs\n", Measure::duration( lookup<decltype( lookup_vector ), decltype( v )>
-                                                     , lookup_vector, v, K, N ) );
-        printf( "Map:    %lfs\n", Measure::duration( lookup<decltype( lookup_map ), decltype( m )>
-                                                     , lookup_map, m, K, N ) );
-        printf( "Array:  %lfs\n", Measure::duration( lookup<decltype( lookup_array ), decltype( a )>
-                                                     , lookup_array, a, K, N ) );
+        double access;
+
+        access = Measure::duration( access_loop<decltype( access_vector ), decltype( v )>, access_vector, v, K, N );
+        printf( "Vector: %lfs - %.10lfs / access\n", access, access / K );
+
+        access = Measure::duration( access_loop<decltype( access_map )   , decltype( m )>, access_map   , m, K, N );
+        printf( "Map:    %lfs - %.10lfs / access\n", access, access / K );
+
+        access = Measure::duration( access_loop<decltype( access_array ) , decltype( a )>, access_array , a, K, N );
+        printf( "Array:  %lfs - %.10lfs / access\n", access, access / K );
 
 
         ////////// c) //////////
-        printf( "Measuring now a list with %d values:\n", K_list );
-        printf( "List:   %lfs\n", Measure::duration( lookup<decltype( lookup_list ), decltype( l )>
-                                                     , lookup_list, l, K_list, N ) );
 
-        printf( "\nThe map takes longer then vector and array (and list)"
-                "because it has a key and a value instead of just a value" );
+        printf( "\n////////// Task 10.1.c //////////\n\n");
+        printf( "Measuring now the list access for %d values:\n", K_list );
+        access = Measure::duration( access_loop<decltype( access_list ), decltype( l )>, access_list, l, K_list, N );
+        printf( "List:   %lfs - %.10lfs / access\n", access, access / K_list );
+
+        printf( "\nThe map takes longer then vector and array because it uses binary search, O(log(n))"
+                        ", instead of random access.\n"
+                "The list is even slower because it neither provides random access nor binary search "
+                        "(we have to iterate through the list to find the right value).\n");
     }
 
     ////////// d) //////////
-    {
-        std::ofstream file ( "access_times.dat" );
 
-        //if (  )
+    printf( "\n////////// Task 10.1.d //////////\n\n");
+
+    {
+        std::ofstream file ( "access_times.dat", std::ios_base::out );
+
+        if ( ! file.is_open() )
+        {
+            fprintf( stderr, "Could not open file!\n" );
+            exit( 1 );
+        }
+
+        int N = 100000;
+
+        printf( "Single access times:\n" );
+        printf( "Filling containers..." );
+
+        std::shared_ptr<Vector> v( new Vector( N ) );
+        std::shared_ptr<Map> m( new Map );
+        std::shared_ptr<List> l( new List );
+        std::shared_ptr<Array> a( new Array );
+
+        fill_loop<decltype( insert_vector ), decltype( v )>( insert_vector, v, N );
+        fill_loop<decltype( insert_map ), decltype( m )>( insert_map, m, N );
+        fill_loop<decltype( insert_list ), decltype( l )>( insert_list, l, N );
+        fill_loop<decltype( insert_array ), decltype( a )>( insert_array, a, N );
+
+        printf( "Done\n" );
+
+        int K = 1000;
+
+        printf( "Measuring access times for %d strings...", K );
+        char c[100];
+        snprintf( c, sizeof( c ), "# r\tVector\tMap\tList\tArray\n" );
+        file << c;
+
+        //srand( time( NULL ) );
+
+        for ( int i = 0; i < K; ++i )
+        {
+            int r = i;
+            snprintf( c, sizeof( c ), "%d\t%.10lf\t%.10lf\t%.10lf\t%.10lf\n"
+                    , r
+                    , Measure::duration( access_vector, v, r )
+                    , Measure::duration( access_map   , m, r )
+                    , Measure::duration( access_list  , l, r )
+                    , Measure::duration( access_array , a, r ) );
+            file << c;
+        }
+
+        printf( "Done\n" );
+
+        /*
+         * There is a gnuplot script to plot the data to a png. (We have included the png for our system as well.)
+         * You can see the vector and array having constant access time, the map's access time is constant as well
+         * but higher. As expected the times for the list are rising linearly.
+         *
+         * Main advantages/disadvantages:
+         *
+         * + all except the array are resizable
+         *
+         * Vector:
+         * + fast access
+         * - slow lookup
+         * - slow insertion/deletion in the middle
+         *
+         * Map:
+         * + fast lookup (if you don't use the key as an index like we did)
+         * + fast insertion/deletion
+         * - no random access
+         *
+         * List:
+         * + fast insertion
+         * - slow access/lookup
+         *
+         * Array:
+         * + fast access
+         * - not resizable
+         * - slow lookup
+         */
+
+        file.close();
     }
 
 
