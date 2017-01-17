@@ -17,7 +17,6 @@ typedef std::map<int,std::string> Map;
 typedef std::list<std::string> List;
 typedef std::array<std::string,SIZE_ARRAY> Array;
 
-
 struct Measure
 {
     /**
@@ -123,6 +122,7 @@ void lookup_array ( std::shared_ptr<Array> a, int i )
 int main ()
 {
     ////////// a) //////////
+    std::cout << std::endl << "////////// Task 10.1.a //////////" << "\n\n";
     // the limits
     std::vector<unsigned> limitsN { 100000, 1000000, 10000000, 100000000 };
 
@@ -163,7 +163,18 @@ int main ()
      * Memory = 15 * 1B + 15*16 * 2B + 15 * 16^2 * 3B + 15 * 16^3 * 4B + 15 * 16^4 * 5B
      */
 
+    int storageSize = 0;
+    for ( int i = 0; i < 100000; ++i )
+    {
+        std::stringstream ss;
+        ss << std::hex << i;
+
+        storageSize += ss.str().length();
+    }
+    printf("size of 100 000 strings: %d byte\n", storageSize);
+
     ////////// b) //////////
+    std::cout << std::endl << "////////// Task 10.1.b //////////" << "\n\n";
     {
         // to speed things up, we use N = 100000
         int N = 100000;
