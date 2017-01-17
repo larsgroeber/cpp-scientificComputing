@@ -51,7 +51,7 @@ void my_fill ( F& func, Args& ... args, int N )
         ss << std::hex << i;
         func ( args..., i, ss.str() );
     }
-};
+}
 
 /**
  * The next functions are used to insert one element into the different containers.
@@ -94,29 +94,29 @@ void lookup ( F& func, Args&... args, int K, int N )
     }
 };
 
-std::string lookup_vector ( std::shared_ptr<Vector> v, int i )
+void lookup_vector ( std::shared_ptr<Vector> v, int i )
 {
-    return (*v)[i];
+    (*v)[i];
 }
 
-std::string lookup_map ( std::shared_ptr<Map> m, int i )
+void lookup_map ( std::shared_ptr<Map> m, int i )
 {
-    return m->find( i )->second;
+    m->find( i )->second;
 }
 
-std::string lookup_list ( std::shared_ptr<List> l, int i )
+void lookup_list ( std::shared_ptr<List> l, int i )
 {
     auto it = l->begin();
     for ( int j = 0; j < i; ++j )
     {
         ++it;
     }
-    return *it;
+    //return *it;
 }
 
-std::string lookup_array ( std::shared_ptr<Array> a, int i )
+void lookup_array ( std::shared_ptr<Array> a, int i )
 {
-    return (*a)[i];
+    (*a)[i];
 }
 
 
@@ -128,7 +128,7 @@ int main ()
 
     for ( auto&& n : limitsN )
     {
-        printf( "Do you want to measure insert times? [y/n]\n" );
+        printf( "Do you want to (continue to) measure insert times? [y/n]\n" );
         std::string s;
         std::cin >> s;
         if ( s != "y" )
@@ -164,28 +164,36 @@ int main ()
      */
 
     ////////// b) //////////
-    // to speed things up, we use N = 100000
-    int N = 100000;
-    int K = 1000000;
-    std::shared_ptr<Vector> v ( new Vector ( N ) );
-    std::shared_ptr<Map> m ( new Map );
-    std::shared_ptr<List> l ( new List );
-    std::shared_ptr<Array> a ( new Array );
+    {
+        // to speed things up, we use N = 100000
+        int N = 100000;
+        int K = 1000000;
+        int K_list = 100000;
+        std::shared_ptr<Vector> v( new Vector( N ) );
+        std::shared_ptr<Map> m( new Map );
+        std::shared_ptr<List> l( new List );
+        std::shared_ptr<Array> a( new Array );
 
-    printf( "Access times: filling containers...\n" );
+        printf( "Access times: filling containers...\n" );
 
-    my_fill<decltype( insert_vector ), decltype( v )>( insert_vector, v, N );
-    my_fill<decltype( insert_map )   , decltype( m )>( insert_map   , m, N );
-    my_fill<decltype( insert_list )  , decltype( l )>( insert_list  , l, N );
-    my_fill<decltype( insert_array ) , decltype( a )>( insert_array , a, N );
+        my_fill<decltype( insert_vector ), decltype( v )>( insert_vector, v, N );
+        my_fill<decltype( insert_map ), decltype( m )>( insert_map, m, N );
+        my_fill<decltype( insert_list ), decltype( l )>( insert_list, l, N );
+        my_fill<decltype( insert_array ), decltype( a )>( insert_array, a, N );
 
-    std::cout << (*a)[1] << std::endl;
+        std::cout << ( *a )[1] << std::endl;
 
-    printf( "Measuring now the access times for %d values:\n", N );
-    printf( "Vector: %lfs\n", Measure::duration( lookup<decltype( lookup_vector ), decltype( v )>, lookup_vector, v, K, N ) );
-    printf( "Map:    %lfs\n", Measure::duration( lookup<decltype( lookup_map )   , decltype( m )>, lookup_map   , m, K, N ) );
-    printf( "List:   %lfs\n", Measure::duration( lookup<decltype( lookup_list )  , decltype( l )>, lookup_list  , l, K, N ) );
-    printf( "Array:  %lfs\n", Measure::duration( lookup<decltype( lookup_array ) , decltype( a )>, lookup_array, a, K, N ) );
+        printf( "Measuring now the access times for %d values:\n", N );
+        printf( "Vector: %lfs\n", Measure::duration( lookup<decltype( lookup_vector ), decltype( v )>
+                                                     , lookup_vector, v, K, N ) );
+        printf( "Map:    %lfs\n", Measure::duration( lookup<decltype( lookup_map ), decltype( m )>
+                                                     , lookup_map, m, K, N ) );
+        printf( "Array:  %lfs\n", Measure::duration( lookup<decltype( lookup_array ), decltype( a )>
+                                                     , lookup_array, a, K, N ) );
+
+        printf( "List:   %lfs\n", Measure::duration( lookup<decltype( lookup_list ), decltype( l )>
+                                                     , lookup_list, l, K_list, N ) );
+    }
 
     return 0;
 }

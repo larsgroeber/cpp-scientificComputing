@@ -12,9 +12,9 @@
 //#define POS_DATA
 
 // 3 examples - just uncomment one to enable!
-//#define DEFAULT       // toy example
+#define DEFAULT       // toy example
 //#define MOON_EARTH
-#define MARS_PHOBOS
+//#define MARS_PHOBOS
 
 #include <string>
 
