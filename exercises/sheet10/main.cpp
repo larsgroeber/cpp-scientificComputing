@@ -16,12 +16,12 @@
 
 const int SIZE_ARRAY = 100000000;
 
-// define our containers
+// defining our containers
 // the last one is the STL implementation of a c-array
 // as we cannot define it at runtime, we chose to always go with the maximum size
-typedef std::vector<std::string> Vector;
-typedef std::map<int,std::string> Map;
-typedef std::list<std::string> List;
+typedef std::vector<std::string>           Vector;
+typedef std::map<int,std::string>          Map;
+typedef std::list<std::string>             List;
 typedef std::array<std::string,SIZE_ARRAY> Array;
 
 struct Measure
@@ -45,17 +45,17 @@ struct Measure
 /**
  * \brief Helper function to fill a container with hexadecimal numbers
  * \param func Function to insert one element into the container
- * \param args The container
+ * \param c    The container
  * \param N    Number of elements
  */
-template <typename F, typename Args>
-void fill_loop ( F& func, Args& args, int N )
+template <typename F, typename C>
+void fill_loop ( F& func, C& c, int N )
 {
     for ( int i = 0; i < N; ++i )
     {
         std::stringstream ss;
         ss << std::hex << i;
-        func ( args, i, ss.str() );
+        func ( c, i, ss.str() );
     }
 }
 
@@ -83,10 +83,14 @@ void insert_array ( std::shared_ptr<Array> array, int i, std::string s )
 }
 
 /**
- * The next functions are used to look up values in different containers
+ * \brief Function to access a container K times in a random fashion
+ * \param func Function to access the container
+ * \param c    The container
+ * \param K    Number of accesses
+ * \param N    Size of the container
  */
-template <typename F, typename Args>
-void access_loop ( F& func, Args& args, int K, int N )
+template <typename F, typename C>
+void access_loop ( F& func, C& c, int K, int N )
 {
     srand( time(NULL) );
 
@@ -95,10 +99,13 @@ void access_loop ( F& func, Args& args, int K, int N )
     {
         int r = rand() % N;
 
-        func( args, r );
+        func( c, r );
     }
 };
 
+/**
+ * The next functions are used to access values in different containers.
+ */
 std::string access_vector ( std::shared_ptr<Vector> v, int i )
 {
     // random access is O(1)
@@ -149,10 +156,11 @@ int main ()
         // so we allocate all of them on the heap
         // and use smart pointer to delete their contents once they are not needed anymore
         // on my system this code needed at least 10gb of RAM for the last value of n!
-        std::shared_ptr<Vector> v ( new Vector ( n ) );
-        std::shared_ptr<Map> m ( new Map );
-        std::shared_ptr<List> l ( new List );
-        std::shared_ptr<Array> a ( new Array );
+        std::shared_ptr<Vector> v ( new Vector ( n ) ); // Preallocating memory improves performance here
+                                                        // otherwise the vector would be way slower than the array
+        std::shared_ptr<Map>    m ( new Map );
+        std::shared_ptr<List>   l ( new List );
+        std::shared_ptr<Array>  a ( new Array );
 
         printf( "Measuring now for N = %d\n", n );
         printf( "Vector: %lf\n"
@@ -230,7 +238,7 @@ int main ()
         access = Measure::duration( access_loop<decltype( access_list ), decltype( l )>, access_list, l, K_list, N );
         printf( "List:   %lfs - %.10lfs / access\n", access, access / K_list );
 
-        printf( "\nThe map takes longer then vector and array because it uses binary search, O(log(n))"
+        printf( "\nThe map takes longer then vector and array because it uses a binary tree, O(log(n))"
                         ", instead of random access.\n"
                 "The list is even slower because it neither provides random access nor binary search "
                         "(we have to iterate through the list to find the right value).\n");
