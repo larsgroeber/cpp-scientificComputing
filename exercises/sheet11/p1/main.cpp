@@ -1,3 +1,11 @@
+/**
+ * Solution to problem 1 of sheet 11
+ * by Lars Gröber, Hendirk Edelmann
+ *
+ * A gnuplot script to plot the data is available.
+ * Compile with 'g++ -std=c++11 main.cpp'
+ */
+
 #include <iostream>
 #include <random>
 #include <map>
@@ -42,6 +50,7 @@ private:
     std::exponential_distribution<> _exponential;
 };
 
+
 int main ()
 {
     /////// a) ///////
@@ -54,8 +63,10 @@ int main ()
     int N = 10000;
     int av_per_bin = 200;
     int bin_num = N / av_per_bin;
+
     double x_min = 0;
     double x_max = 10;
+
     double bin_size = (x_max - x_min) / bin_num;
 
     std::map<int,int> hist_gauss;   // (bin number | bin count)
@@ -75,6 +86,7 @@ int main ()
 
     std::cout << "Done" << std::endl;
 
+    /////// c) ///////
     // write data to file
     std::ofstream file ( "hist.dat", std::ios_base::out );
 
@@ -94,4 +106,6 @@ int main ()
     std::cout << "Done writing histogram to file." << std::endl;
 
     file.close();
+
+    return 0;
 }

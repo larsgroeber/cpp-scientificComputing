@@ -4,7 +4,6 @@ set terminal pngcairo size 1200,800 enhanced font 'Verdana,14'
 
 file="hist.dat"
 
-#set xrange [0:10]
 set xlabel "Bin"
 set ylabel "Mean Counts"
 
